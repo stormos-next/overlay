@@ -11,7 +11,7 @@ SRC_URI="http://www.gzip.org/zlib/${P}.tar.bz2
 
 LICENSE="ZLIB"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd ~x86-solaris"
 IUSE=""
 
 RDEPEND=""
@@ -38,6 +38,11 @@ src_compile() {
 		export RC=${CHOST}-windres DLLWRAP=${CHOST}-dllwrap
 		emake -f win32/Makefile.gcc prefix=/usr || die
 		;;
+	*solaris*)
+		# need to use mapfile for ABI compat with solaris binaries
+		./configure --shared --prefix=/usr --libdir=/$(get_libdir) || die
+		emake LDSHARED="${CC} -shared -G -h libz.so.1 -Wl,-M,"${FILESDIR}"/mapfile -L." || die
+		;;
 	*)
 		# not an autoconf script, so cant use econf
 		./configure --shared --prefix=/usr --libdir=/$(get_libdir) || die
@@ -57,7 +62,7 @@ src_install() {
 
 	# we don't need the static lib in /lib
 	# as it's only for compiling against
-	dolib libz.a
+	use kernel_solaris || dolib libz.a
 
 	# all the shared libs go into /lib
 	# for NFS based /usr

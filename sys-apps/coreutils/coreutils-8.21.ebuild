@@ -19,7 +19,7 @@ SRC_URI="mirror://gnu-alpha/coreutils/${P}.tar.xz
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~arm-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~arm-linux ~x86-linux ~x86-solaris"
 IUSE="acl caps gmp nls selinux static userland_BSD vanilla xattr"
 
 LIB_DEPEND="acl? ( sys-apps/acl[static-libs] )
@@ -75,7 +75,7 @@ src_configure() {
 	export gl_cv_func_mknod_works=yes #409919
 	use static && append-ldflags -static && sed -i '/elf_sys=yes/s:yes:no:' configure #321821
 	use selinux || export ac_cv_{header_selinux_{context,flash,selinux}_h,search_setfilecon}=no #301782
-	use userland_BSD && myconf="${myconf} -program-prefix=g --program-transform-name=s/stat/nustat/"
+	use userland_GNU || myconf="${myconf} -program-prefix=g --program-transform-name=s/stat/nustat/"
 	# kill/uptime - procps
 	# groups/su   - shadow
 	# hostname    - net-tools

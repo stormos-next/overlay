@@ -34,3 +34,6 @@ wayland
 
 # Recent sys-auth/polkit cannot be built on FreeBSD
 policykit
+
+# Disable static builds on Solaris
+static

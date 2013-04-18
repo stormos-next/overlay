@@ -17,3 +17,11 @@ RDEPEND=""
 # The testsuite makes use of gendiff(1) that comes from rpm, thus if
 # the user wants to run tests, it should install that too.
 DEPEND="test? ( app-arch/rpm )"
+
+src_compile() {
+	local myconf
+	use userland_solaris && myconf=" --program-prefix=g"
+
+	econf ${myconf} || die "configure failed"
+	emake || die "make failed"
+}

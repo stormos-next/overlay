@@ -5,6 +5,9 @@
 # Last building sandbox breaks gfind, bug #374425
 FEATURES="-sandbox"
 
+# Don't strip binaries on solaris, it fucks 'em up
+FEATURES="${FEATURES} nostrip"
+
 USERLAND="solaris"
 KERNEL="solaris"
 ELIBC="solaris"
