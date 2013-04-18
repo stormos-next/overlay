@@ -1,0 +1,42 @@
+# ChangeLog for dev-python/python-keystoneclient
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/python-keystoneclient/ChangeLog,v 1.6 2013/03/26 06:09:02 prometheanfire Exp $
+
+*python-keystoneclient-0.2.2-r1 (26 Mar 2013)
+
+  26 Mar 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +python-keystoneclient-0.2.2-r1.ebuild, -python-keystoneclient-0.2.2.ebuild,
+  python-keystoneclient-9999.ebuild:
+  fixed dep on prettytable (bad interaction with quantumclient)
+
+  21 Mar 2013; Matthew Thode <prometheanfire@gentoo.org>
+  -python-keystoneclient-0.2.1-r1.ebuild:
+  removing the old keystoneclient ebuild
+
+*python-keystoneclient-0.2.2 (11 Mar 2013)
+
+  11 Mar 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +python-keystoneclient-0.2.2.ebuild, python-keystoneclient-9999.ebuild:
+  bumping python-keystoneclient to 0.2.2, better test support
+
+*python-keystoneclient-0.2.1-r1 (11 Jan 2013)
+
+  11 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  -python-keystoneclient-0.2.1.ebuild, +python-keystoneclient-0.2.1-r1.ebuild,
+  python-keystoneclient-9999.ebuild:
+  updating ebuilds to support more []
+
+*python-keystoneclient-0.2.1 (01 Jan 2013)
+
+  01 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +python-keystoneclient-0.2.1.ebuild, -python-keystoneclient-2012.2.ebuild:
+  added python-keystoneclient-0.2.1 (from pypi) and removed
+  python-keystoneclient-2012.2 (from launchpad)
+
+*python-keystoneclient-9999 (01 Jan 2013)
+*python-keystoneclient-2012.2 (01 Jan 2013)
+
+  01 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +python-keystoneclient-2012.2.ebuild, +python-keystoneclient-9999.ebuild,
+  +metadata.xml:
+  initial add of python-keystoneclient

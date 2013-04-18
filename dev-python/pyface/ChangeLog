@@ -1,0 +1,40 @@
+# ChangeLog for dev-python/pyface
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/pyface/ChangeLog,v 1.8 2013/04/11 16:05:33 idella4 Exp $
+
+*pyface-4.3.0-r1 (11 Apr 2013)
+
+  11 Apr 2013; Ian Delaney <idella4@gentoo.org> +pyface-4.3.0-r1.ebuild:
+  migration to distutils-r1, rm py2.6 support, fixed test phase
+
+*pyface-4.3.0 (03 Apr 2013)
+
+  03 Apr 2013; Patrick Lauer <patrick@gentoo.org> +pyface-4.3.0.ebuild:
+  Bump
+
+  06 Dec 2012; Sébastien Fabbro <bicatali@gentoo.org> pyface-4.2.0.ebuild:
+  Keyword amd64-linux and x86-linux
+
+  09 Nov 2012; Ian Delaney <idella4@gentoo.org> pyface-4.1.0.ebuild,
+  pyface-4.2.0.ebuild:
+  Skipping upassable test.py file, test restricting python2.[56] & pypy,
+  upgrading src_test, fixes Bug #No. 431530
+
+*pyface-4.2.0 (09 Oct 2012)
+
+  09 Oct 2012; Patrick Lauer <patrick@gentoo.org> +pyface-4.2.0.ebuild:
+  Bump
+
+  07 Aug 2012; Patrick Lauer <patrick@gentoo.org> pyface-4.1.0.ebuild:
+  Restricting py-2.5
+
+*pyface-4.1.0 (17 Jan 2012)
+
+  17 Jan 2012; Sébastien Fabbro <bicatali@gentoo.org> +pyface-4.1.0.ebuild:
+  Version bump
+
+*pyface-4.0.0 (03 Aug 2011)
+
+  03 Aug 2011; Sébastien Fabbro <bicatali@gentoo.org> +pyface-4.0.0.ebuild,
+  +metadata.xml:
+  Initial import

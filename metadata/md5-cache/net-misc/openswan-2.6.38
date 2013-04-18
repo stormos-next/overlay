@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install postinst preinst prepare setup
+DEPEND=!net-misc/strongswan dev-libs/gmp dev-lang/perl caps? ( sys-libs/libcap-ng ) curl? ( net-misc/curl ) ldap? ( net-nds/openldap ) nss? ( dev-libs/nss ) ssl? ( dev-libs/openssl ) virtual/linux-sources app-text/xmlto app-text/docbook-xml-dtd:4.1.2
+DESCRIPTION=Open Source implementation of IPsec for the Linux operating system (was SuperFreeS/WAN).
+EAPI=4
+HOMEPAGE=http://www.openswan.org/
+IUSE=caps curl ldap pam ssl extra-algorithms weak-algorithms nocrypto-algorithms ms-bad-proposal nss
+KEYWORDS=amd64 ~ppc ~sparc x86
+LICENSE=GPL-2
+RDEPEND=!net-misc/strongswan dev-libs/gmp dev-lang/perl caps? ( sys-libs/libcap-ng ) curl? ( net-misc/curl ) ldap? ( net-nds/openldap ) nss? ( dev-libs/nss ) ssl? ( dev-libs/openssl ) || ( sys-apps/net-tools[old-output] <sys-apps/net-tools-1.60_p201111202031570500 ) virtual/logger sys-apps/iproute2
+RESTRICT=test
+SLOT=0
+SRC_URI=http://download.openswan.org/openswan/openswan-2.6.38.tar.gz
+_eclasses_=eutils	36e6377b0e31856b6d62af831661c4f3	flag-o-matic	d900015de4e092f26d8c0a18b6bd60de	linux-info	dd8fdcccc30f117673b4cba4ed4f74a7	multilib	ded93e450747134a079e647d888aa80b	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e	user	d0a4d0735a6c0183d707ca919bd72f28	versionator	6601b4c5b3f019a993db59a50e1854e4
+_md5_=08ed3349f79b4e83cdcbc2505f540351

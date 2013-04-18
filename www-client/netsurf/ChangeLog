@@ -1,0 +1,25 @@
+# ChangeLog for www-client/netsurf
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/www-client/netsurf/ChangeLog,v 1.5 2013/02/28 08:15:38 xmw Exp $
+
+  28 Feb 2013; Michael Weber <xmw@gentoo.org> netsurf-2.9.ebuild:
+  Restore cross-compile functionality (thanks James Le Cuirot, bug 431884)
+
+  20 Aug 2012; Michael Weber <xmw@gentoo.org>
+  +files/netsurf-2.9-conditionally-include-image-headers.patch,
+  netsurf-2.9.ebuild:
+  Fix compilation w/o libnsbmp (bug 428660, thanks James Le Cuirot for the
+  patch)
+
+  01 Aug 2012; Michael Sterrett <mr_bones_@gentoo.org> metadata.xml:
+  fix metadata typo
+
+  18 Jul 2012; Michael Weber <xmw@gentoo.org> netsurf-2.9.ebuild:
+  Drop net-libs/libdom dependency
+
+*netsurf-2.9 (18 Jul 2012)
+
+  18 Jul 2012; Michael Weber <xmw@gentoo.org>
+  +files/netsurf-2.9-buildsystem.patch, +files/netsurf-2.9-includes.patch,
+  +metadata.xml, +netsurf-2.9.ebuild:
+  Initial import

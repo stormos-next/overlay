@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm prepare test
+DEPEND=dev-python/setuptools doc? ( dev-python/sphinx dev-python/epydoc ) test? ( dev-python/webob ) =dev-lang/python-2* test? ( dev-python/nose )
+DESCRIPTION=A HTTP ressource kit for Python.
+EAPI=3
+HOMEPAGE=http://github.com/benoitc/restkit http://benoitc.github.com/restkit/ http://pypi.python.org/pypi/restkit
+IUSE=+cli doc examples test
+KEYWORDS=~amd64
+LICENSE=MIT
+RDEPEND=cli? ( dev-python/ipython dev-python/setuptools ) =dev-lang/python-2*
+SLOT=0
+SRC_URI=mirror://pypi/r/restkit/restkit-2.3.3.tar.gz
+_eclasses_=distutils	77fc6005d2dfcc7bdb5ec363a49d9912	multilib	ded93e450747134a079e647d888aa80b	python	dd56675d8e9f7e85d815a28c87383141	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e
+_md5_=a1b552a24f42b8767d778ba4f7a22110

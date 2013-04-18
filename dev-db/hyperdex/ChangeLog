@@ -1,0 +1,38 @@
+# ChangeLog for dev-db/hyperdex
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-db/hyperdex/ChangeLog,v 1.8 2013/04/15 06:35:43 patrick Exp $
+
+*hyperdex-1.0_rc4 (15 Apr 2013)
+
+  15 Apr 2013; Patrick Lauer <patrick@gentoo.org> +hyperdex-1.0_rc4.ebuild:
+  Bump
+
+*hyperdex-1.0_rc3 (25 Feb 2013)
+
+  25 Feb 2013; Patrick Lauer <patrick@gentoo.org> +hyperdex-1.0_rc3.ebuild:
+  Bump
+
+*hyperdex-1.0_rc2 (10 Feb 2013)
+
+  10 Feb 2013; Patrick Lauer <patrick@gentoo.org> +hyperdex-1.0_rc2.ebuild:
+  Bump
+
+*hyperdex-1.0_rc1 (24 Jan 2013)
+
+  24 Jan 2013; Patrick Lauer <patrick@gentoo.org> +hyperdex-1.0_rc1.ebuild:
+  Bump
+
+  20 Aug 2012; Patrick Lauer <patrick@gentoo.org> hyperdex-0.4.0.ebuild:
+  ... and clean up the python bits
+
+  20 Aug 2012; Patrick Lauer <patrick@gentoo.org> hyperdex-0.4.0.ebuild:
+  Fix python bindings
+
+  18 Aug 2012; Patrick Lauer <patrick@gentoo.org> hyperdex-0.4.0.ebuild:
+  Small fix for trace-player as libbsd file locations have changed
+
+*hyperdex-0.4.0 (18 Aug 2012)
+
+  18 Aug 2012; Patrick Lauer <patrick@gentoo.org> +files/hyperdex.confd,
+  +files/hyperdex.initd, +hyperdex-0.4.0.ebuild, +metadata.xml:
+  Initial import. Ebuilds by me.

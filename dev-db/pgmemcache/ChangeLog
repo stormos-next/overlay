@@ -1,0 +1,20 @@
+# ChangeLog for dev-db/pgmemcache
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-db/pgmemcache/ChangeLog,v 1.4 2013/03/17 15:19:40 hwoarang Exp $
+
+  17 Mar 2013; Markos Chandras <hwoarang@gentoo.org> metadata.xml:
+  Add proxy-maintainers to metadata.xml
+
+*pgmemcache-2.0.6 (06 Jun 2011)
+
+  06 Jun 2011; Patrick Lauer <patrick@gentoo.org> +pgmemcache-2.0.6.ebuild:
+  Bump for #370147
+
+  30 Nov 2010; Patrick Lauer <patrick@gentoo.org> pgmemcache-2.0.4.ebuild:
+  Fixing libmemcached minimum version
+
+*pgmemcache-2.0.4 (17 Jun 2010)
+
+  17 Jun 2010; Patrick Lauer <patrick@gentoo.org> +pgmemcache-2.0.4.ebuild,
+  +metadata.xml:
+  Initial import. Ebuild by jbergstroem.

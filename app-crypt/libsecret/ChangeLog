@@ -1,0 +1,79 @@
+# ChangeLog for app-crypt/libsecret
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/app-crypt/libsecret/ChangeLog,v 1.18 2013/03/31 16:06:16 eva Exp $
+
+*libsecret-0.15 (31 Mar 2013)
+
+  31 Mar 2013; Gilles Dartiguelongue <eva@gentoo.org> +libsecret-0.15.ebuild:
+  Version bump.
+
+  30 Mar 2013; Gilles Dartiguelongue <eva@gentoo.org> libsecret-0.14.ebuild:
+  Policy fixups, switch to python-any-r1.
+
+  05 Mar 2013; Gilles Dartiguelongue <eva@gentoo.org> -libsecret-0.11.ebuild:
+  Clean up old revision.
+
+*libsecret-0.14 (05 Mar 2013)
+
+  05 Mar 2013; Nirbheek Chauhan <nirbheek@gentoo.org> +libsecret-0.14.ebuild,
+  -files/libsecret-0.13-fix-secretvalue-get.patch, -libsecret-0.13.ebuild:
+  Bump to 0.14, and remove 0.13
+
+*libsecret-0.13 (02 Mar 2013)
+
+  02 Mar 2013; Nirbheek Chauhan <nirbheek@gentoo.org>
+  +files/libsecret-0.13-fix-secretvalue-get.patch, +libsecret-0.13.ebuild:
+  Bump to 0.13, add a patch from git to fix SecretValue annotations
+
+  28 Jan 2013; Alexis Ballier <aballier@gentoo.org> libsecret-0.12.ebuild:
+  keyword ~amd64-fbsd
+
+  06 Jan 2013; Markus Meier <maekke@gentoo.org> libsecret-0.12.ebuild:
+  add ~arm, bug #449220
+
+  06 Jan 2013; Agostino Sarubbo <ago@gentoo.org> libsecret-0.12.ebuild:
+  Add ~sparc, wrt bug #449220
+
+  01 Jan 2013; Agostino Sarubbo <ago@gentoo.org> libsecret-0.12.ebuild:
+  Add ~alpha, wrt bug #449220
+
+  01 Jan 2013; Agostino Sarubbo <ago@gentoo.org> libsecret-0.12.ebuild:
+  Add ~ia64, wrt bug #449220
+
+  17 Dec 2012; Agostino Sarubbo <ago@gentoo.org> libsecret-0.12.ebuild:
+  Add ~ppc, wrt bug #447426
+
+  17 Dec 2012; Agostino Sarubbo <ago@gentoo.org> libsecret-0.12.ebuild:
+  Add ~ppc64, wrt bug #447426
+
+  16 Dec 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
+  libsecret-0.12.ebuild, metadata.xml:
+  Switch to global introspection USE flag. Clean up ebuild a bit.
+
+*libsecret-0.12 (09 Dec 2012)
+
+  09 Dec 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -libsecret-0.10.ebuild, +libsecret-0.12.ebuild:
+  Version bump, adds shared memory pool with gcr. Drop old.
+
+  24 Oct 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
+  libsecret-0.11.ebuild:
+  Correctly order python_set_active_version / python_pkg_setup.
+
+  24 Oct 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
+  libsecret-0.11.ebuild:
+  G2CONF usage fix.
+
+*libsecret-0.11 (24 Oct 2012)
+
+  24 Oct 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
+  +libsecret-0.11.ebuild, metadata.xml:
+  Version bump with stricter error handling. Respect USE=-introspection. Enable
+  vala bindings. Add missing dependencies for the test suite.
+
+*libsecret-0.10 (25 Sep 2012)
+
+  25 Sep 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
+  +libsecret-0.10.ebuild, +metadata.xml:
+  Add a new library for accessing the freedesktop.org Secret Service API, which
+  is implemented by gnome-keyring and ksecrets.

@@ -1,0 +1,30 @@
+# ChangeLog for sys-libs/musl
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/musl/ChangeLog,v 1.6 2013/04/14 10:58:33 blueness Exp $
+
+  14 Apr 2013; Anthony G. Basile <blueness@gentoo.org> ChangeLog:
+  Fix gpg signing of Manifest
+
+*musl-0.9.10 (14 Apr 2013)
+
+  14 Apr 2013; Anthony G. Basile <blueness@gentoo.org> +musl-0.9.10.ebuild:
+  Version bump
+
+*musl-0.9.9 (23 Feb 2013)
+
+  23 Feb 2013; Anthony G. Basile <blueness@gentoo.org> +musl-0.9.9.ebuild:
+  Add release 0.9.9, bug #458846
+
+  26 Dec 2012; Anthony G. Basile <blueness@gentoo.org> metadata.xml,
+  musl-9999.ebuild:
+  Added ~mips and removed some lint
+
+  25 Dec 2012; Anthony G. Basile <blueness@gentoo.org> metadata.xml,
+  musl-9999.ebuild:
+  Correct minor typo, add myself as co-maintainer
+
+*musl-9999 (25 Dec 2012)
+
+  25 Dec 2012; Luca Barbato <lu_zero@gentoo.org> +musl-9999.ebuild,
+  +metadata.xml:
+  Initial commit

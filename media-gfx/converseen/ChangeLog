@@ -1,0 +1,37 @@
+# ChangeLog for media-gfx/converseen
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/converseen/ChangeLog,v 1.7 2013/03/02 21:34:12 hwoarang Exp $
+
+  02 Mar 2013; Markos Chandras <hwoarang@gentoo.org> converseen-0.4.7.ebuild,
+  converseen-0.4.9.ebuild, converseen-0.5.1.ebuild, converseen-0.5.3.ebuild,
+  converseen-0.5.ebuild:
+  Move Qt dependencies to the new category
+
+*converseen-0.5.3 (28 Feb 2013)
+
+  28 Feb 2013; Sergey Popov <pinkbyte@gentoo.org> +converseen-0.5.3.ebuild:
+  Version bump, add missing USE=cxx dependency on imagemagick
+
+*converseen-0.5.1 (29 Jul 2012)
+
+  29 Jul 2012; Maxim Koltsov <maksbotan@gentoo.org> +converseen-0.5.1.ebuild:
+  Bump to 0.5.1, thanks to Nikoli
+
+*converseen-0.5 (13 Jun 2012)
+
+  13 Jun 2012; Michael Weber <xmw@gentoo.org> +converseen-0.5.ebuild:
+  Version bump by Nikoli (bug 420219 by Sergey Popov)
+
+*converseen-0.4.9 (24 Mar 2012)
+
+  24 Mar 2012; Markos Chandras <hwoarang@gentoo.org> +converseen-0.4.9.ebuild:
+  Version bump. Bug #408309
+
+  12 Dec 2011; Maxim Koltsov <maksbotan@gentoo.org> converseen-0.4.7.ebuild:
+  Fix bug 393557, thanks to Nikoli
+
+*converseen-0.4.7 (07 Dec 2011)
+
+  07 Dec 2011; Maxim Koltsov <maksbotan@gentoo.org> +converseen-0.4.7.ebuild,
+  +metadata.xml:
+  Add media-gfx/converseen-0.4.7, bug 393543. Thanks to Nikoli

@@ -1,0 +1,54 @@
+# ChangeLog for dev-python/restkit
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/restkit/ChangeLog,v 1.11 2013/03/20 07:10:33 patrick Exp $
+
+  20 Mar 2013; Patrick Lauer <patrick@gentoo.org> restkit-4.2.1-r1.ebuild:
+  Keywording for ~x86 too
+
+*restkit-4.2.1-r1 (26 Feb 2013)
+
+  26 Feb 2013; Mike Gilbert <floppym@gentoo.org>
+  +files/restkit-exclude-tests.patch, +restkit-4.2.1-r1.ebuild,
+  -restkit-4.2.0.ebuild, -restkit-4.2.1.ebuild:
+  Exclude tests the right way.
+
+*restkit-4.2.1 (10 Feb 2013)
+
+  10 Feb 2013; Ian Delaney <idella4@gentoo.org> +restkit-4.2.1.ebuild:
+  bump
+
+  15 Jan 2013; Ian Delaney <idella4@gentoo.org> restkit-4.2.0.ebuild:
+  tests folder removed to avoid file collisions, fixes Bug #451968
+
+  15 Jan 2013; Ian Delaney <idella4@gentoo.org> restkit-4.2.0.ebuild:
+  Remove unrequired 'leftover' eutils from inherit, thanks for noticing Arfrever
+
+*restkit-4.2.0 (13 Jan 2013)
+
+  13 Jan 2013; Ian Delaney <idella4@gentoo.org> +restkit-4.2.0.ebuild:
+  bump; DEPEND & RDEPEND updraded,migrated to distutils-r1, closes Bug #416651
+
+  29 Nov 2011; Mike Gilbert <floppym@gentoo.org> restkit-3.0.2.ebuild:
+  Restrict python 2.4, fixes bug 366357.
+
+*restkit-3.0.2 (04 Feb 2011)
+
+  04 Feb 2011; Tiziano Müller <dev-zero@gentoo.org> +restkit-3.0.2.ebuild:
+  Version bump.
+
+*restkit-2.3.3 (11 Jan 2011)
+
+  11 Jan 2011; Tiziano Müller <dev-zero@gentoo.org> +restkit-2.3.3.ebuild:
+  Version bump (bug #348311).
+
+*restkit-2.2.3 (15 Nov 2010)
+
+  15 Nov 2010; Tiziano Müller <dev-zero@gentoo.org> +restkit-2.2.3.ebuild:
+  Version bump (bug #341533), re-enabled tests, fixed failure when
+  generating docs.
+
+*restkit-2.1.4 (27 Aug 2010)
+
+  27 Aug 2010; Tiziano Müller <dev-zero@gentoo.org> +restkit-2.1.4.ebuild,
+  +metadata.xml:
+  Initial commit.

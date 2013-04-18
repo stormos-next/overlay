@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm prepare test
+DEPEND=>=dev-python/elementtree-1.2 >=dev-libs/expat-1.95.8 dev-python/setuptools =dev-lang/python-2*
+DESCRIPTION=The cElementTree module is a C implementation of the ElementTree API
+EAPI=3
+HOMEPAGE=http://effbot.org/zone/celementtree.htm http://pypi.python.org/pypi/cElementTree
+IUSE=doc
+KEYWORDS=alpha amd64 ia64 ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~x86-macos ~sparc-solaris
+LICENSE=ElementTree
+RDEPEND=>=dev-python/elementtree-1.2 >=dev-libs/expat-1.95.8 =dev-lang/python-2*
+SLOT=0
+SRC_URI=http://effbot.org/downloads/cElementTree-1.0.5-20051216.tar.gz
+_eclasses_=distutils	77fc6005d2dfcc7bdb5ec363a49d9912	eutils	36e6377b0e31856b6d62af831661c4f3	multilib	ded93e450747134a079e647d888aa80b	python	dd56675d8e9f7e85d815a28c87383141	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e	user	d0a4d0735a6c0183d707ca919bd72f28
+_md5_=6baddceb09649882eaa9177e75e0b094

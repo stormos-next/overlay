@@ -1,0 +1,26 @@
+# ChangeLog for media-sound/opus-tools
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/media-sound/opus-tools/ChangeLog,v 1.5 2013/04/08 01:20:30 radhermit Exp $
+
+  08 Apr 2013; Tim Harder <radhermit@gentoo.org> metadata.xml:
+  Use correct herd.
+
+  16 Feb 2013; Agostino Sarubbo <ago@gentoo.org> opus-tools-0.1.6.ebuild:
+  Add x86, wrt bug #436548
+
+*opus-tools-0.1.6 (13 Jan 2013)
+
+  13 Jan 2013; Hanno Boeck <hanno@gentoo.org> +opus-tools-0.1.6.ebuild,
+  metadata.xml:
+  Version bump
+
+*opus-tools-0.1.5 (09 Sep 2012)
+
+  09 Sep 2012; Luca Barbato <lu_zero@gentoo.org> +opus-tools-0.1.5.ebuild:
+  New version
+
+*opus-tools-0.1.2 (14 Jun 2012)
+
+  14 Jun 2012; Luca Barbato <lu_zero@gentoo.org> +opus-tools-0.1.2.ebuild,
+  +metadata.xml:
+  Initial commit

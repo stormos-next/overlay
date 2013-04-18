@@ -1,0 +1,27 @@
+# ChangeLog for dev-python/python-glanceclient
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/python-glanceclient/ChangeLog,v 1.5 2013/03/11 03:02:22 prometheanfire Exp $
+
+*python-glanceclient-0.8.0 (11 Mar 2013)
+
+  11 Mar 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +python-glanceclient-0.8.0.ebuild:
+  bumping python-glanceclient to 0.8.0
+
+  17 Jan 2013; Matthew Thode <prometheanfire@gentoo.org> metadata.xml,
+  python-glanceclient-0.7.0.ebuild:
+  changed the description of glance, glance is not nova
+
+  17 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  python-glanceclient-0.7.0.ebuild:
+  update for warlocks less usability with python 2.6
+
+  17 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  python-glanceclient-0.7.0.ebuild:
+  forgot the [${PYTHON_USEDEP}]
+
+*python-glanceclient-0.7.0 (17 Jan 2013)
+
+  17 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +python-glanceclient-0.7.0.ebuild, +metadata.xml:
+  adding python-glanceclient for glance

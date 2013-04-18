@@ -1,0 +1,31 @@
+# ChangeLog for dev-libs/MicroJSON
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/MicroJSON/ChangeLog,v 1.7 2013/03/27 15:30:16 ago Exp $
+
+  27 Mar 2013; Agostino Sarubbo <ago@gentoo.org> MicroJSON-0.3.0.ebuild:
+  Stable for x86, wrt bug #463436
+
+  27 Mar 2013; Agostino Sarubbo <ago@gentoo.org> MicroJSON-0.3.0.ebuild:
+  Stable for amd64, wrt bug #463436
+
+*MicroJSON-0.3.0 (12 Mar 2013)
+
+  12 Mar 2013; Tom Wijsman <TomWij@gentoo.org> +MicroJSON-0.3.0.ebuild:
+  Version bump to 0.3.0, by Gorelov Grigory. Fixes bug #461504.
+
+*MicroJSON-0.2.1 (07 Mar 2013)
+
+  07 Mar 2013; Tom Wijsman <TomWij@gentoo.org> +MicroJSON-0.2.1.ebuild:
+  Version bump to 0.2.1, by Gorelov Grigory. Fixes bug #460664.
+
+  06 Mar 2013; Tom Wijsman <TomWij@gentoo.org> MicroJSON-0.2.0.ebuild:
+  EAPI 5, thanks to Chris Reffett for reporting. Fixes bug #460572.
+
+  03 Mar 2013; Tom Wijsman <TomWij@gentoo.org> metadata.xml:
+  Added the proxy-maintainers herd as requested on the dev ML.
+
+*MicroJSON-0.2.0 (14 Feb 2013)
+
+  14 Feb 2013; Tom Wijsman <TomWij@gentoo.org> +MicroJSON-0.2.0.ebuild,
+  +metadata.xml:
+  New ebuild for MicroJSON. Contributed by Gorelov Grigory. Fixes bug #457160.

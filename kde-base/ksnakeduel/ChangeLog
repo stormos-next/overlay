@@ -1,0 +1,88 @@
+# ChangeLog for kde-base/ksnakeduel
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/kde-base/ksnakeduel/ChangeLog,v 1.22 2013/04/06 00:04:23 dilfridge Exp $
+
+*ksnakeduel-4.10.2 (05 Apr 2013)
+
+  05 Apr 2013; Andreas K. Huettel <dilfridge@gentoo.org>
+  +ksnakeduel-4.10.2.ebuild:
+  Version bump KDE SC 4.10.2
+
+  02 Apr 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.10.1.ebuild:
+  Stable for ppc64, wrt to bug #462890
+
+  01 Apr 2013; Agostino Sarubbo <ago@gentoo.org> -ksnakeduel-4.10.0.ebuild,
+  -ksnakeduel-4.9.5.ebuild:
+  Remove old
+
+  01 Apr 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.10.1.ebuild:
+  Stable for ppc, wrt to bug #462890
+
+  31 Mar 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.10.1.ebuild:
+  Stable for x86, wrt bug #462890
+
+  31 Mar 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.10.1.ebuild:
+  Stable for amd64, wrt bug #462890
+
+*ksnakeduel-4.10.1 (06 Mar 2013)
+
+  06 Mar 2013; Andreas K. Huettel <dilfridge@gentoo.org>
+  +ksnakeduel-4.10.1.ebuild:
+  Version bump KDE SC 4.10.1
+
+  23 Feb 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.10.0.ebuild,
+  ksnakeduel-4.9.5.ebuild:
+  Add ~ppc64, wrt bug #455960
+
+*ksnakeduel-4.10.0 (06 Feb 2013)
+
+  06 Feb 2013; Alexey Shvetsov <alexxy@gentoo.org> +ksnakeduel-4.10.0.ebuild:
+  Version bump KDE SC 4.10.0
+
+  28 Jan 2013; Agostino Sarubbo <ago@gentoo.org> -ksnakeduel-4.9.3.ebuild,
+  -ksnakeduel-4.9.4.ebuild:
+  Remove old
+
+  27 Jan 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.9.5.ebuild:
+  Stable for ppc, wrt bug #450678
+
+  27 Jan 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.9.5.ebuild:
+  Stable for x86, wrt bug #450678
+
+  27 Jan 2013; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.9.5.ebuild:
+  Stable for amd64, wrt bug #450678
+
+*ksnakeduel-4.9.5 (05 Jan 2013)
+
+  05 Jan 2013; <creffett@gentoo.org> +ksnakeduel-4.9.5.ebuild:
+  Version bump KDE SC 4.9.5
+
+  22 Dec 2012; Markus Meier <maekke@gentoo.org> ksnakeduel-4.9.4.ebuild:
+  add ~arm
+
+*ksnakeduel-4.9.4 (05 Dec 2012)
+
+  05 Dec 2012; Alexey Shvetsov <alexxy@gentoo.org> +ksnakeduel-4.9.4.ebuild:
+  Version bump KDE SC 4.9.4
+
+  30 Nov 2012; <ago@gentoo.org> ksnakeduel-4.9.3.ebuild:
+  Stable for ppc, wrt bug #442394
+
+  23 Nov 2012; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.9.3.ebuild:
+  Stable for x86, wrt bug #442394
+
+  23 Nov 2012; Agostino Sarubbo <ago@gentoo.org> ksnakeduel-4.9.3.ebuild:
+  Stable for amd64, wrt bug #442394
+
+  13 Nov 2012; Johannes Huber <johu@gentoo.org> -ksnakeduel-4.9.2.ebuild:
+  Remove KDE SC 4.9.2
+
+*ksnakeduel-4.9.3 (08 Nov 2012)
+
+  08 Nov 2012; <creffett@gentoo.org> +ksnakeduel-4.9.3.ebuild:
+  Version bump KDE SC 4.9.3
+
+*ksnakeduel-4.9.2 (02 Oct 2012)
+
+  02 Oct 2012; Johannes Huber <johu@gentoo.org> +ksnakeduel-4.9.2.ebuild:
+  Version bump KDE SC 4.9.2

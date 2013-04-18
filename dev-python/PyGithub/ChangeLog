@@ -1,0 +1,35 @@
+# ChangeLog for dev-python/PyGithub
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/PyGithub/ChangeLog,v 1.7 2013/04/01 07:57:23 radhermit Exp $
+
+*PyGithub-1.13.1 (01 Apr 2013)
+
+  01 Apr 2013; Tim Harder <radhermit@gentoo.org> +PyGithub-1.13.1.ebuild:
+  Version bump, add python-3.3 support since tests are now fixed with it.
+
+*PyGithub-1.12.2 (06 Mar 2013)
+
+  06 Mar 2013; Tim Harder <radhermit@gentoo.org> +PyGithub-1.12.2.ebuild:
+  Version bump.
+
+*PyGithub-1.12.1 (25 Feb 2013)
+
+  25 Feb 2013; Tim Harder <radhermit@gentoo.org> +PyGithub-1.12.1.ebuild:
+  Version bump.
+
+*PyGithub-1.11.1 (10 Feb 2013)
+
+  10 Feb 2013; Tim Harder <radhermit@gentoo.org> +PyGithub-1.11.1.ebuild:
+  Version bump.
+
+  20 Jan 2013; Mike Gilbert <floppym@gentoo.org> PyGithub-1.10.0.ebuild:
+  Add PYTHON_USEDEP to setuptools dep.
+
+  20 Jan 2013; Mike Gilbert <floppym@gentoo.org> PyGithub-1.10.0.ebuild:
+  Add note about pypi missing test data.
+
+*PyGithub-1.10.0 (20 Jan 2013)
+
+  20 Jan 2013; Mike Gilbert <floppym@gentoo.org> +PyGithub-1.10.0.ebuild,
+  +metadata.xml:
+  New package.

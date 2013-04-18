@@ -1,0 +1,166 @@
+# ChangeLog for sys-kernel/aufs-sources
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sys-kernel/aufs-sources/ChangeLog,v 1.26 2013/04/13 13:03:54 jlec Exp $
+
+*aufs-sources-3.8.7 (13 Apr 2013)
+
+  13 Apr 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.8.7.ebuild:
+  Bump to latest genpatches
+
+*aufs-sources-3.8.6 (06 Apr 2013)
+
+  06 Apr 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.8.6.ebuild:
+  Bump to latest genpatches and aufs3 release
+
+*aufs-sources-3.8.5 (30 Mar 2013)
+
+  30 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.8.5.ebuild:
+  Bump to genpatches 3.8-8 and latest aufs
+
+*aufs-sources-3.8.4 (21 Mar 2013)
+
+  21 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.8.4.ebuild:
+  Version Bump
+
+*aufs-sources-3.8.3-r1 (18 Mar 2013)
+*aufs-sources-3.7.10-r2 (18 Mar 2013)
+*aufs-sources-3.6.11-r3 (18 Mar 2013)
+
+  18 Mar 2013; Justin Lecher <jlec@gentoo.org> -aufs-sources-3.6.11-r1.ebuild,
+  -aufs-sources-3.6.11-r2.ebuild, +aufs-sources-3.6.11-r3.ebuild,
+  -aufs-sources-3.7.10.ebuild, -aufs-sources-3.7.10-r1.ebuild,
+  +aufs-sources-3.7.10-r2.ebuild, -aufs-sources-3.8.2.ebuild,
+  -aufs-sources-3.8.2-r1.ebuild, -aufs-sources-3.8.2-r2.ebuild,
+  -aufs-sources-3.8.3.ebuild, +aufs-sources-3.8.3-r1.ebuild:
+  Drop old; Revert memcg patches that prevent OOM with too many dirty pages
+  which caused ZFS to flush dirty pages to deadlock, see bug #462066; in 3.6,
+  3.7 and 3.8. Backported fixes from 3.8 to 3.7 that affect some of our Gentoo
+  users.
+
+*aufs-sources-3.8.3 (16 Mar 2013)
+
+  16 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.8.3.ebuild:
+  Bump to genpatches 3.8-5
+
+*aufs-sources-3.8.2-r2 (15 Mar 2013)
+
+  15 Mar 2013; Justin Lecher <jlec@gentoo.org> aufs-sources-3.8.2-r1.ebuild,
+  +aufs-sources-3.8.2-r2.ebuild:
+  Version Bump
+
+*aufs-sources-3.8.2-r1 (10 Mar 2013)
+
+  10 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.8.2-r1.ebuild:
+  Don't fiddle with in kernel headers
+
+*aufs-sources-3.8.2 (07 Mar 2013)
+*aufs-sources-3.7.10-r1 (07 Mar 2013)
+*aufs-sources-3.6.11-r2 (07 Mar 2013)
+
+  07 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.6.11-r2.ebuild,
+  +aufs-sources-3.7.10-r1.ebuild, +aufs-sources-3.8.2.ebuild:
+  Version Bump and bump to latest aufs3 release
+
+*aufs-sources-3.7.10 (03 Mar 2013)
+*aufs-sources-3.6.11-r1 (03 Mar 2013)
+
+  03 Mar 2013; Justin Lecher <jlec@gentoo.org> -aufs-sources-3.6.11.ebuild,
+  +aufs-sources-3.6.11-r1.ebuild, -aufs-sources-3.7.2.ebuild,
+  -aufs-sources-3.7.3.ebuild, -aufs-sources-3.7.4.ebuild,
+  -aufs-sources-3.7.6.ebuild, -aufs-sources-3.7.7.ebuild,
+  -aufs-sources-3.7.8.ebuild, +aufs-sources-3.7.10.ebuild:
+  Version Bump and remove old to fix CVE-2013-1763, #460126
+
+*aufs-sources-3.7.8 (15 Feb 2013)
+
+  15 Feb 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.7.8.ebuild:
+  Version BUmp
+
+*aufs-sources-3.7.7 (13 Feb 2013)
+
+  13 Feb 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.7.7.ebuild:
+  Bump to Linux-3.7.7
+
+*aufs-sources-3.7.6 (07 Feb 2013)
+
+  07 Feb 2013; Justin Lecher <jlec@gentoo.org> -aufs-sources-3.6.10.ebuild,
+  -aufs-sources-3.7.1.ebuild, +aufs-sources-3.7.6.ebuild:
+  Version BUmp; drop unsupported
+
+*aufs-sources-3.7.4 (24 Jan 2013)
+
+  24 Jan 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.7.4.ebuild:
+  Version Bump
+
+*aufs-sources-3.7.3 (18 Jan 2013)
+
+  18 Jan 2013; Justin Lecher <jlec@gentoo.org> aufs-sources-3.7.1.ebuild,
+  aufs-sources-3.7.2.ebuild, +aufs-sources-3.7.3.ebuild, metadata.xml:
+  Correct patch version, #452754; Version Bump; include support for proc maps,
+  #452406
+
+  16 Jan 2013; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.10.ebuild,
+  aufs-sources-3.6.11.ebuild, aufs-sources-3.7.1.ebuild,
+  aufs-sources-3.7.2.ebuild:
+  Change from tristate to bool with USE=-modules, #452406
+
+*aufs-sources-3.7.2 (14 Jan 2013)
+
+  14 Jan 2013; Justin Lecher <jlec@gentoo.org> -aufs-sources-3.6.6.ebuild,
+  -aufs-sources-3.6.8.ebuild, aufs-sources-3.6.10.ebuild,
+  aufs-sources-3.6.11.ebuild, aufs-sources-3.7.1.ebuild,
+  +aufs-sources-3.7.2.ebuild:
+  Version Bump; drop old
+
+*aufs-sources-3.7.1 (07 Jan 2013)
+
+  07 Jan 2013; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.7.1.ebuild:
+  Version Bump
+
+  23 Dec 2012; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.11.ebuild:
+  Move last versions dep
+
+  21 Dec 2012; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.6.ebuild,
+  aufs-sources-3.6.8.ebuild, aufs-sources-3.6.10.ebuild:
+  Move deps to PDEPEND
+
+*aufs-sources-3.6.11 (19 Dec 2012)
+
+  19 Dec 2012; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.6.ebuild,
+  aufs-sources-3.6.8.ebuild, aufs-sources-3.6.10.ebuild,
+  +aufs-sources-3.6.11.ebuild:
+  Version Bump; Stop installing files oputside kernel dir in order to prevent
+  file collisions
+
+*aufs-sources-3.6.10 (17 Dec 2012)
+
+  17 Dec 2012; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.6.10.ebuild,
+  metadata.xml:
+  Version Bump
+
+  29 Nov 2012; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.8.ebuild:
+  Revert installation position of header file
+
+  29 Nov 2012; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.8.ebuild,
+  metadata.xml:
+  Allow aufs support being build as module; install header outside linux-header
+  dir
+
+*aufs-sources-3.6.8 (27 Nov 2012)
+
+  27 Nov 2012; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.6.8.ebuild:
+  Version Bump
+
+  26 Nov 2012; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.6.6.ebuild,
+  +metadata.xml:
+  Move from betagarden to the tree
+
+  19 Nov 2012; Justin Lecher <jlec@gentoo.org> aufs-sources-3.6.6.ebuild:
+  Add sys-fs/aufs-util as dependency
+
+*aufs-sources-3.6.6 (13 Nov 2012)
+
+  13 Nov 2012; Justin Lecher <jlec@gentoo.org> +aufs-sources-3.6.6.ebuild,
+  +metadata.xml:
+  New addition
+

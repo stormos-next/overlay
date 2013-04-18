@@ -1,0 +1,34 @@
+# ChangeLog for net-firewall/ipt_netflow
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-firewall/ipt_netflow/ChangeLog,v 1.7 2013/04/16 16:53:57 ago Exp $
+
+  16 Apr 2013; Agostino Sarubbo <ago@gentoo.org> ipt_netflow-1.8-r1.ebuild:
+  Stable for x86, wrt bug #466068
+
+  16 Apr 2013; Agostino Sarubbo <ago@gentoo.org> ipt_netflow-1.8-r1.ebuild:
+  Stable for amd64, wrt bug #466068
+
+  07 Feb 2013; Jeroen Roovers <jer@gentoo.org>
+  files/ipt_netflow-1.8-configure.patch:
+  Simplify patch.
+
+  07 Feb 2013; Sergey Popov <pinkbyte@gentoo.org> ipt_netflow-1.8-r1.ebuild:
+  Fix for last commit - forgot to make CONFIG_CHECK non-fatal in last revision.
+  Thanks to Jeroen Roovers for pointing on this
+
+  07 Feb 2013; Sergey Popov <pinkbyte@gentoo.org> ipt_netflow-1.8.ebuild,
+  ipt_netflow-1.8-r1.ebuild:
+  Make KEYWORDS alphabetically ordered, make CONFIG_CHECK non-fatal
+
+*ipt_netflow-1.8-r1 (07 Feb 2013)
+
+  07 Feb 2013; Sergey Popov <pinkbyte@gentoo.org> +ipt_netflow-1.8-r1.ebuild,
+  +files/ipt_netflow-1.8-configure.patch:
+  Revision bump: EAPI 5, fix for pkgconfig 0.28 support via patch for configure
+  script. Thanks to Jeroen Roovers for patch
+
+*ipt_netflow-1.8 (14 Oct 2012)
+
+  14 Oct 2012; Sergey Popov <pinkbyte@gentoo.org> +ipt_netflow-1.8.ebuild,
+  +metadata.xml:
+  Initial commit wrt bug #283578

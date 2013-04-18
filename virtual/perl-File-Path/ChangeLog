@@ -1,0 +1,35 @@
+# ChangeLog for virtual/perl-File-Path
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/virtual/perl-File-Path/ChangeLog,v 1.9 2013/02/18 19:27:34 ago Exp $
+
+  18 Feb 2013; Agostino Sarubbo <ago@gentoo.org> perl-File-Path-2.90.0.ebuild:
+  Stable for x86, wrt bug #458122
+
+  18 Feb 2013; Agostino Sarubbo <ago@gentoo.org> perl-File-Path-2.90.0.ebuild:
+  Stable for amd64, wrt bug #458122
+
+*perl-File-Path-2.90.0 (19 Jan 2013)
+
+  19 Jan 2013; Torsten Veller <tove@gentoo.org> +perl-File-Path-2.90.0.ebuild:
+  Version bump
+
+  22 Dec 2012; Agostino Sarubbo <ago@gentoo.org> perl-File-Path-2.08.ebuild:
+  Add ~ppc, wrt bug #429088
+
+  01 Sep 2012; Fabian Groffen <grobian@gentoo.org> perl-File-Path-2.08.ebuild:
+  Marked ~ppc-aix, bug #432288
+
+  05 Apr 2012; Jeff Horelick <jdhore@gentoo.org> perl-File-Path-2.08.ebuild:
+  marked x86 per bug 397727
+
+  07 Jan 2012; Agostino Sarubbo <ago@gentoo.org> perl-File-Path-2.08.ebuild:
+  Stable for AMD64, wrt bug #397727
+
+  07 Jan 2010; Torsten Veller <tove@gentoo.org> perl-File-Path-2.08.ebuild:
+  Set empty HOMEPAGE and LICENSE
+
+*perl-File-Path-2.08 (14 Nov 2009)
+
+  14 Nov 2009; Torsten Veller <tove@gentoo.org> +perl-File-Path-2.08.ebuild,
+  +metadata.xml:
+  Initial commit

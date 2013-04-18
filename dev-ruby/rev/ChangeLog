@@ -1,0 +1,19 @@
+# ChangeLog for dev-ruby/rev
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/rev/ChangeLog,v 1.4 2013/03/28 22:01:19 a3li Exp $
+
+  28 Mar 2013; Alex Legler <a3li@gentoo.org> rev-0.3.2.ebuild:
+  Fix HOMEPAGE, bug 463552
+
+  13 Jan 2012; Hans de Graaff <graaff@gentoo.org> rev-0.3.2.ebuild:
+  Add ruby19.
+
+  26 Dec 2010; Hans de Graaff <graaff@gentoo.org> rev-0.3.2.ebuild:
+  Keyword ~x86-macos.
+
+*rev-0.3.2 (24 Oct 2010)
+
+  24 Oct 2010; Hans de Graaff <graaff@gentoo.org> +rev-0.3.2.ebuild,
+  +metadata.xml:
+  Initial import. Miscompiles with --no-undefined so people won't be able to
+  install the gem directly.

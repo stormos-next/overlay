@@ -1,0 +1,28 @@
+# ChangeLog for games-board/simsu
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/games-board/simsu/ChangeLog,v 1.7 2013/03/02 21:13:44 hwoarang Exp $
+
+  02 Mar 2013; Markos Chandras <hwoarang@gentoo.org> simsu-1.2.2.ebuild:
+  Move Qt dependencies to the new category
+
+  30 Jan 2013; Michael Sterrett <mr_bones_@gentoo.org> -simsu-1.2.1.ebuild:
+  old
+
+  25 Apr 2012; Jeff Horelick <jdhore@gentoo.org> simsu-1.2.2.ebuild:
+  marked x86 per bug 413319
+
+  24 Apr 2012; Agostino Sarubbo <ago@gentoo.org> simsu-1.2.2.ebuild:
+  Stable for amd64, wrt bug #413319
+
+*simsu-1.2.2 (10 Feb 2012)
+
+  10 Feb 2012; Michael Sterrett <mr_bones_@gentoo.org> +simsu-1.2.2.ebuild:
+  version bump (bug #402939)
+
+  27 Feb 2010; Pawel Hajdan jr <phajdan.jr@gentoo.org> simsu-1.2.1.ebuild:
+  x86 stable wrt bug #303501
+
+*simsu-1.2.1 (05 Jan 2010)
+
+  05 Jan 2010; Samuli Suominen <ssuominen@gentoo.org> +simsu-1.2.1.ebuild:
+  Initial commit.

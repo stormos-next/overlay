@@ -1,0 +1,58 @@
+# ChangeLog for sys-fs/aufs-util
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sys-fs/aufs-util/ChangeLog,v 1.11 2013/03/16 16:53:09 jlec Exp $
+
+  16 Mar 2013; Justin Lecher <jlec@gentoo.org> aufs-util-3.8_p20130318.ebuild:
+  Fine grade blocker of sys-fs/aufs3, #461810
+
+*aufs-util-3.8_p20130318 (15 Mar 2013)
+
+  15 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-util-3.8_p20130318.ebuild,
+  -aufs-util-3.8.0.ebuild:
+  Version Bump
+
+*aufs-util-3.8.0 (10 Mar 2013)
+
+  10 Mar 2013; Justin Lecher <jlec@gentoo.org> +aufs-util-3.8.0.ebuild:
+  Version Bump
+
+*aufs-util-3.7.6 (07 Feb 2013)
+
+  07 Feb 2013; Justin Lecher <jlec@gentoo.org> +aufs-util-3.7.6.ebuild:
+  Version BUmp
+
+  23 Jan 2013; Justin Lecher <jlec@gentoo.org> aufs-util-3.7-r1.ebuild:
+  Don't depend on the kernel sources
+
+*aufs-util-3.7-r1 (23 Jan 2013)
+
+  23 Jan 2013; Justin Lecher <jlec@gentoo.org> +aufs-util-3.7-r1.ebuild:
+  Do not depend on a kernel source at buildtime, #452996
+
+*aufs-util-3.7 (14 Jan 2013)
+
+  14 Jan 2013; Justin Lecher <jlec@gentoo.org> aufs-util-3.6.ebuild,
+  +aufs-util-3.7.ebuild:
+  Version Bump
+
+  21 Dec 2012; Justin Lecher <jlec@gentoo.org> aufs-util-3.6.ebuild:
+  Add it kernel back
+
+  21 Dec 2012; Justin Lecher <jlec@gentoo.org> aufs-util-3.6.ebuild:
+  Don't depend on the kernel
+
+  19 Dec 2012; Justin Lecher <jlec@gentoo.org> aufs-util-3.6.ebuild,
+  metadata.xml:
+  Add support for aufs_type.h in kernel src dir
+
+  26 Nov 2012; Justin Lecher <jlec@gentoo.org> +aufs-util-3.6.ebuild,
+  +metadata.xml:
+  Move from betagarden to the tree
+
+*aufs-util-9999 (13 Nov 2012)
+*aufs-util-3.6 (13 Nov 2012)
+
+  13 Nov 2012; Justin Lecher <jlec@gentoo.org> +aufs-util-3.6.ebuild,
+  +aufs-util-9999.ebuild, +metadata.xml:
+  New addition
+

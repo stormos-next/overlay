@@ -1,0 +1,35 @@
+# ChangeLog for sys-cluster/swift
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sys-cluster/swift/ChangeLog,v 1.6 2013/04/11 07:20:00 prometheanfire Exp $
+
+*swift-9999 (11 Apr 2013)
+
+  11 Apr 2013; Matthew Thode <prometheanfire@gentoo.org> +swift-9999.ebuild:
+  adding a 9999 version of swift
+
+*swift-1.8.0 (10 Apr 2013)
+
+  10 Apr 2013; Matthew Thode <prometheanfire@gentoo.org> +swift-1.8.0.ebuild,
+  -swift-1.7.4.ebuild:
+  upgrade of swift to 1.8.0 (grizzly release)
+
+*swift-1.7.6-r1 (04 Mar 2013)
+
+  04 Mar 2013; Matthew Thode <prometheanfire@gentoo.org> -swift-1.7.6.ebuild,
+  +swift-1.7.6-r1.ebuild:
+  spelling fix for bug 457628
+
+*swift-1.7.6 (26 Jan 2013)
+
+  26 Jan 2013; Matthew Thode <prometheanfire@gentoo.org> +swift-1.7.6.ebuild:
+  bump of swift to 1.7.6
+
+  11 Jan 2013; Matthew Thode <prometheanfire@gentoo.org> swift-1.7.4.ebuild:
+  updating ebuilds to support more []
+
+*swift-1.7.4 (31 Dec 2012)
+
+  31 Dec 2012; Matthew Thode <prometheanfire@gentoo.org> +swift-1.7.4.ebuild,
+  +files/swift-proxy-server.initd, +files/swift-storage-server.confd,
+  +files/swift-storage-server.initd, +metadata.xml:
+  initial add of openstack-swift

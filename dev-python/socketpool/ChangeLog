@@ -1,0 +1,29 @@
+# ChangeLog for dev-python/socketpool
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/socketpool/ChangeLog,v 1.5 2013/02/10 15:07:44 idella4 Exp $
+
+  10 Feb 2013; Ian Delaney <idella4@gentoo.org>
+  +files/socketpool-0.5.2-pool.patch, socketpool-0.5.2-r1.ebuild:
+  Added -pool.patch, fixes broken test, fixes Bug #451610
+
+  04 Feb 2013; Ian Delaney <idella4@gentoo.org>
+  +files/socketpool-0.5.2-locale.patch, socketpool-0.5.2-r1.ebuild:
+  Added socketpool-0.5.2-locale.patch to fix locale issue wrt Bug #454920 by
+  flameeyes, set src_test to python_test
+
+*socketpool-0.5.2-r1 (13 Jan 2013)
+
+  13 Jan 2013; Ian Delaney <idella4@gentoo.org> +socketpool-0.5.2-r1.ebuild,
+  socketpool-0.5.2.ebuild:
+  socketpool supports py3, added to PYTHON_COMPAT in rev bump
+
+  13 Jan 2013; Ian Delaney <idella4@gentoo.org> socketpool-0.5.2.ebuild:
+  migrated to distutils-r1, added test phase, its 1 test fails making for Bug
+  #451610
+
+*socketpool-0.5.2 (16 Nov 2012)
+
+  16 Nov 2012; Ian Delaney <idella4@gentoo.org> +metadata.xml,
+  +socketpool-0.5.2.ebuild:
+  New ebuild written by me, required as a dep to restkit in test suite wrt Bug
+  #41665

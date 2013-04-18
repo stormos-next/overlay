@@ -1,0 +1,24 @@
+# ChangeLog for net-analyzer/goaccess
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-analyzer/goaccess/ChangeLog,v 1.4 2013/01/17 07:38:43 pinkbyte Exp $
+
+  17 Jan 2013; Sergey Popov <pinkbyte@gentoo.org> goaccess-0.5-r1.ebuild:
+  Fix improper USE-flag handling in src_configure. Thanks to Nikoli for
+  discovering this issue
+
+*goaccess-0.5-r1 (15 Jan 2013)
+
+  15 Jan 2013; Sergey Popov <pinkbyte@gentoo.org> -goaccess-0.5.ebuild,
+  +goaccess-0.5-r1.ebuild:
+  Revision bump: EAPI 5, use autotools-utils eclass, respect CFLAGS wrt bug
+  #451806
+
+  23 Oct 2012; Sergey Popov <pinkbyte@gentoo.org> metadata.xml:
+  Fix proxy maintainers herd name in metadata
+
+*goaccess-0.5 (27 Jul 2012)
+
+  27 Jul 2012; Ben de Groot <yngwin@gentoo.org> +goaccess-0.5.ebuild,
+  +metadata.xml:
+  Initial commit. Ebuild by proxy maintainer Nikoli, with a few edits by me,
+  from bug #348855.

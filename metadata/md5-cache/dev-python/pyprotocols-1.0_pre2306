@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install postinst postrm prepare test
+DEPEND=>=dev-python/decoratortools-1.4 dev-python/pyrex dev-python/setuptools =dev-lang/python-2*
+DESCRIPTION=Extends the PEP 246 adapt() function with a new 'declaration API' that lets you easily define your own protocols and adapters, and declare what adapters should be used to adapt what types, objects, or protocols.
+EAPI=3
+HOMEPAGE=http://peak.telecommunity.com/PyProtocols.html http://pypi.python.org/pypi/PyProtocols
+KEYWORDS=amd64 ~ia64 ppc x86 ~amd64-linux ~x86-linux ~x86-macos
+LICENSE=|| ( PSF-2 ZPL )
+RDEPEND=>=dev-python/decoratortools-1.4 =dev-lang/python-2*
+SLOT=0
+SRC_URI=mirror://gentoo/PyProtocols-1.0a0dev_r2306.tar.gz
+_eclasses_=distutils	77fc6005d2dfcc7bdb5ec363a49d9912	multilib	ded93e450747134a079e647d888aa80b	python	dd56675d8e9f7e85d815a28c87383141	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e
+_md5_=1821eb2dd879dcb46f592d56ec54759a

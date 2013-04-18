@@ -1,0 +1,41 @@
+# ChangeLog for dev-db/libzdb
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-db/libzdb/ChangeLog,v 1.10 2013/04/02 15:03:17 floppym Exp $
+
+  02 Apr 2013; Mike Gilbert <floppym@gentoo.org> libzdb-2.10.3.ebuild,
+  libzdb-2.10.5.ebuild, libzdb-2.11.1.ebuild:
+  Fix typo, bug 463906 by Chris Mayo.
+
+  27 Mar 2013; Mike Gilbert <floppym@gentoo.org> libzdb-2.10.3.ebuild,
+  libzdb-2.10.5.ebuild, libzdb-2.11.1.ebuild:
+  Update sqlite deps per bug 462390.
+
+  17 Mar 2013; Markos Chandras <hwoarang@gentoo.org> metadata.xml:
+  Add proxy-maintainers to metadata.xml
+
+*libzdb-2.11.1 (09 Jan 2013)
+
+  09 Jan 2013; <lordvan@gentoo.org> +libzdb-2.11.1.ebuild:
+  new version added (Bug #443172; thanks Johan)
+
+  16 Dec 2012; Kacper Kowalik <xarthisius@gentoo.org> metadata.xml:
+  Drop no-herd from metadata.xml
+
+  04 Dec 2012;  <ago@gentoo.org> libzdb-2.10.5.ebuild:
+  Stable for x86, wrt bug #439056
+
+  24 Oct 2012; <ago@gentoo.org> libzdb-2.10.5.ebuild:
+  Stable for amd64, wrt bug #439056
+
+*libzdb-2.10.5 (07 Sep 2012)
+
+  07 Sep 2012; <lordvan@gentoo.org> +libzdb-2.10.5.ebuild:
+  latest ebuild from bug #251063 Thanks Johan again
+
+  05 Sep 2012; <lordvan@gentoo.org> libzdb-2.10.3.ebuild,
+  +files/sqlite_configure.patch:
+  added patch to configure script by Johan Bergström <bugs@bergstroem.nu>
+
+  05 Sep 2012; <lordvan@gentoo.org> libzdb-2.10.3.ebuild, metadata.xml:
+  using parts from ebuild from bug #251063 by Johan Bergström
+  <bugs@bergstroem.nu>

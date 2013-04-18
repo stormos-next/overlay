@@ -1,0 +1,33 @@
+# ChangeLog for dev-libs/qrosscore
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/qrosscore/ChangeLog,v 1.7 2013/03/02 20:03:49 hwoarang Exp $
+
+  02 Mar 2013; Markos Chandras <hwoarang@gentoo.org> qrosscore-0.2.0.ebuild,
+  qrosscore-0.2.2.ebuild, qrosscore-9999.ebuild:
+  Move Qt dependencies to the new category
+
+  19 Jul 2012; Michael Palimaka <kensington@gentoo.org> qrosscore-0.2.0.ebuild,
+  qrosscore-0.2.2.ebuild, qrosscore-9999.ebuild:
+  Add missing slot dependencies on Qt.
+
+  23 Apr 2012; Michał Górny <mgorny@gentoo.org> qrosscore-0.2.0.ebuild,
+  qrosscore-0.2.2.ebuild:
+  Use mirror://github.
+
+  07 Apr 2012; Markus Meier <maekke@gentoo.org> qrosscore-0.2.2.ebuild:
+  x86 stable, bug #400605
+
+  04 Feb 2012; Agostino Sarubbo <ago@gentoo.org> qrosscore-0.2.2.ebuild:
+  Stable for amd64, wrt bug #400605
+
+*qrosscore-0.2.2 (04 Feb 2012)
+
+  04 Feb 2012; Maxim Koltsov <maksbotan@gentoo.org> +qrosscore-0.2.2.ebuild:
+  Bump to 0.2.2, fixes bug 402117
+
+*qrosscore-9999 (22 Aug 2011)
+*qrosscore-0.2.0 (22 Aug 2011)
+
+  22 Aug 2011; Maxim Koltsov <maksbotan@gentoo.org> +qrosscore-0.2.0.ebuild,
+  +qrosscore-9999.ebuild, +metadata.xml:
+  Copy dev-libs/qrosscore from rion-overlay, thanks to 0xd34df00d

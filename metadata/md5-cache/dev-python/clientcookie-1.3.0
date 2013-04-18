@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install postinst postrm prepare
+DEPEND=dev-python/setuptools =dev-lang/python-2*
+DESCRIPTION=Python module for handling HTTP cookies on the client side
+EAPI=3
+HOMEPAGE=http://wwwsearch.sourceforge.net/ClientCookie/ http://pypi.python.org/pypi/ClientCookie
+KEYWORDS=~alpha ~amd64 ~ia64 ~ppc ~x86 ~amd64-linux ~ia64-linux ~x86-linux ~x86-macos
+LICENSE=BSD
+RDEPEND==dev-lang/python-2*
+SLOT=0
+SRC_URI=http://wwwsearch.sourceforge.net/ClientCookie/src/ClientCookie-1.3.0.tar.gz
+_eclasses_=distutils	77fc6005d2dfcc7bdb5ec363a49d9912	multilib	ded93e450747134a079e647d888aa80b	python	dd56675d8e9f7e85d815a28c87383141	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e
+_md5_=a852d0b1122ac86a392e4948e774b9a3

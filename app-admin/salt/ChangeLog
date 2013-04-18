@@ -1,0 +1,60 @@
+# ChangeLog for app-admin/salt
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/app-admin/salt/ChangeLog,v 1.11 2013/04/16 00:51:35 chutzpah Exp $
+
+*salt-0.14.1 (16 Apr 2013)
+
+  16 Apr 2013; Patrick McLean <chutz@gentoo.org> +salt-0.14.1.ebuild:
+  Version bump.
+
+*salt-0.14.0 (25 Mar 2013)
+
+  26 Mar 2013; Patrick McLean <chutzpah@gentoo.org> +salt-0.14.0.ebuild,
+  -salt-0.11.0.ebuild, -salt-0.12.0.ebuild, -salt-0.12.1.ebuild:
+  Version bump, clean out old versions.
+
+*salt-0.13.1 (19 Feb 2013)
+
+  19 Feb 2013; Patrick McLean <chutzpah@gentoo.org>
+  +files/salt-0.13.1-disable-failing-tests.patch, +salt-0.13.1.ebuild,
+  -files/salt-0.9.8-syndic-resolution-of-master.patch:
+  Version bump, add a patch to workaround test failures. Drop old unused patch
+  from files.
+
+*salt-0.12.1 (22 Jan 2013)
+
+  22 Jan 2013; Patrick McLean <chutzpah@gentoo.org> +salt-0.12.1.ebuild:
+  Version bump.
+
+*salt-0.12.0 (16 Jan 2013)
+
+  16 Jan 2013; Patrick McLean <chutzpah@gentoo.org> +salt-0.12.0.ebuild,
+  -salt-0.10.5.ebuild, metadata.xml:
+  Version bump (bug #452478). Remove old 0.10.5 version.
+
+  19 Dec 2012; Patrick McLean <chutzpah@gentoo.org> salt-0.11.0.ebuild,
+  salt-9999.ebuild:
+  Use the develop branch for the 9999 ebuild rather than master.
+
+*salt-9999 (18 Dec 2012)
+*salt-0.11.0 (18 Dec 2012)
+
+  18 Dec 2012; Patrick McLean <chutzpah@gentoo.org> +salt-0.11.0.ebuild,
+  +salt-9999.ebuild, -salt-0.10.0.ebuild, -salt-0.9.8.ebuild:
+  Version bump, port to distutils-r1 from python-distutils-ng. Add a 9999 live
+  ebuild.
+
+  29 Nov 2012; Michał Górny <mgorny@gentoo.org> salt-0.10.0.ebuild,
+  salt-0.10.5.ebuild, salt-0.9.8.ebuild:
+  Restrict tests due to bug #437268 (dangerous to system files).
+
+*salt-0.10.5 (16 Nov 2012)
+
+  16 Nov 2012; Patrick McLean <chutzpah@gentoo.org> +salt-0.10.5.ebuild,
+  metadata.xml:
+  Version bump.
+
+*salt-0.10.0 (06 Jul 2012)
+
+  06 Jul 2012; Patrick McLean <chutzpah@gentoo.org> +salt-0.10.0.ebuild:
+  Version bump.

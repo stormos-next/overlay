@@ -1,0 +1,34 @@
+# ChangeLog for x11-misc/sunflower
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/x11-misc/sunflower/ChangeLog,v 1.6 2013/04/14 19:22:18 hasufell Exp $
+
+*sunflower-0.1_alpha55 (14 Apr 2013)
+
+  14 Apr 2013; Julian Ospald <hasufell@gentoo.org>
+  +sunflower-0.1_alpha55.ebuild:
+  version bump
+
+*sunflower-0.1_alpha54 (30 Mar 2013)
+
+  30 Mar 2013; Julian Ospald <hasufell@gentoo.org>
+  +sunflower-0.1_alpha54.ebuild:
+  version bump, improve LINGUAS handling
+
+  17 Mar 2013; Markos Chandras <hwoarang@gentoo.org> metadata.xml:
+  Add proxy-maintainers to metadata.xml
+
+*sunflower-0.1_alpha53 (05 Feb 2013)
+
+  05 Feb 2013; Julian Ospald <hasufell@gentoo.org>
+  -sunflower-0.1_alpha52.ebuild, +sunflower-0.1_alpha53.ebuild:
+  version bump, remove old
+
+  31 Jan 2013; Julian Ospald <hasufell@gentoo.org>
+  sunflower-0.1_alpha52.ebuild:
+  update icon
+
+*sunflower-0.1_alpha52 (31 Jan 2013)
+
+  31 Jan 2013; Julian Ospald <hasufell@gentoo.org>
+  +sunflower-0.1_alpha52.ebuild, +files/sunflower, +metadata.xml:
+  initial import with Henrique Dias wrt #454600

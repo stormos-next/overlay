@@ -1,0 +1,58 @@
+# ChangeLog for app-admin/rex
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/app-admin/rex/ChangeLog,v 1.10 2013/04/15 05:25:15 patrick Exp $
+
+*rex-0.41.1 (15 Apr 2013)
+
+  15 Apr 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.41.1.ebuild,
+  -rex-0.38.0.ebuild:
+  Bump
+
+*rex-0.41.0 (02 Apr 2013)
+
+  02 Apr 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.41.0.ebuild:
+  Bump
+
+*rex-0.40.2 (06 Mar 2013)
+
+  06 Mar 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.40.2.ebuild,
+  -rex-0.37.0.ebuild, -rex-0.37.1.ebuild, -rex-0.39.0.ebuild,
+  -rex-0.40.0.ebuild, -rex-0.40.1.ebuild:
+  Bump
+
+*rex-0.40.1 (28 Feb 2013)
+
+  28 Feb 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.40.1.ebuild:
+  Bump
+
+*rex-0.40.0 (25 Feb 2013)
+
+  25 Feb 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.40.0.ebuild:
+  Bump
+
+*rex-0.39.0 (21 Feb 2013)
+
+  21 Feb 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.39.0.ebuild:
+  Bump
+
+*rex-0.38.0 (29 Jan 2013)
+
+  29 Jan 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.38.0.ebuild:
+  Bump
+
+*rex-0.37.1 (16 Jan 2013)
+
+  16 Jan 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.37.1.ebuild,
+  -rex-0.33.3.ebuild:
+  Bump
+
+*rex-0.37.0 (11 Jan 2013)
+
+  11 Jan 2013; Patrick Lauer <patrick@gentoo.org> +rex-0.37.0.ebuild:
+  Bump
+
+*rex-0.33.3 (10 Oct 2012)
+
+  10 Oct 2012; Patrick Lauer <patrick@gentoo.org> +metadata.xml,
+  +rex-0.33.3.ebuild:
+  Initial import, ebuilds by Jan Gehring

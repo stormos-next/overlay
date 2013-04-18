@@ -1,0 +1,66 @@
+# ChangeLog for net-news/quiterss
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-news/quiterss/ChangeLog,v 1.13 2013/04/17 08:47:05 pinkbyte Exp $
+
+  17 Apr 2013; Sergey Popov <pinkbyte@gentoo.org> quiterss-0.11.0.ebuild,
+  quiterss-0.12.3.ebuild:
+  Add explicit dependency on dev-db/sqlite, add USE='sqlite' to dev-qt/qtsql,
+  wrt bug #466152, thanks to Phr33d0m <god AT politeia.in>
+
+  17 Apr 2013; Agostino Sarubbo <ago@gentoo.org> quiterss-0.12.3.ebuild:
+  Stable for x86, wrt bug #466142
+
+  17 Apr 2013; Agostino Sarubbo <ago@gentoo.org> quiterss-0.12.3.ebuild:
+  Stable for amd64, wrt bug #466142
+
+  16 Mar 2013; Sergey Popov <pinkbyte@gentoo.org> quiterss-0.12.3.ebuild:
+  Prefix support, add ~amd64-linux and ~x86-linux keywords
+
+*quiterss-0.12.3 (16 Mar 2013)
+
+  16 Mar 2013; Sergey Popov <pinkbyte@gentoo.org> +quiterss-0.12.3.ebuild,
+  +files/quiterss-0.12.3-unbundle-sqlite.patch:
+  Version bump, wrt bug #458170, thanks to Denis M. <god AT politeia.in> for
+  updated ebuild and patch
+
+  15 Mar 2013; Agostino Sarubbo <ago@gentoo.org> quiterss-0.11.0.ebuild:
+  Stable for x86, wrt bug #461312
+
+  15 Mar 2013; Agostino Sarubbo <ago@gentoo.org> quiterss-0.11.0.ebuild:
+  Stable for amd64, wrt bug #461312
+
+  02 Mar 2013; Markos Chandras <hwoarang@gentoo.org> quiterss-0.11.0.ebuild:
+  Move Qt dependencies to the new category
+
+*quiterss-0.11.0 (10 Jan 2013)
+
+  10 Jan 2013; Davide Pesavento <pesa@gentoo.org>
+  +files/quiterss-0.11.0-unbundle-sqlite.patch, +quiterss-0.11.0.ebuild,
+  -files/quiterss-unbundle-sqlite.patch, -quiterss-0.10.2.ebuild,
+  -quiterss-0.10.3.ebuild:
+  Version bump with updated sqlite unbundling patch. Remove old.
+
+*quiterss-0.10.3 (29 Oct 2012)
+
+  29 Oct 2012; Ben de Groot <yngwin@gentoo.org> +quiterss-0.10.3.ebuild:
+  Version bump, but unbundle-sqlite patch needs updating
+
+*quiterss-0.10.2 (03 Oct 2012)
+
+  03 Oct 2012; Ben de Groot <yngwin@gentoo.org>
+  +files/quiterss-unbundle-sqlite.patch, +quiterss-0.10.2.ebuild,
+  -quiterss-0.10.1.ebuild, metadata.xml:
+  Version bump. Unbundle sqlite with patch by Alec Moskvin in bug #436230.
+  Remove old.
+
+*quiterss-0.10.1 (02 Sep 2012)
+
+  02 Sep 2012; Davide Pesavento <pesa@gentoo.org> +quiterss-0.10.1.ebuild,
+  -quiterss-0.9.1.ebuild:
+  Version bump.
+
+*quiterss-0.9.1 (30 Jun 2012)
+
+  30 Jun 2012; Ben de Groot <yngwin@gentoo.org> +metadata.xml,
+  +quiterss-0.9.1.ebuild:
+  Initial commit. Ebuild by Miguel Tavares in bug #420697.

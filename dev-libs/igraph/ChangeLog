@@ -1,0 +1,32 @@
+# ChangeLog for dev-libs/igraph
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/igraph/ChangeLog,v 1.7 2013/03/09 17:18:48 vadimk Exp $
+
+  09 Mar 2013; Vadim Kuznetsov vadimk@gentoo.org metadata.xml:
+  maintainer needed
+
+  01 Mar 2013; Justin Lecher <jlec@gentoo.org> igraph-0.6.4.ebuild:
+  Swap DEPEND/RDEPEND, thanks Mr_Bones spotting this mistake
+
+  27 Feb 2013; Justin Lecher <jlec@gentoo.org> igraph-0.6.4.ebuild,
+  files/igraph-0.6.4-unbundle.patch:
+  Use detected pkg-config instead of generic
+
+  23 Feb 2013; Justin Lecher <jlec@gentoo.org> igraph-0.6.4.ebuild:
+  Add missing dep on virtual/pkgconfig
+
+*igraph-0.6.4 (21 Feb 2013)
+
+  21 Feb 2013; Justin Lecher <jlec@gentoo.org> -igraph-0.5.4.ebuild,
+  +igraph-0.6.4.ebuild, +files/igraph-0.6.4-unbundle.patch, metadata.xml:
+  Version Bump; unbundle correctly and use pkg-config to detect sys libs,
+  #445114; fix tests, #421773; drop old
+
+  20 Feb 2012; Mike Gilbert <floppym@gentoo.org> metadata.xml:
+  Drop no-herd.
+
+*igraph-0.5.4 (13 Nov 2011)
+
+  13 Nov 2011; Vadim Kuznetsov <vadimk@gentoo.org> +igraph-0.5.4.ebuild,
+  +metadata.xml:
+  igraph initial ebuild

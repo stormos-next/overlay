@@ -1,0 +1,54 @@
+# ChangeLog for net-nntp/sabnzbd
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-nntp/sabnzbd/ChangeLog,v 1.10 2013/03/08 02:46:45 jsbronder Exp $
+
+  08 Mar 2013; Justin Bronder <jsbronder@gentoo.org> files/sabnzbd.initd:
+  Fix init.d stop(), re #459992
+
+  22 Feb 2013; Justin Bronder <jsbronder@gentoo.org> files/sabnzbd.initd:
+  Correctly track status via pidfile re #458034. Thanks to Gerard Neil for the
+  patch.
+
+*sabnzbd-0.7.11 (14 Feb 2013)
+
+  14 Feb 2013; Justin Bronder <jsbronder@gentoo.org> +sabnzbd-0.7.11.ebuild:
+  Version bump (#456336). Rebundle cherrypy until 0.8.0 comes out (#450242,
+  #456338 and see comments in ebuild).  Remove default user/pass from config.
+
+*sabnzbd-0.7.10 (06 Feb 2013)
+
+  06 Feb 2013; Justin Bronder <jsbronder@gentoo.org> -sabnzbd-0.7.7.ebuild,
+  -sabnzbd-0.7.9.ebuild, +sabnzbd-0.7.10.ebuild, +files/sabnzbd.ini,
+  +files/sabnzbd.logrotate:
+  Bump, add .ini and logrotate files, use yenc by default, fix rar dep
+  (#455190). Fix unbundling of cherrypy.
+
+  11 Jan 2013; Justin Bronder <jsbronder@gentoo.org> files/sabnzbd:
+  Wrap sabnzbd.py with either python2.7 or python2.6. Resolves #450698.
+
+  07 Jan 2013; Zac Medico <zmedico@gentoo.org> Manifest:
+  Fix incorrect Manifest entry for SABnzbd-0.7.9-src.tar.gz.
+
+*sabnzbd-0.7.9 (06 Jan 2013)
+
+  06 Jan 2013; Justin Bronder <jsbronder@gentoo.org> -sabnzbd-0.7.8.ebuild,
+  +sabnzbd-0.7.9.ebuild:
+  Bump, remove broken 0.7.8 release
+
+*sabnzbd-0.7.8 (06 Jan 2013)
+
+  06 Jan 2013; Justin Bronder <jsbronder@gentoo.org> +sabnzbd-0.7.8.ebuild,
+  files/sabnzbd.initd:
+  Bump (#450208), use system cherrypy-3.2* (#450242), respect logging settings
+  from conf.d
+
+  03 Jan 2013; Justin Bronder <jsbronder@gentoo.org> sabnzbd-0.7.7.ebuild,
+  metadata.xml:
+  Add support for using yenc
+
+*sabnzbd-0.7.7 (03 Jan 2013)
+
+  03 Jan 2013; Justin Bronder <jsbronder@gentoo.org> +sabnzbd-0.7.7.ebuild,
+  +files/sabnzbd, +files/sabnzbd.confd, +files/sabnzbd.initd,
+  +files/use-system-configobj-and-feedparser.patch, +metadata.xml:
+  add net-nntp/sabnzbd

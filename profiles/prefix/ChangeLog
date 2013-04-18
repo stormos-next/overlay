@@ -1,0 +1,29 @@
+# ChangeLog for profiles/prefix
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/profiles/prefix/ChangeLog,v 1.380 2013/03/05 01:41:14 ottxor Exp $
+
+  05 Mar 2013; Christoph Junghans <ottxor@gentoo.org> darwin/package.mask:
+  unmask povray on darwin
+
+  26 Feb 2013; Fabian Groffen <grobian@gentoo.org>
+  darwin/macos/10.5/make.defaults, darwin/macos/10.6/make.defaults,
+  darwin/macos/10.7/make.defaults, darwin/macos/10.8/make.defaults:
+  Disable sandbox on OSX again, due to #456234, #443444 (vcs eclass problems)
+
+  02 Feb 2013; Fabian Groffen <grobian@gentoo.org> aix/use.mask, bsd/use.mask,
+  darwin/macos/10.4/x86/use.mask, darwin/macos/10.5/x64/use.mask,
+  darwin/macos/10.5/x86/use.mask, darwin/macos/10.6/x64/use.mask,
+  darwin/macos/10.6/x86/use.mask, darwin/macos/10.7/x64/use.mask,
+  darwin/macos/10.7/x86/use.mask, darwin/macos/10.8/x64/use.mask,
+  darwin/macos/10.8/x86/use.mask, darwin/use.mask, hpux/use.mask,
+  mint/use.mask, sunos/use.mask:
+  move cman clvm masks up to system level, bug #452848
+
+  03 Jan 2013; Fabian Groffen <grobian@gentoo.org> darwin/package.mask:
+  Extend cmake mask, bug #445308
+
+  01 Jan 2013; Andreas K. Huettel <dilfridge@gentoo.org> +ChangeLog-2012:
+  Split ChangeLog.
+
+  For previous entries, please see ChangeLog-2012.
+

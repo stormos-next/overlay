@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm prepare test
+DEPEND=dev-python/chardet dev-python/setuptools test? ( app-arch/dpkg ) || ( =dev-lang/python-2.7* =dev-lang/python-2.6* =dev-lang/python-2.5* )
+DESCRIPTION=Python modules to work with Debian-related data formats
+EAPI=3
+HOMEPAGE=http://packages.debian.org/sid/python-debian
+IUSE=examples test
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-2 GPL-3
+RDEPEND=dev-python/chardet || ( =dev-lang/python-2.7* =dev-lang/python-2.6* =dev-lang/python-2.5* )
+SLOT=0
+SRC_URI=mirror://debian/pool/main/p/python-debian/python-debian_0.1.21.tar.gz
+_eclasses_=distutils	77fc6005d2dfcc7bdb5ec363a49d9912	multilib	ded93e450747134a079e647d888aa80b	python	dd56675d8e9f7e85d815a28c87383141	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e
+_md5_=0ed6cc2e3543fd5b89069a0ff681995c

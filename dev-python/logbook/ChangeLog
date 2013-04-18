@@ -1,0 +1,39 @@
+# ChangeLog for dev-python/logbook
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/logbook/ChangeLog,v 1.8 2013/04/05 21:49:42 ago Exp $
+
+  05 Apr 2013; Agostino Sarubbo <ago@gentoo.org> logbook-0.4.ebuild:
+  Stable for x86, wrt bug #457900
+
+  01 Apr 2013; Agostino Sarubbo <ago@gentoo.org> logbook-0.4.ebuild:
+  Stable for amd64, wrt to bug #457900
+
+  29 Mar 2013; Michał Górny <mgorny@gentoo.org> logbook-0.4.1.ebuild:
+  Fix test dependencies.
+
+  29 Mar 2013; Michał Górny <mgorny@gentoo.org> logbook-0.4.1.ebuild:
+  Fix DOCS install, bug #462330. Improve use of distutils-r1.
+
+*logbook-0.4.1 (21 Feb 2013)
+
+  21 Feb 2013; Ian Delaney <idella4@gentoo.org>
+  +files/logbook-0.4.1-testspy3.patch, +files/logbook-0.4.1.patch,
+  +logbook-0.4.1.ebuild:
+  bump with required patch to pass testsuite; closes Bug 451248
+
+  03 Nov 2012; Samuli Suominen <ssuominen@gentoo.org> -logbook-0.3.ebuild:
+  old
+
+*logbook-0.4 (03 Nov 2012)
+
+  03 Nov 2012; Samuli Suominen <ssuominen@gentoo.org> +logbook-0.4.ebuild,
+  metadata.xml:
+  Version bump. Remove myself from metadata.xml.
+
+  15 Jan 2012; Markos Chandras <hwoarang@gentoo.org> logbook-0.3.ebuild:
+  Fix dependencies. Patch by Arfrever.
+
+*logbook-0.3 (11 Jan 2012)
+
+  11 Jan 2012; Samuli Suominen <ssuominen@gentoo.org> +logbook-0.3.ebuild:
+  Initial commit.

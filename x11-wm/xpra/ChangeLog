@@ -1,0 +1,285 @@
+# ChangeLog for x11-wm/xpra
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/x11-wm/xpra/ChangeLog,v 1.58 2013/03/13 08:40:51 xmw Exp $
+
+*xpra-0.8.8 (13 Mar 2013)
+
+  13 Mar 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.8.ebuild:
+  Version bump
+
+*xpra-0.8.7-r1 (02 Mar 2013)
+
+  02 Mar 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.7-r1.ebuild:
+  Revbump to force server? ( xorg-server[xvbf] )
+
+*xpra-0.8.7 (01 Mar 2013)
+
+  01 Mar 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.7.ebuild:
+  Version bump
+
+*xpra-0.8.6-r1 (26 Feb 2013)
+
+  26 Feb 2013; Michael Weber <xmw@gentoo.org> -xpra-0.8.4.ebuild,
+  -xpra-0.8.5.ebuild, -xpra-0.8.6.ebuild, +xpra-0.8.6-r1.ebuild:
+  Revbump to address x264 libav situation (bug 459218, thanks Oliver
+  Freyermuth). Drop old versions.
+
+  25 Feb 2013; Agostino Sarubbo <ago@gentoo.org> xpra-0.7.8.ebuild:
+  Stable for x86, wrt bug #459110
+
+  25 Feb 2013; Agostino Sarubbo <ago@gentoo.org> xpra-0.7.8.ebuild:
+  Stable for amd64, wrt bug #459110
+
+*xpra-0.8.6 (25 Feb 2013)
+
+  25 Feb 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.6.ebuild:
+  Version bump
+
+  23 Feb 2013; Michael Weber <xmw@gentoo.org> xpra-0.8.4.ebuild,
+  xpra-0.8.5.ebuild:
+  Apply old-libav.patch for ffmpeg and <libav-9 (thanks Benda Xu, bug 458808)
+
+*xpra-0.8.5 (18 Feb 2013)
+
+  18 Feb 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.5.ebuild:
+  Version bump
+
+*xpra-0.8.4 (13 Feb 2013)
+
+  13 Feb 2013; Michael Weber <xmw@gentoo.org> -xpra-0.7.6.ebuild,
+  -xpra-0.8.0-r1.ebuild, +xpra-0.8.4.ebuild:
+  Version bump, drop old
+
+*xpra-0.8.1-r1 (05 Feb 2013)
+*xpra-0.8.0-r1 (05 Feb 2013)
+
+  05 Feb 2013; Michael Weber <xmw@gentoo.org> -xpra-0.8.0.ebuild,
+  +xpra-0.8.0-r1.ebuild, -xpra-0.8.1.ebuild, +xpra-0.8.1-r1.ebuild:
+  Fix README removals on reduced USE flag situations (thanks Francisco Vazquez
+  for reporting bug 455098)
+
+*xpra-0.8.1 (04 Feb 2013)
+
+  04 Feb 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.1.ebuild:
+  Version bump
+
+*xpra-0.8.0 (01 Feb 2013)
+
+  01 Feb 2013; Michael Weber <xmw@gentoo.org> +xpra-0.8.0.ebuild,
+  +files/xpra-0.8.0-prefix.patch:
+  Version bump
+
+  24 Jan 2013; Agostino Sarubbo <ago@gentoo.org> xpra-0.7.5.ebuild:
+  Stable for x86, wrt bug #453288
+
+  24 Jan 2013; Agostino Sarubbo <ago@gentoo.org> xpra-0.7.5.ebuild:
+  Stable for amd64, wrt bug #453288
+
+*xpra-0.7.8 (21 Jan 2013)
+
+  21 Jan 2013; Michael Weber <xmw@gentoo.org> -xpra-0.6.4.ebuild,
+  -xpra-0.7.4.ebuild, +xpra-0.7.8.ebuild:
+  Version bump, drop old.
+
+*xpra-0.7.6 (11 Jan 2013)
+
+  11 Jan 2013; Michael Weber <xmw@gentoo.org> +xpra-0.7.6.ebuild:
+  Version bump (thanks euscan)
+
+  07 Dec 2012; Michael Weber <xmw@gentoo.org> metadata.xml:
+  Remove unused local USE flag descriptions
+
+*xpra-0.7.5 (07 Dec 2012)
+
+  07 Dec 2012; Michael Weber <xmw@gentoo.org> -xpra-0.7.2.ebuild,
+  -xpra-0.7.3.ebuild, +xpra-0.7.5.ebuild:
+  Version bump (euscan), drop old.
+
+  30 Nov 2012; Michael Weber <xmw@gentoo.org> xpra-0.7.4.ebuild,
+  +files/xpra-0.7.4-prefix.patch:
+  Prefix support by Benda Xu (bug 445332).
+
+*xpra-0.7.4 (18 Nov 2012)
+
+  18 Nov 2012; Michael Weber <xmw@gentoo.org> +xpra-0.7.4.ebuild:
+  Version bump
+
+*xpra-0.7.3 (13 Nov 2012)
+
+  13 Nov 2012; Michael Weber <xmw@gentoo.org> -xpra-0.7.1-r1.ebuild,
+  +xpra-0.7.3.ebuild:
+  Version bump
+
+*xpra-0.7.2 (07 Nov 2012)
+
+  07 Nov 2012; Michael Weber <xmw@gentoo.org> -xpra-0.4.2.ebuild,
+  -xpra-0.5.6.ebuild, +xpra-0.7.2.ebuild:
+  Version bump, drop old.
+
+*xpra-0.7.1-r1 (29 Oct 2012)
+
+  29 Oct 2012; Michael Weber <xmw@gentoo.org> -xpra-0.7.1.ebuild,
+  +xpra-0.7.1-r1.ebuild, +files/xpra-0.7.1-ignore-gentoo-no-compile.patch:
+  Revbump to address .so situation.
+
+*xpra-0.7.1 (22 Oct 2012)
+
+  22 Oct 2012; Michael Weber <xmw@gentoo.org> -xpra-0.7.0.ebuild,
+  -files/xpra-0.7.0-ignore-gentoo-no-compile.patch, +xpra-0.7.1.ebuild:
+  Version bump
+
+  16 Oct 2012; Michael Weber <xmw@gentoo.org> xpra-0.6.4.ebuild,
+  xpra-0.7.0.ebuild:
+  Python3 preparations
+
+  16 Oct 2012; Michael Weber <xmw@gentoo.org> xpra-0.6.4.ebuild,
+  xpra-0.7.0.ebuild:
+  Fix patch location (thanks redneb, bug 438472), reestablish USE server
+
+  16 Oct 2012; Michael Weber <xmw@gentoo.org> xpra-0.7.0.ebuild:
+  Fix src_install (thanks Gary E. Miller, bug 438526)
+
+  14 Oct 2012; Michael Weber <xmw@gentoo.org> xpra-0.7.0.ebuild:
+  Fix README files and warn about Xorg permissions.
+
+*xpra-0.7.0 (14 Oct 2012)
+
+  14 Oct 2012; Michael Weber <xmw@gentoo.org> -xpra-0.5.3.ebuild,
+  -xpra-0.6.0.ebuild, xpra-0.6.4.ebuild, +xpra-0.7.0.ebuild,
+  +files/xpra-0.7.0-ignore-gentoo-no-compile.patch, metadata.xml:
+  Version bump, add setxkbmap dep (thanks redneb, bug 437614), add keywords to
+  0.6 series, drop old.
+
+*xpra-0.6.4 (06 Oct 2012)
+*xpra-0.5.6 (06 Oct 2012)
+
+  06 Oct 2012; Michael Weber <xmw@gentoo.org> -xpra-0.5.2.ebuild,
+  +xpra-0.5.6.ebuild, +xpra-0.6.4.ebuild:
+  Version bump
+
+*xpra-0.5.3 (05 Sep 2012)
+
+  05 Sep 2012; Michael Weber <xmw@gentoo.org> +xpra-0.5.3.ebuild,
+  xpra-0.6.0.ebuild:
+  Upstream dropped 0.6.0 release. Version bump to 0.5.3.
+
+*xpra-0.5.2 (29 Aug 2012)
+
+  29 Aug 2012; Michael Weber <xmw@gentoo.org> +xpra-0.5.2.ebuild,
+  -xpra-0.5.0.ebuild, -xpra-0.5.1.ebuild:
+  Version bump, drop old
+
+*xpra-0.6.0 (27 Aug 2012)
+*xpra-0.5.1 (27 Aug 2012)
+
+  27 Aug 2012; Michael Weber <xmw@gentoo.org> +xpra-0.5.1.ebuild,
+  +xpra-0.6.0.ebuild, -xpra-0.4.1.ebuild, metadata.xml:
+  Version bump
+
+*xpra-0.5.0 (20 Aug 2012)
+
+  20 Aug 2012; Michael Weber <xmw@gentoo.org> +xpra-0.5.0.ebuild:
+  Version bump
+
+  17 Aug 2012; Michael Weber <xmw@gentoo.org> xpra-0.4.2.ebuild:
+  Fix whitespaces.
+
+*xpra-0.4.2 (17 Aug 2012)
+
+  17 Aug 2012; Michael Weber <xmw@gentoo.org> +xpra-0.4.2.ebuild:
+  Version bump.
+
+  04 Aug 2012; Michael Weber <xmw@gentoo.org> -xpra-0.4.0.ebuild,
+  xpra-0.4.1.ebuild:
+  Define cython dependency (bug 429624, thanks igel), drop old.
+
+*xpra-0.4.1 (01 Aug 2012)
+
+  01 Aug 2012; Michael Weber <xmw@gentoo.org> +xpra-0.4.1.ebuild,
+  -xpra-0.3.3.ebuild:
+  Version bump, drop old.
+
+*xpra-0.4.0 (23 Jul 2012)
+
+  23 Jul 2012; Michael Weber <xmw@gentoo.org> +xpra-0.4.0.ebuild,
+  -xpra-0.2.0-r1.ebuild, -xpra-0.3.1.ebuild, -xpra-0.3.2.ebuild:
+  Version bump
+
+*xpra-0.3.3 (15 Jul 2012)
+
+  15 Jul 2012; Michael Weber <xmw@gentoo.org> +xpra-0.3.3.ebuild:
+  Version bump
+
+  11 Jun 2012; Benda Xu <heroxbd@gentoo.org> xpra-0.3.2.ebuild:
+  keyword ~x86-linux
+
+  06 Jun 2012; Benda Xu <heroxbd@gentoo.org> xpra-0.3.2.ebuild:
+  keyword ~amd64-linux
+
+*xpra-0.3.2 (04 Jun 2012)
+
+  04 Jun 2012; Michael Weber <xmw@gentoo.org> -xpra-0.1.0.1.ebuild,
+  +xpra-0.3.2.ebuild:
+  Version bump, remove old.
+
+  30 May 2012; Michael Weber <xmw@gentoo.org> xpra-0.3.1.ebuild:
+  Disable python 3
+
+*xpra-0.3.1 (29 May 2012)
+
+  29 May 2012; Michael Weber <xmw@gentoo.org> +xpra-0.3.1.ebuild:
+  Version bump, python 3 support.
+
+*xpra-0.2.0-r1 (23 May 2012)
+
+  23 May 2012; Michael Weber <xmw@gentoo.org> -xpra-0.2.0.ebuild,
+  +xpra-0.2.0-r1.ebuild:
+  Add USE flags ffmpeg and x264 (thans soxx)
+
+  21 May 2012; Michael Weber <xmw@gentoo.org> xpra-0.2.0.ebuild:
+  fix dependency on dev-python/cython (bug 416631, thanks Benjamin Bannier)
+
+*xpra-0.2.0 (15 May 2012)
+
+  15 May 2012; Michael Weber <xmw@gentoo.org> +xpra-0.2.0.ebuild:
+  Version bump
+
+  04 May 2012; Jeff Horelick <jdhore@gentoo.org> xpra-0.1.0.1.ebuild:
+  dev-util/pkgconfig -> virtual/pkgconfig
+
+  06 Apr 2012; Michael Weber <xmw@gentoo.org> -xpra-0.0.7.36.ebuild:
+  Remove old version
+
+*xpra-0.1.0.1 (25 Mar 2012)
+
+  25 Mar 2012; Michael Weber <xmw@gentoo.org> -xpra-0.0.7.32.ebuild,
+  -xpra-0.0.7.35.ebuild, +xpra-0.1.0.1.ebuild:
+  Version bump (thanks Violet, bug 409447)
+
+*xpra-0.0.7.36 (28 Feb 2012)
+
+  28 Feb 2012; Michael Weber <xmw@gentoo.org> +xpra-0.0.7.36.ebuild:
+  Version bump, thanks soxx.
+
+  20 Feb 2012; Mike Gilbert <floppym@gentoo.org> metadata.xml:
+  Drop no-herd.
+
+*xpra-0.0.7.35 (05 Feb 2012)
+
+  05 Feb 2012; Michael Weber <xmw@gentoo.org> -xpra-0.0.7.30.ebuild,
+  +xpra-0.0.7.35.ebuild:
+  Version bump, thanks soxx
+
+*xpra-0.0.7.32 (17 Dec 2011)
+
+  17 Dec 2011; Michael Weber <xmw@gentoo.org> +xpra-0.0.7.32.ebuild:
+  Version bump, thanks Antoine Martin for the hint.
+
+  04 Nov 2011; Michael Weber <xmw@gentoo.org> xpra-0.0.7.30.ebuild:
+  Add server patch
+
+*xpra-0.0.7.30 (04 Nov 2011)
+
+  04 Nov 2011; Michael Weber <xmw@gentoo.org> +xpra-0.0.7.30.ebuild,
+  +metadata.xml:
+  Initial import (thanks to Antoine Martin, soxx, bug 352974, bug 353661)

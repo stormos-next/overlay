@@ -1,0 +1,18 @@
+# ChangeLog for dev-python/pysctp
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/pysctp/ChangeLog,v 1.4 2013/03/17 15:59:59 hwoarang Exp $
+
+  17 Mar 2013; Markos Chandras <hwoarang@gentoo.org> metadata.xml:
+  Add proxy-maintainers to metadata.xml
+
+  02 Dec 2012; Jason A. Donenfeld <zx2c4@gentoo.org> pysctp-0.6.ebuild:
+  Rename the tarball to something reasonable.
+
+  02 Dec 2012; Jason A. Donenfeld <zx2c4@gentoo.org> pysctp-0.6.ebuild:
+  Remove extranious header installation.
+
+*pysctp-0.6 (02 Dec 2012)
+
+  02 Dec 2012; Jason A. Donenfeld <zx2c4@gentoo.org> +metadata.xml,
+  +pysctp-0.6.ebuild:
+  Initial version from Phil's maintainership.

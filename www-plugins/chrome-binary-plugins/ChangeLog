@@ -1,0 +1,53 @@
+# ChangeLog for www-plugins/chrome-binary-plugins
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/www-plugins/chrome-binary-plugins/ChangeLog,v 1.8 2013/04/16 01:43:40 floppym Exp $
+
+*chrome-binary-plugins-26.0.1410.63_p192696 (16 Apr 2013)
+*chrome-binary-plugins-27.0.1453.47_beta193194 (16 Apr 2013)
+*chrome-binary-plugins-28.0.1478.0_alpha194114 (16 Apr 2013)
+
+  16 Apr 2013; Mike Gilbert <floppym@gentoo.org>
+  +chrome-binary-plugins-26.0.1410.63_p192696.ebuild,
+  +chrome-binary-plugins-27.0.1453.47_beta193194.ebuild,
+  +chrome-binary-plugins-28.0.1478.0_alpha194114.ebuild,
+  -chrome-binary-plugins-9997.ebuild, -chrome-binary-plugins-9998.ebuild,
+  -chrome-binary-plugins-9999.ebuild:
+  Convert live ebuilds into normal ones, bug 457638.
+
+*chrome-binary-plugins-9997 (19 Mar 2013)
+*chrome-binary-plugins-9998 (19 Mar 2013)
+
+  19 Mar 2013; Mike Gilbert <floppym@gentoo.org>
+  +chrome-binary-plugins-9997.ebuild, +chrome-binary-plugins-9998.ebuild,
+  chrome-binary-plugins-9999.ebuild:
+  Add ebuilds for stable and beta releases.
+
+  28 Feb 2013; Jason A. Donenfeld <zx2c4@gentoo.org>
+  chrome-binary-plugins-9999.ebuild:
+  Use get_libdir for strict multilib, and do not complain about LDFLAGS.  This
+  fixes bug #459688
+
+  31 Jan 2013; Jason A. Donenfeld <zx2c4@gentoo.org>
+  chrome-binary-plugins-9999.ebuild:
+  Shorter description still.
+
+  31 Jan 2013; Jason A. Donenfeld <zx2c4@gentoo.org>
+  chrome-binary-plugins-9999.ebuild:
+  Better description for ago.
+
+  08 Dec 2012; Mike Gilbert <floppym@gentoo.org>
+  chrome-binary-plugins-9999.ebuild:
+  RESTRICT=bindist.
+
+  19 Oct 2012; Jason A. Donenfeld <zx2c4@gentoo.org>
+  chrome-binary-plugins-9999.ebuild:
+  Per floppym's suggestion, use unpacker class.
+
+*chrome-binary-plugins-9999 (19 Oct 2012)
+
+  19 Oct 2012; Jason A. Donenfeld <zx2c4@gentoo.org>
+  +chrome-binary-plugins-9999.ebuild, +metadata.xml:
+  New ebuild that imports Chrome's binary plugins into Chromium. Initially a
+  live ebuild, with ugly live fetching semantics, but might in the future
+  transition to something that's released in tandem with Chromium, with proper
+  versioning.

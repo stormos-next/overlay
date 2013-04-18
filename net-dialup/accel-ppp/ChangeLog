@@ -1,0 +1,20 @@
+# ChangeLog for net-dialup/accel-ppp
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-dialup/accel-ppp/ChangeLog,v 1.3 2013/02/28 16:42:58 pinkbyte Exp $
+
+  28 Feb 2013; Sergey Popov <pinkbyte@gentoo.org> metadata.xml:
+  Add net-dialup herd to maintainers
+
+*accel-ppp-1.7.9999 (18 Jan 2013)
+
+  18 Jan 2013; Sergey Popov <pinkbyte@gentoo.org> +accel-ppp-1.7.9999.ebuild:
+  Add live ebuild for 1.7 branch
+
+*accel-ppp-1.7.3 (03 Jan 2013)
+
+  03 Jan 2013; Sergey Popov <pinkbyte@gentoo.org> +accel-ppp-1.7.3.ebuild,
+  +files/accel-ppp.confd, +files/accel-ppp.initd,
+  +files/accel-ppp-remove_obsolete_tbf_shaper.patch, +metadata.xml:
+  Initial commit, wrt bug #448054. Thanks to all, who helps writing ebuild and
+  other stuff
+

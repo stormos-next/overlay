@@ -1,0 +1,31 @@
+# ChangeLog for app-arch/snappy
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/app-arch/snappy/ChangeLog,v 1.6 2013/03/26 09:08:11 pinkbyte Exp $
+
+  26 Mar 2013; Sergey Popov <pinkbyte@gentoo.org> snappy-1.0.5.ebuild,
+  snappy-1.1.0.ebuild:
+  Add ~arm keyword, wrt bug #463308
+
+*snappy-1.1.0 (26 Mar 2013)
+
+  26 Mar 2013; Patrick Lauer <patrick@gentoo.org> +snappy-1.1.0.ebuild:
+  Bump for #457626
+
+  03 Mar 2013; Sébastien Fabbro <bicatali@gentoo.org> snappy-1.0.5.ebuild:
+  Keyword amd64-linux and x86-linux
+
+*snappy-1.0.5 (25 Nov 2012)
+
+  25 Nov 2012; Tim Harder <radhermit@gentoo.org> +snappy-1.0.5.ebuild:
+  Version bump (bug #407733).
+
+*snappy-1.0.4 (21 Nov 2011)
+
+  21 Nov 2011; Nirbheek Chauhan <nirbheek@gentoo.org> +snappy-1.0.4.ebuild:
+  Bump to 1.0.4, bug 385275
+
+*snappy-1.0.3 (14 Jun 2011)
+
+  14 Jun 2011; Nirbheek Chauhan <nirbheek@gentoo.org> +snappy-1.0.3.ebuild,
+  +metadata.xml:
+  Add snappy-1.0.3, there seems to be demand for it

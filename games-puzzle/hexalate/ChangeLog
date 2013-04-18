@@ -1,0 +1,19 @@
+# ChangeLog for games-puzzle/hexalate
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/games-puzzle/hexalate/ChangeLog,v 1.4 2013/03/02 21:19:20 hwoarang Exp $
+
+  02 Mar 2013; Markos Chandras <hwoarang@gentoo.org> hexalate-1.0.1.ebuild:
+  Move Qt dependencies to the new category
+
+  28 Mar 2012; Michael Sterrett <mr_bones_@gentoo.org> hexalate-1.0.1.ebuild:
+  migrate to qt4-r2 eclass with patch from Michael (kensington) (bug #410027)
+
+  27 Feb 2010; Pawel Hajdan jr <phajdan.jr@gentoo.org>
+  hexalate-1.0.1.ebuild:
+  x86 stable wrt bug #302945, arch-tested by Thomas Kahle
+
+*hexalate-1.0.1 (31 Dec 2009)
+
+  31 Dec 2009; Samuli Suominen <ssuominen@gentoo.org>
+  +hexalate-1.0.1.ebuild:
+  Initial commit.

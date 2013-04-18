@@ -1,0 +1,33 @@
+# ChangeLog for Gentoo eapi-5-files profile directory
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/profiles/eapi-5-files/ChangeLog,v 1.8 2013/04/12 04:54:19 ssuominen Exp $
+
+  12 Apr 2013; Samuli Suominen <ssuominen@gentoo.org> package.use.stable.mask:
+  Move app-pda/gtkpod[cdr] mask from base/package.use.mask to here.
+
+  01 Apr 2013; Agostino Sarubbo <ago@gentoo.org> package.use.stable.mask:
+  Revert www-client/chromium[gps] stable mask since now
+  =sci-geosciences/gpsd-3.7 is stable
+
+  28 Mar 2013; Andreas K. Huettel <dilfridge@gentoo.org>
+  package.use.stable.mask:
+  Mask editor flag of kde-base/kalzium
+
+  27 Mar 2013; Mike Gilbert <floppym@gentoo.org> package.use.stable.mask:
+  Stable-mask www-client/chromium[gps]
+
+  02 Mar 2013; Michał Górny <mgorny@gentoo.org> -use.mask:
+  Use stable-masking only for systemd. Masking it for old profiles is too
+  troublesome (overrides arch-specific masks).
+
+  24 Feb 2013; Michał Górny <mgorny@gentoo.org> +use.mask, use.stable.mask:
+  Unmask systemd flag for testing and mask for stable.
+
+  16 Feb 2013; Maxim Koltsov <maksbotan@gentoo.org> package.use.stable.mask:
+  Mask 'unstable' ﬂag for leechraft-full on stable keywords
+
+  14 Jan 2013; Andreas K. Huettel <dilfridge@gentoo.org> +eapi,
+  +package.use.stable.force, +package.use.stable.mask, +use.stable.force,
+  +use.stable.mask:
+  Add empty files
+

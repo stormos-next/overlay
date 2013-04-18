@@ -1,0 +1,26 @@
+# ChangeLog for dev-python/testfixtures
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/testfixtures/ChangeLog,v 1.5 2013/03/15 20:58:09 idella4 Exp $
+
+*testfixtures-3.0.0 (15 Mar 2013)
+
+  15 Mar 2013; Ian Delaney <idella4@gentoo.org> +testfixtures-3.0.0.ebuild,
+  testfixtures-2.3.4.ebuild:
+  Bump; dep added to -2.3.4 supporting / enabling test phase
+
+  14 Nov 2012; Ian Delaney <idella4@gentoo.org> metadata.xml:
+  Updating maintainer, metadata.xml
+
+  29 May 2012; Kacper Kowalik <xarthisius@gentoo.org> metadata.xml:
+  Fix metadata.xml to have only bugzilla related email for proxy maintainer
+
+  22 May 2012; Theo Chatzimichos <tampakrap@gentoo.org>
+  testfixtures-2.3.4.ebuild:
+  Restrict tests, since they require dev-python/manuel which is not in tree yet
+
+*testfixtures-2.3.4 (20 May 2012)
+
+  20 May 2012; Theo Chatzimichos <tampakrap@gentoo.org>
+  +files/testfixtures-2.3.4-adjust_tests.patch, +metadata.xml,
+  +testfixtures-2.3.4.ebuild:
+  Initial commit, ebuild by idella4

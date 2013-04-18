@@ -1,0 +1,34 @@
+# ChangeLog for dev-libs/jsoncpp
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/jsoncpp/ChangeLog,v 1.8 2013/04/04 20:16:25 ago Exp $
+
+  04 Apr 2013; Agostino Sarubbo <ago@gentoo.org> jsoncpp-0.5.0-r1.ebuild:
+  Stable for x86, wrt bug #463426
+
+  04 Apr 2013; Agostino Sarubbo <ago@gentoo.org> jsoncpp-0.5.0-r1.ebuild:
+  Stable for amd64, wrt bug #463426
+
+*jsoncpp-0.5.0-r1 (28 Feb 2013)
+
+  28 Feb 2013; Pawel Hajdan jr <phajdan.jr@gentoo.org>
+  +jsoncpp-0.5.0-r1.ebuild:
+  Version bump to avoid file collisions, bug #452234.
+
+  25 Feb 2013; Pawel Hajdan jr <phajdan.jr@gentoo.org> jsoncpp-0.5.0.ebuild:
+  Keyword ~arm
+
+  28 Jan 2013; Justin Lecher <jlec@gentoo.org> jsoncpp-0.5.0.ebuild:
+  Add missing eclass
+
+  28 Jan 2013; Justin Lecher <jlec@gentoo.org> jsoncpp-0.5.0.ebuild,
+  metadata.xml:
+  Block colliding version, #452234
+
+  08 Jan 2013; Pawel Hajdan jr <phajdan.jr@gentoo.org> jsoncpp-0.5.0.ebuild:
+  Keyword ~amd64
+
+*jsoncpp-0.5.0 (29 Dec 2012)
+
+  29 Dec 2012; Pawel Hajdan jr <phajdan.jr@gentoo.org> +jsoncpp-0.5.0.ebuild,
+  +metadata.xml:
+  Initial import.

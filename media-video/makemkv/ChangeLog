@@ -1,0 +1,89 @@
+# ChangeLog for media-video/makemkv
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/media-video/makemkv/ChangeLog,v 1.19 2013/03/02 22:31:29 hwoarang Exp $
+
+  02 Mar 2013; Markos Chandras <hwoarang@gentoo.org> makemkv-1.8.0-r1.ebuild:
+  Move Qt dependencies to the new category
+
+*makemkv-1.8.0-r1 (22 Feb 2013)
+
+  22 Feb 2013; Matthew Marlowe <mattm@gentoo.org> +makemkv-1.8.0-r1.ebuild,
+  -makemkv-1.7.8.ebuild, -makemkv-1.8.0.ebuild:
+  Hopefully final fix for Bug 439380
+
+  22 Feb 2013; Matthew Marlowe <mattm@gentoo.org> makemkv-1.8.0.ebuild:
+  Minor fix for icon directory.  Continuing to work on Bug 439380.
+
+  22 Feb 2013; Matthew Marlowe <mattm@gentoo.org> makemkv-1.8.0.ebuild:
+  Updated makemkv 1.8.0 ebuild to reflect upstreams change in location of icons
+  for gui.  keywording ~amd64/~x86.
+
+  22 Feb 2013; Matthew Marlowe <mattm@gentoo.org>
+  +files/makemkv-1.8.0-makefile.linux.patch:
+  Duplicating makemkv 1.7.8 patch for 1.8.0, will see how it behaves during
+  testing.
+
+*makemkv-1.8.0 (22 Feb 2013)
+
+  22 Feb 2013; Matthew Marlowe <mattm@gentoo.org> +makemkv-1.8.0.ebuild:
+  Bump for makemkv 1.8.0, temporarily package masked during testing, hope to
+  eventually close out bug #439380
+
+*makemkv-1.7.8 (25 Nov 2012)
+
+  25 Nov 2012; Matthew Marlowe <mattm@gentoo.org>
+  +files/makemkv-1.7.8-makefile.linux.patch, +makemkv-1.7.8.ebuild,
+  -makemkv-1.7.7.ebuild:
+  Bump for makemkv 1.7.8 Holding off on bump for 1.7.9 due to Bug 439380.
+
+*makemkv-1.7.7 (02 Oct 2012)
+
+  02 Oct 2012; Matthew Marlowe <mattm@gentoo.org>
+  +files/makemkv-1.7.7-makefile.linux.patch, +makemkv-1.7.7.ebuild,
+  -makemkv-1.7.4-r1.ebuild, -makemkv-1.7.6.ebuild:
+  Fixed Bug 435554 - Bump for makemkv 1.7.7, remove legacy ebuilds, some of
+  which have upstream has moved source paths for.
+
+  04 Jul 2012; Samuli Suominen <ssuominen@gentoo.org> makemkv-1.7.6.ebuild:
+  Install hicolor icons and update icon cache. Use virtual/opengl instead of
+  media-libs/mesa. Missing LICENSE information from file headers; LGPL-2.1,
+  MPL-1.1 and openssl. Install translation files. Install mmdtsdec utility.
+
+  03 Jul 2012; Matthew Marlowe <mattm@gentoo.org>
+  files/makemkv-1.7.6-makefile.linux.patch:
+  User submitted minor fix to patch created for bug 424477.
+
+  02 Jul 2012; Matthew Marlowe <mattm@gentoo.org>
+  +files/makemkv-1.7.6-makefile.linux.patch:
+  Stab at resolving bug 424477 - added makefile patch that 1.7.6 ebuild wants.
+
+*makemkv-1.7.6 (02 Jul 2012)
+
+  02 Jul 2012; Matthew Marlowe <mattm@gentoo.org> +makemkv-1.7.6.ebuild:
+  Bump for release 1.7.6 - upstream has changed download pkg naming rules, will
+  need to double check for any other significant changes.
+
+*makemkv-1.7.4-r1 (02 Jul 2012)
+
+  02 Jul 2012; Matthew Marlowe <mattm@gentoo.org> -makemkv-1.6.16.ebuild,
+  +makemkv-1.7.4-r1.ebuild, +files/makemkv-1.7.4-makefile.linux.patch:
+  Per request from Bug 396253, took over maintainership of media-video/makemkv.
+  Bumped to latest user contributed ebuild. Verified dependencies and
+  installation/operation, supplemented basic elog install directions, and
+  removed obsolete/non functional prior ebuild.
+
+  01 Jul 2012; Ben de Groot <yngwin@gentoo.org> metadata.xml:
+  Reassign as per bug #396253
+
+  03 Dec 2011; Steve Dibb <beandog@gentoo.org> makemkv-1.6.16.ebuild:
+  Add symlinks for libraries
+
+  03 Dec 2011; Steve Dibb <beandog@gentoo.org> makemkv-1.6.16.ebuild,
+  files/makemkv-1.6.16-makefile.linux.patch:
+  Add sys-libs/zlib dependency, cleanup QA variables, install into /opt
+
+*makemkv-1.6.16 (02 Dec 2011)
+
+  02 Dec 2011; Steve Dibb <beandog@gentoo.org> +makemkv-1.6.16.ebuild,
+  +metadata.xml:
+  Initial commit to portage tree, bug 280347

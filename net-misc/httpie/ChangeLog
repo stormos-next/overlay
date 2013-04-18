@@ -1,0 +1,27 @@
+# ChangeLog for net-misc/httpie
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-misc/httpie/ChangeLog,v 1.5 2013/02/28 15:18:03 vikraman Exp $
+
+*httpie-0.4.1 (28 Feb 2013)
+
+  28 Feb 2013; Vikraman <vikraman@gentoo.org> +httpie-0.4.1.ebuild:
+  Version bump to 0.4.1. Fixes bug #459308
+
+*httpie-0.3.1 (28 Dec 2012)
+
+  28 Dec 2012; Vikraman <vikraman@gentoo.org> +httpie-0.3.1.ebuild:
+  Version bump to 0.3.1
+
+*httpie-0.3.0-r1 (28 Dec 2012)
+
+  28 Dec 2012; Vikraman <vikraman@gentoo.org> +httpie-0.3.0-r1.ebuild:
+  Fix dev-python/requests dependency
+
+  29 Oct 2012; Michał Górny <mgorny@gentoo.org> httpie-0.3.0.ebuild:
+  Use virtual for argparse.
+
+*httpie-0.3.0 (05 Oct 2012)
+
+  05 Oct 2012; Vikraman <vikraman@gentoo.org> +httpie-0.3.0.ebuild,
+  +metadata.xml:
+  New ebuild for HTTPie, a CLI, cURL-like tool for humans. Fixes bug #437242

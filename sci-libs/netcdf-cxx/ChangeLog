@@ -1,0 +1,24 @@
+# ChangeLog for sci-libs/netcdf-cxx
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/netcdf-cxx/ChangeLog,v 1.4 2013/02/20 17:06:36 bicatali Exp $
+
+  20 Feb 2013; Sébastien Fabbro <bicatali@gentoo.org>
+  files/netcdf-cxx-4.2-config.patch:
+  Avoid infinite loop with netcdf (bug #456916)
+
+*netcdf-cxx-4.2-r1 (10 Jan 2013)
+
+  10 Jan 2013; Sébastien Fabbro <bicatali@gentoo.org>
+  +files/netcdf-cxx-4.2-config.patch, +netcdf-cxx-4.2-r1.ebuild,
+  -netcdf-cxx-4.2.ebuild:
+  Fixed pkg-config file and ncxx4-config script to include netcdf C libraries
+  for as-needed problems
+
+  02 Aug 2012; Sébastien Fabbro <bicatali@gentoo.org> netcdf-cxx-4.2.ebuild:
+  Keyword amd64-linux x86-linux
+
+*netcdf-cxx-4.2 (18 Apr 2012)
+
+  18 Apr 2012; Sébastien Fabbro <bicatali@gentoo.org> +netcdf-cxx-4.2.ebuild,
+  +metadata.xml:
+  Initial import

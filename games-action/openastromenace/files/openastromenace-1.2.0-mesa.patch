@@ -1,0 +1,10 @@
+--- OpenAstroMenaceSVN/AstroMenaceSource/Core/RendererInterface/RendererInterface.h.orig
++++ OpenAstroMenaceSVN/AstroMenaceSource/Core/RendererInterface/RendererInterface.h
+@@ -37,6 +37,7 @@
+ #include "../Base.h"
+ #include "../Math/Math.h"
+ #include "../Texture/Texture.h"
++#define PFNGLCLIENTACTIVETEXTUREPROC PFNGLACTIVETEXTUREPROC
+ 
+ 
+ 

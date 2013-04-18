@@ -1,0 +1,20 @@
+# ChangeLog for dev-python/iso8601
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/iso8601/ChangeLog,v 1.4 2013/01/12 23:29:19 mgorny Exp $
+
+  12 Jan 2013; Michał Górny <mgorny@gentoo.org> iso8601-0.1.4-r1.ebuild:
+  Add PYTHON_USEDEP on dev-python/nose.
+
+*iso8601-0.1.4-r1 (12 Jan 2013)
+
+  12 Jan 2013; Michał Górny <mgorny@gentoo.org> +iso8601-0.1.4-r1.ebuild:
+  Migrate to distutils-r1.
+
+  19 Aug 2011; Markos Chandras <hwoarang@gentoo.org> iso8601-0.1.4.ebuild:
+  Require Python 2. Patch by Arfrever.
+
+*iso8601-0.1.4 (30 Jul 2011)
+
+  30 Jul 2011; Rafael G. Martins <rafaelmartins@gentoo.org>
+  +iso8601-0.1.4.ebuild, +metadata.xml:
+  Initial version. Based on ebuild by Jan Matějka (bug #368017).

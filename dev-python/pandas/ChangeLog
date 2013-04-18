@@ -1,0 +1,67 @@
+# ChangeLog for dev-python/pandas
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/pandas/ChangeLog,v 1.13 2013/02/07 08:52:22 idella4 Exp $
+
+  07 Feb 2013; Ian Delaney <idella4@gentoo.org> pandas-0.10.1.ebuild:
+  deps added to build docs and a dep deleted to build docs to avoid circular
+  dependeny for the second time, (patchable) sed statement to disable naughty
+  downloading, build of docs corrected with einfo msg, 1 test file disabled
+  (rmvd) for py2.6, redundant distutils-r1_python_install dropped avoiding
+  wrongful duplication, example py modules set uncompressed
+
+*pandas-0.10.1 (31 Jan 2013)
+
+  31 Jan 2013; Sébastien Fabbro <bicatali@gentoo.org> +pandas-0.10.1.ebuild,
+  metadata.xml:
+  Version bump
+
+  31 Jan 2013; Justin Lecher <jlec@gentoo.org> pandas-0.10.0.ebuild:
+  Move to new python eclasses; fixes broken test with latest nose # 454828 and
+  sanitizes py deps
+
+  16 Jan 2013; Justin Lecher <jlec@gentoo.org> -pandas-0.8.1.ebuild,
+  -pandas-0.9.0.ebuild, -pandas-0.9.1.ebuild, pandas-0.10.0.ebuild,
+  metadata.xml:
+  No py3 support
+
+*pandas-0.10.0 (29 Dec 2012)
+
+  29 Dec 2012; Kacper Kowalik <xarthisius@gentoo.org> +pandas-0.10.0.ebuild:
+  Version bump
+
+*pandas-0.9.1 (23 Nov 2012)
+
+  23 Nov 2012; Sébastien Fabbro <bicatali@gentoo.org> +pandas-0.9.1.ebuild:
+  Version bump
+
+*pandas-0.9.0 (29 Oct 2012)
+
+  29 Oct 2012; Sébastien Fabbro <bicatali@gentoo.org> +pandas-0.9.0.ebuild,
+  -pandas-0.7.3.ebuild:
+  Version bump
+
+  18 Oct 2012; Patrick Lauer <patrick@gentoo.org> pandas-0.7.3.ebuild,
+  pandas-0.8.1.ebuild:
+  Restricting CPython-3.3
+
+  09 Aug 2012; Patrick Lauer <patrick@gentoo.org> pandas-0.8.1.ebuild:
+  Restrict jython
+
+*pandas-0.8.1 (30 Jul 2012)
+
+  30 Jul 2012; Sébastien Fabbro <bicatali@gentoo.org> +pandas-0.8.1.ebuild:
+  Version bump
+
+  21 Jun 2012; Sébastien Fabbro <bicatali@gentoo.org> pandas-0.7.3.ebuild:
+  Restrict pypy
+
+  08 May 2012; Sébastien Fabbro <bicatali@gentoo.org> pandas-0.7.3.ebuild:
+  Remove scikits_statsmodels as dependency to get rid of circular dependency.
+  Allow python-3
+
+*pandas-0.7.3 (20 Apr 2012)
+
+  20 Apr 2012; Sébastien Fabbro <bicatali@gentoo.org> +pandas-0.7.3.ebuild,
+  +metadata.xml:
+  Initial import from the science overlay + version bump. Added doc, testing
+  and extra dependencies.

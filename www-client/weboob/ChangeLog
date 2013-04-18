@@ -1,0 +1,29 @@
+# ChangeLog for www-client/weboob
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/www-client/weboob/ChangeLog,v 1.4 2013/03/25 03:42:27 patrick Exp $
+
+*weboob-0e-r2 (25 Mar 2013)
+
+  25 Mar 2013; Patrick Lauer <patrick@gentoo.org> +weboob-0e-r2.ebuild,
+  -weboob-0e-r1.ebuild, weboob-9998.ebuild, weboob-9999.ebuild:
+  Fix PyQt deps #462368
+
+*weboob-0e-r1 (25 Mar 2013)
+
+  25 Mar 2013; Patrick Lauer <patrick@gentoo.org> +weboob-0e-r1.ebuild,
+  -weboob-0e.ebuild:
+  Bump for #462842
+
+*weboob-0e (28 Jan 2013)
+
+  28 Jan 2013; Patrick Lauer <patrick@gentoo.org> +weboob-0e.ebuild,
+  weboob-9998.ebuild, weboob-9999.ebuild:
+  Bump for #454040
+
+*weboob-0d (25 Jan 2013)
+*weboob-9999 (25 Jan 2013)
+*weboob-9998 (25 Jan 2013)
+
+  25 Jan 2013; Patrick Lauer <patrick@gentoo.org> +metadata.xml,
+  +weboob-0d.ebuild, +weboob-9998.ebuild, +weboob-9999.ebuild:
+  Initial import from laurentb overlay

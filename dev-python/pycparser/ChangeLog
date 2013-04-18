@@ -1,0 +1,22 @@
+# ChangeLog for dev-python/pycparser
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/pycparser/ChangeLog,v 1.4 2013/03/20 08:03:38 idella4 Exp $
+
+  20 Mar 2013; Ian Delaney <idella4@gentoo.org> pycparser-2.09.1.ebuild:
+  pypy support tested, added
+
+*pycparser-2.09.1 (08 Jan 2013)
+
+  08 Jan 2013; Tim Harder <radhermit@gentoo.org> +pycparser-2.09.1.ebuild:
+  Version bump. Migrate to distutils-r1.
+
+*pycparser-2.08 (29 Aug 2012)
+
+  29 Aug 2012; Patrick Lauer <patrick@gentoo.org> +pycparser-2.08.ebuild:
+  Bump
+
+*pycparser-2.07 (27 Jul 2012)
+
+  27 Jul 2012; Dirkjan Ochtman <djc@gentoo.org> +pycparser-2.07.ebuild,
+  +metadata.xml:
+  Initial version (bug 364801).

@@ -1,0 +1,20 @@
+# ChangeLog for app-vim/rails
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/app-vim/rails/ChangeLog,v 1.3 2013/04/01 08:32:28 radhermit Exp $
+
+*rails-5.0 (01 Apr 2013)
+
+  01 Apr 2013; Tim Harder <radhermit@gentoo.org> +rails-5.0.ebuild:
+  Version bump.
+
+*rails-4.4 (07 Nov 2011)
+
+  07 Nov 2011; Tim Harder <radhermit@gentoo.org> +rails-4.4.ebuild:
+  Version bump. Use github mirror.
+
+*rails-4.3 (10 Mar 2011)
+
+  10 Mar 2011; Tim Harder <radhermit@gentoo.org> +rails-4.3.ebuild,
+  +metadata.xml:
+  Initial import.
+

@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install postinst postrm prepare
+DEPEND=>=dev-python/pysnmp-4.1.10a >=dev-python/pysnmp-mibs-0.0.6a dev-python/setuptools =dev-lang/python-2*
+DESCRIPTION=PySNMP applications
+EAPI=3
+HOMEPAGE=http://pysnmp.sf.net/ http://pypi.python.org/pypi/pysnmp-apps
+KEYWORDS=~amd64 ~x86
+LICENSE=BSD
+RDEPEND=>=dev-python/pysnmp-4.1.10a >=dev-python/pysnmp-mibs-0.0.6a =dev-lang/python-2*
+SLOT=0
+SRC_URI=mirror://pypi/p/pysnmp-apps/pysnmp-apps-0.2.11a.tar.gz
+_eclasses_=distutils	77fc6005d2dfcc7bdb5ec363a49d9912	multilib	ded93e450747134a079e647d888aa80b	python	dd56675d8e9f7e85d815a28c87383141	toolchain-funcs	69a2016af67775a812f4c03ba4b0e03e
+_md5_=8af3f0c2e66157cade6d23505851db02

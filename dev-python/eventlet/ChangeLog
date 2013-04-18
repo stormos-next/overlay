@@ -1,0 +1,27 @@
+# ChangeLog for dev-python/eventlet
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-python/eventlet/ChangeLog,v 1.5 2013/02/12 12:22:20 mgorny Exp $
+
+*eventlet-0.12.1-r1 (12 Feb 2013)
+
+  12 Feb 2013; Michał Górny <mgorny@gentoo.org> +eventlet-0.12.1-r1.ebuild:
+  Migrate to distutils-r1.
+
+  01 Feb 2013; Ian Delaney <idella4@gentoo.org> eventlet-0.9.16.ebuild:
+  Added missing deps for tests, fix missing import in test file, fixes Bug
+  #452480 by flameeyes
+
+*eventlet-0.12.1 (26 Jan 2013)
+
+  26 Jan 2013; Matthew Thode <prometheanfire@gentoo.org>
+  +eventlet-0.12.1.ebuild:
+  adding an updated eventlet ebuild for sys-cluster/cinder
+
+  30 Oct 2012; Mike Gilbert <floppym@gentoo.org> eventlet-0.9.16.ebuild:
+  Add x86 keyword.
+
+*eventlet-0.9.16 (25 Oct 2012)
+
+  25 Oct 2012; Patrick Lauer <patrick@gentoo.org> +eventlet-0.9.16.ebuild,
+  +metadata.xml:
+  Initial import, borrowed from the hyves openstack-overlay

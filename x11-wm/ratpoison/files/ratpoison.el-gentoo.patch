@@ -1,0 +1,11 @@
+--- a/ratpoison.el
++++ b/ratpoison.el
+@@ -44,6 +44,8 @@
+ ;; - auto-completion of commands
+ ;; - probably a bunch of other things
+ 
++(require 'generic)
++
+ (defvar ratpoison-commands-0
+   (list
+    "abort"

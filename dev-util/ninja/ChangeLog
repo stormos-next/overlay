@@ -1,0 +1,47 @@
+# ChangeLog for dev-util/ninja
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-util/ninja/ChangeLog,v 1.11 2013/03/07 01:50:01 ottxor Exp $
+
+  07 Mar 2013; Christoph Junghans <ottxor@gentoo.org> ninja-1.1.0.ebuild:
+  added ~x86-macos (test by me)
+
+  06 Mar 2013; Alexey Shvetsov <alexxy@gentoo.org> ninja-1.1.0.ebuild:
+  Add keywords for prefix
+
+  06 Mar 2013; Christoph Junghans <ottxor@gentoo.org> ninja-1.1.0.ebuild:
+  added ~arm (tested by me)
+
+  05 Mar 2013; Agostino Sarubbo <ago@gentoo.org> ninja-1.1.0.ebuild:
+  Add ~alpha,~ppc64,~sparc, wrt to bug #456890
+
+  11 Jan 2013; Christoph Junghans <ottxor@gentoo.org> -ninja-1.0.0.ebuild,
+  ninja-1.1.0.ebuild:
+  updated SRC_URI, remove old
+
+*ninja-1.1.0 (31 Dec 2012)
+
+  31 Dec 2012; Christoph Junghans <ottxor@gentoo.org> +ninja-1.1.0.ebuild:
+  version bump
+
+  30 Dec 2012; Christoph Junghans <ottxor@gentoo.org> ninja-1.0.0.ebuild:
+  fix collision with net-irc/ninja (bug #436804)
+
+*ninja-1.0.0 (23 Oct 2012)
+
+  23 Oct 2012; Christoph Junghans <ottxor@gentoo.org> +ninja-1.0.0.ebuild,
+  -ninja-120508.ebuild, -ninja-120715.ebuild, metadata.xml:
+  version bump
+
+  25 Aug 2012; Christoph Junghans <ottxor@gentoo.org> ninja-120715.ebuild:
+  added ~ppc-macos (bug #432692)
+
+*ninja-120715 (18 Aug 2012)
+
+  18 Aug 2012; Christoph Junghans <ottxor@gentoo.org> +ninja-120715.ebuild:
+  version bump
+
+*ninja-120508 (08 Aug 2012)
+
+  08 Aug 2012; Christoph Junghans <ottxor@gentoo.org> +metadata.xml,
+  +ninja-120508.ebuild:
+  initial commit (bug #383441)
