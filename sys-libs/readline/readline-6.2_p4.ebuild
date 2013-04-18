@@ -47,6 +47,7 @@ src_unpack() {
 	[[ ${PLEVEL} -gt 0 ]] && epatch $(patches -s)
 	epatch "${FILESDIR}"/${PN}-5.0-no_rpath.patch
 	epatch "${FILESDIR}"/${PN}-5.2-no-ignore-shlib-errors.patch #216952
+	epatch "${FILESDIR}"/${PN}-6.2-rlfe-solaris.patch
 
 	# force ncurses linking #71420
 	sed -i -e 's:^SHLIB_LIBS=:SHLIB_LIBS=-lncurses:' support/shobj-conf || die "sed"
