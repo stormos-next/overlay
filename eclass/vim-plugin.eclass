@@ -28,11 +28,13 @@ vim-plugin_src_install() {
 		ebegin "Fixing file permissions"
 		# Make sure perms are good
 		chmod -R a+rX "${S}" || die "chmod failed"
-		find "${S}" -user  'portage' -exec chown root '{}' \; || die "chown failed"
+		find "${S}" -user "${PORTAGE_GRPNAME:=portage}" -exec chown root '{}' \; || die "chown failed"
 		if use userland_BSD || [[ ${CHOST} == *-darwin* ]] ; then
-			find "${S}" -group 'portage' -exec chgrp wheel '{}' \; || die "chgrp failed"
+			find "${S}" -group "${PORTAGE_GRPNAME:=portage}" -exec chgrp wheel '{}' \; || die "chgrp failed"
+		elif use userland_solaris ; then
+			find "${S}" -group "${PORTAGE_GRPNAME:=portage}" -exec chgrp staff '{}' \; || die "chgrp failed"
 		else
-			find "${S}" -group 'portage' -exec chgrp root '{}' \; || die "chgrp failed"
+			find "${S}" -group "${PORTAGE_GRPNAME:=portage}" -exec chgrp root '{}' \; || die "chgrp failed"
 		fi
 		eend $?
 	fi
