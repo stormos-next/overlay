@@ -11,7 +11,7 @@ SRC_URI="http://www.gzip.org/zlib/${P}.tar.bz2
 
 LICENSE="ZLIB"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd ~x86-solaris"
 IUSE=""
 
 RDEPEND="!<dev-libs/libxml2-2.7.7" #309623
@@ -41,6 +41,11 @@ src_compile() {
 			-e 's|@includedir@|${prefix}/include|g' \
 			-e 's|@VERSION@|'${PV}'|g' \
 			zlib.pc.in > zlib.pc || die
+		;;
+	*solaris*)
+		# need to use mapfile for ABI compat with solaris binaries
+		CC="$(tc-getCC)" ./configure --shared --prefix=/usr --libdir=/usr/$(get_libdir) || die
+		emake LDSHARED="$(tc-getCC) -shared -G -h libz.so.1 -Wl,-M,"${FILESDIR}"/mapfile -L." || die
 		;;
 	*)	# not an autoconf script, so can't use econf
 		./configure --shared --prefix=/usr --libdir=/usr/$(get_libdir) || die
