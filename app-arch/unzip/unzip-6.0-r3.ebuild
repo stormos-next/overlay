@@ -13,7 +13,7 @@ SRC_URI="mirror://sourceforge/infozip/${MY_P}.tar.gz"
 
 LICENSE="Info-ZIP"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux ~x86-solaris"
 IUSE="bzip2 natspec unicode"
 
 DEPEND="bzip2? ( app-arch/bzip2 )
@@ -51,6 +51,7 @@ src_compile() {
 		i?86*-dragonfly*)    TARGET=freebsd ;; # mislabelled bsd with x86 asm
 		*bsd* | *dragonfly*) TARGET=bsd ;;
 		*-darwin*)           TARGET=macosx ;;
+		*solaris*)           TARGET=generic_gcc ;;
 		*) die "Unknown target, you suck" ;;
 	esac
 
