@@ -67,6 +67,23 @@ src_configure() {
 	econf $(use_enable static-libs static)
 }
 
+src_compile() {
+	emake && return 0
+
+	# workaround libtool wackyness on solaris
+	case "${CHOST}" in
+		*-solaris*)
+			gsed -i s/1.3091/1.3293/g "${S}/libtool"
+		;;
+		*)
+			die "emake failed"
+		;;
+	esac
+
+	# try make again
+	emake
+}
+
 src_install() {
 	emake DESTDIR="${D}" install || die
 	dodoc AUTHORS ChangeLog* NEWS README THANKS TODO doc/PLATFORMS
