@@ -15,7 +15,7 @@ SRC_URI="ftp://xmlsoft.org/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~arm-linux ~x86-linux ~x86-solaris"
 IUSE="crypt debug python static-libs"
 
 RDEPEND=">=dev-libs/libxml2-2.8.0:2
@@ -39,6 +39,13 @@ src_prepare() {
 	# and it is propably otherwise too if upstream generated with new
 	# autoconf
 #	epunt_cxx
+
+	# solaris has its own mapfile
+	case "${CHOST}" in
+		*-solaris*)
+			cp "${FILESDIR}/mapfile.xslt" libxslt/libxslt.syms
+		;;
+	esac
 }
 
 src_configure() {
@@ -58,7 +65,16 @@ src_configure() {
 }
 
 src_compile() {
-	default
+	# workaround libtool wackyness on solaris
+	case "${CHOST}" in
+		*-solaris*)
+			gmake
+			gsed -i s/1.3135/1.3337/g "${S}/libtool"			
+		;;
+	esac
+
+	emake || die "emake failed"
+
 	if use python; then
 		python_copy_sources
 		python_foreach_impl libxslt_py_emake
