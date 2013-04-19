@@ -12,7 +12,7 @@ SRC_URI="mirror://gentoo/pax-utils-${PV}.tar.xz
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x86-solaris"
 IUSE="caps python"
 #RESTRICT="mirror"
 
@@ -23,13 +23,14 @@ DEPEND="${RDEPEND}
 
 _emake() {
 	emake \
+		CC="$(tc-getCC)" \
 		USE_CAP=$(usex caps) \
 		USE_PYTHON=$(usex python) \
 		"$@" || die
 }
 
 src_compile() {
-	_emake CC="$(tc-getCC)"
+	_emake
 }
 
 src_test() {
