@@ -1,0 +1,45 @@
+# Copyright 1999-2013 Gentoo Foundation.
+# Distributed under the terms of the GNU General Public License, v2
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/x86-fbsd/use.mask,v 1.12 2013/02/07 03:23:41 mattst88 Exp $
+
+# Unmask the flag which corresponds to ARCH.
+-x86-solaris
+
+# Diego Elio Pettenò <flameeyes@gentoo.org> (21 Aug 2012)
+# IPMI is only implemented for x86, amd64 and ia64
+-ipmi
+
+-3dnow
+-3dnowext
+-mmx
+-mmxext
+-sse
+-sse2
+-sse3
+-sse4
+-sse4a
+-ssse3
+-win32codecs
+
+# nvidia drivers works on x86
+-xvmc
+-nvidia
+-video_cards_nvidia
+
+# Unmask vmware drivers
+-video_cards_vmware
+-input_devices_vmmouse
+
+# Diablo Latte and Caffe (JRE and JDK) works here
+-java
+
+# No pulseaudio version is keyworded; unmask when it works
+pulseaudio
+# No portaudio version is keyworded; unmask when it works
+portaudio
+
+# valgrind hasn't been ported to fbsd yet
+valgrind
+
+# libva doesnt build on fbsd for now
+vaapi
