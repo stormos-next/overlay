@@ -18,5 +18,6 @@ DEPEND="
 		>=dev-util/pkgconfig-0.27.1
 		dev-util/pkgconf[pkg-config]
 		dev-util/pkgconfig-openbsd[pkg-config]
+		dev-util/pkg-config-lite[pkg-config]
 	)"
 RDEPEND="${DEPEND}"
