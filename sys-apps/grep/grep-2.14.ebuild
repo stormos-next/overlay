@@ -21,10 +21,14 @@ DEPEND="${RDEPEND}
 	nls? ( sys-devel/gettext )"
 
 src_configure() {
+	local myconf
+	use userland_solaris && myconf="--program-prefix=g"
+
 	econf \
 		--bindir="${EPREFIX}"/bin \
 		$(use_enable nls) \
-		$(use_enable pcre perl-regexp)
+		$(use_enable pcre perl-regexp) \
+		${myconf}
 }
 
 src_install() {
