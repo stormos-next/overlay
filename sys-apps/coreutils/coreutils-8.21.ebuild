@@ -75,7 +75,8 @@ src_configure() {
 	export gl_cv_func_mknod_works=yes #409919
 	use static && append-ldflags -static && sed -i '/elf_sys=yes/s:yes:no:' configure #321821
 	use selinux || export ac_cv_{header_selinux_{context,flash,selinux}_h,search_setfilecon}=no #301782
-	use userland_GNU || myconf="${myconf} -program-prefix=g --program-transform-name=s/stat/nustat/"
+	use userland_GNU || myconf="${myconf} -program-prefix=g"
+	use userland_BSD && myconf="${myconf} --program-transform-name=s/stat/nustat/"
 	# kill/uptime - procps
 	# groups/su   - shadow
 	# hostname    - net-tools
@@ -146,6 +147,11 @@ src_install() {
 		local x
 		for x in ${com} uname ; do
 			dosym /bin/${x} /usr/bin/${x} || die
+		done
+	elif [[ ${USERLAND} == "solaris" ]] ; then
+		# solaris does not provide readlink or stat
+		for x in readlink stat ; do
+			dosym /usr/bin/g${x} /usr/bin/${x} || die
 		done
 	else
 		# For now, drop the man pages, collides with the ones of the system.
