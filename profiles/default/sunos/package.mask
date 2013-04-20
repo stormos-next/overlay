@@ -42,3 +42,6 @@ net-mail/metamail
 # We obviously can't have linux-sources (mask this to allow the
 # virtual to be masked)
 sys-kernel/gentoo-sources
+
+# pkg-config is braindead on solaris thanks to iconv issues
+dev-util/pkgconfig
