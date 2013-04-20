@@ -59,7 +59,7 @@ REQUIRED_USE="smartcard? ( !static )"
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-2.0.17-gpgsm-gencert.patch
 	epatch -l "${FILESDIR}/${P}-support-sc-key-3072.patch"
-	epatch -l "${FILESDIR}/${P}-texinfo-5.patch"
+	use doc && epatch -l "${FILESDIR}/${P}-texinfo-5.patch"
 }
 
 src_configure() {
@@ -76,6 +76,12 @@ src_configure() {
 		myconf+=" --disable-scdaemon"
 	fi
 
+	if use elibc_SunOS || use libc_solaris ; then
+		myconf+=" --disable-symcryptrun"
+	else
+		myconf+=" --enable-symcryptrun"
+	fi
+
 	econf \
 		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
 		--enable-gpg \
@@ -84,7 +90,6 @@ src_configure() {
 		${myconf} \
 		$(use_with adns) \
 		$(use_enable bzip2) \
-		$(use_enable !elibc_SunOS symcryptrun) \
 		$(use_enable nls) \
 		$(use_enable mta mailto) \
 		$(use_enable ldap) \
