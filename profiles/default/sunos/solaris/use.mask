@@ -37,3 +37,4 @@ policykit
 
 # Disable static builds on Solaris
 static
+static-libs
