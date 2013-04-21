@@ -53,7 +53,15 @@ src_compile() {
 	fi
 
 	make_flags=""
-	do_compile narrowc
+
+	# put ncurses in /usr/include/ncurses on solaris to avoid
+	# a conflict with its own included curses implementation
+	if use kernel_solaris ; then
+		do_compile narrowc --includedir=/usr/include/ncurses
+	else
+		do_compile narrowc
+	fi
+
 	use unicode && do_compile widec --enable-widec --includedir=/usr/include/ncursesw
 }
 do_compile() {
