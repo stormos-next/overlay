@@ -240,7 +240,7 @@ enewuser() {
 		useradd "${opts[@]}" "${euser}" || die
 		;;
 
-	*-openbsd*)
+	*-openbsd*|*-solaris*)
 		# all ops the same, except the -g vs -g/-G ...
 		useradd -u ${euid} -s "${eshell}" \
 			-d "${ehome}" -g "${egroups}" "${euser}" || die
@@ -326,7 +326,7 @@ enewgroup() {
 		pw groupadd "${egroup}" -g ${egid} || die
 		;;
 
-	*-netbsd*)
+	*-netbsd*|*-solaris*)
 		_enewgroup_next_gid
 		groupadd -g ${egid} "${egroup}" || die
 		;;
