@@ -141,6 +141,9 @@ sparc-fbsd      default/bsd/fbsd/sparc/8.2                      exp
 x86-fbsd	default/bsd/fbsd/x86/9.0			dev
 x86-fbsd	default/bsd/fbsd/x86/9.1			dev
 
+# Gentoo/Solaris Profiles
+x86-solaris	default/sunos/solaris/x86/5.11			exp
+
 # Hardened Profiles
 amd64		hardened/linux/amd64					stable
 amd64		hardened/linux/amd64/selinux				stable
