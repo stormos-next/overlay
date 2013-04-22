@@ -1,0 +1,12 @@
+--- md5deep-4.3/src/hash.cpp.bak	2013-04-21 19:34:11.901405613 -0700
++++ md5deep-4.3/src/hash.cpp	2013-04-21 19:35:32.650118301 -0700
+@@ -273,6 +273,9 @@
+ 		return;
+ 	    }
+ #ifdef HAVE_MMAP
++#ifndef MAP_FILE
++#define MAP_FILE 0
++#endif
+ 	    fdht->base = (uint8_t *)mmap(0,fdht->stat_bytes,PROT_READ,MAP_FILE|MAP_SHARED,fd,0);
+ 	    if(fdht->base>0){		
+ 		/* mmap is successful, so set the bounds.
