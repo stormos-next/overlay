@@ -33,10 +33,23 @@
 # Note that the source above actually lives in the ON tree.
 #
 # Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
 #
 # public interfaces in libz
 #
 $mapfile_version 2
+
+$if _ELF32
+SYMBOL_VERSION STORMOS_0.1 {
+    global:
+	gzopen64 ;
+	gzseek64 ;
+	gztell64 ;
+	crc32_combine64 ;
+	adler32_combine64 ;
+	gzoffset64 ;
+} SUNW_1.2;
+$endif
 
 SYMBOL_VERSION SUNW_1.2 {
     global:
