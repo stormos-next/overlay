@@ -14,7 +14,7 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit git-2
 else
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.xz"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd ~x86-solaris"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
 fi
 
 DESCRIPTION="A shared library tool for developers"
@@ -65,23 +65,6 @@ src_configure() {
 	export CONFIG_SHELL=/bin/bash
 
 	econf $(use_enable static-libs static)
-}
-
-src_compile() {
-	emake && return 0
-
-	# workaround libtool wackyness on solaris
-	case "${CHOST}" in
-		*-solaris*)
-			gsed -i s/1.3091/1.3293/g "${S}/libtool"
-		;;
-		*)
-			die "emake failed"
-		;;
-	esac
-
-	# try make again
-	emake
 }
 
 src_install() {
