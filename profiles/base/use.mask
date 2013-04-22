@@ -148,6 +148,7 @@ psyco
 
 # Mask ELIBC, KERNEL, and USERLAND flags that apply to specific profiles.
 userland_BSD
+userland_SunOS
 
 elibc_AIX
 elibc_Darwin

@@ -16,8 +16,8 @@ fftw
 -hardened
 
 # Unmask solaris-specific variables
--libc_solaris
--kernel_solaris
+-elibc_SunOS
+-kernel_SunOS
 
 # This does not build on FreeBSD, unless anybody wants to fix it, use opie
 skey

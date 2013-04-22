@@ -8,9 +8,9 @@ FEATURES="-sandbox"
 # Don't strip binaries on solaris, it fucks 'em up
 FEATURES="${FEATURES} nostrip"
 
-USERLAND="solaris"
-KERNEL="solaris"
-ELIBC="solaris"
+USERLAND="SunOS"
+KERNEL="SunOS"
+ELIBC="SunOS"
 
 MAKE="gmake"
 
