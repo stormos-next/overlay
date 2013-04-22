@@ -65,15 +65,7 @@ src_configure() {
 }
 
 src_compile() {
-	# workaround libtool wackyness on solaris
-	case "${CHOST}" in
-		*-solaris*)
-			gmake
-			gsed -i s/1.3135/1.3337/g "${S}/libtool"			
-		;;
-	esac
-
-	emake || die "emake failed"
+	default
 
 	if use python; then
 		python_copy_sources
