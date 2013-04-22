@@ -1,0 +1,88 @@
+--- src/tspi/rpc/hosttable.c.old	Thu Jan 28 13:27:59 2010
++++ src/tspi/rpc/hosttable.c	Thu Aug  5 14:24:00 2010
+@@ -22,7 +22,7 @@
+ struct host_table *ht = NULL;
+ 
+ TSS_RESULT
+-host_table_init()
++static host_table_init()
+ {
+ 	ht = calloc(1, sizeof(struct host_table));
+ 	if (ht == NULL) {
+@@ -36,8 +36,7 @@
+ }
+ 
+ #ifdef SOLARIS
+-#pragma init(_init)
+-void _init(void)
++static void my_init(void)
+ #else
+ void __attribute__ ((constructor)) my_init(void)
+ #endif
+@@ -46,7 +45,7 @@
+ 	__tspi_obj_list_init();
+ }
+ 
+-void
++static void
+ host_table_final()
+ {
+ 	struct host_table_entry *hte, *next = NULL;
+@@ -70,8 +69,7 @@
+ }
+ 
+ #ifdef SOLARIS
+-#pragma fini(_fini)
+-void _fini(void)
++static void my_fini(void)
+ #else
+ void __attribute__ ((destructor)) my_fini(void)
+ #endif
+@@ -79,6 +77,11 @@
+ 	host_table_final();
+ }
+ 
++#ifdef SOLARIS
++#pragma init(my_init)
++#pragma fini(my_fini)
++#endif
++
+ TSS_RESULT
+ __tspi_add_table_entry(TSS_HCONTEXT tspContext, BYTE *host, int type, struct host_table_entry **ret)
+ {
+
+--- configure.in.old	2013-04-21 22:18:09.618674145 -0700
++++ configure.in	2013-04-21 22:20:10.181865058 -0700
+@@ -37,6 +37,7 @@
+ case $target in
+ 	*solaris*)
+ 		CFLAGS="$CFLAGS -DSOLARIS"
++		LDFLAGS="$LDFLAGS -lsocket -lnsl -lresolv -lscf"
+ 		;;
+         *)
+                 ;;
+@@ -361,6 +362,7 @@
+ 	-DTSS_SPEC_MINOR=${TSS_SPEC_MINOR}"
+ #CFLAGS="$CFLAGS -I../include -std=c99 -pedantic -W -Wall"
+ KERNEL_VERSION=`uname -r`
++AC_SUBST(LDFLAGS)
+ AC_SUBST(CFLAGS)
+ 
+ # When we build the rpms, prefix will be /usr. This'll do some things that make sense,
+@@ -397,4 +399,5 @@
+ 	  man/man8/Makefile)
+ 
+ echo "CFLAGS=$CFLAGS"
++echo "LDFLAGS=$LDFLAGS"
+ 
+--- src/include/linux/tpm.h.old	2013-04-21 22:52:05.446231912 -0700
++++ src/include/linux/tpm.h	2013-04-21 22:52:56.338243875 -0700
+@@ -20,6 +20,8 @@
+ #include <linux/ioctl.h>
+ #elif (defined (__OpenBSD__) || defined (__FreeBSD__))
+ #include <sys/ioctl.h>
++#elif (defined (__sun) || defined(__sun__))
++#include <sys/ioccom.h>
+ #endif
+ 
+ /* ioctl commands */

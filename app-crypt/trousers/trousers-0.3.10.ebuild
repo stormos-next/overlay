@@ -13,7 +13,7 @@ HOMEPAGE="http://trousers.sf.net"
 SRC_URI="mirror://sourceforge/trousers/${P}.tar.gz"
 LICENSE="CPL-1.0"
 SLOT="0"
-KEYWORDS="amd64 arm x86"
+KEYWORDS="amd64 arm x86 ~x86-solaris"
 IUSE="doc" # gtk
 
 # gtk support presently does NOT compile.
@@ -28,7 +28,7 @@ DEPEND="${RDEPEND}
 
 DOCS="AUTHORS ChangeLog NICETOHAVES README TODO"
 
-pkg_setup() {
+setup_driver() {
 	# Check for driver (not sure it can be an rdep, because ot depends on the
 	# version of virtual/linux-sources... Is that supported by portage?)
 	linux-info_pkg_setup
@@ -63,6 +63,10 @@ pkg_setup() {
 		eerror "  - switch to a >=2.6.12 kernel and compile the kernel module"
 		eerror
 	fi
+}
+
+pkg_setup() {
+	use kernel_linux && setup_driver
 
 	# New user/group for the daemon
 	enewgroup tss
@@ -71,6 +75,12 @@ pkg_setup() {
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-0.3.5-nouseradd.patch
+	epatch "${FILESDIR}"/${PN}-0.3.10-solaris-ftbfs.patch
+
+	# disable relro if not supported by linker
+	/usr/bin/ld --help 2>&1 | grep -q relro || (sed -i -r \
+		-e 's/-Wl,-z,relro//g' \
+		src/tcsd/Makefile.am || die)
 
 	sed -i -r \
 		-e '/CFLAGS/s/ -(Werror|m64)//' \
