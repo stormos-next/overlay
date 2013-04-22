@@ -18,7 +18,7 @@ SRC_URI="http://www.python.org/ftp/python/${PV}/${MY_P}.tar.bz2
 
 LICENSE="PSF-2"
 SLOT="2.6"
-KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd ~x86-solaris"
 IUSE="-berkdb build doc elibc_uclibc examples gdbm hardened ipv6 +ncurses +readline sqlite +ssl +threads tk +wide-unicode wininst +xml"
 
 # Do not add a dependency on dev-lang/python to this ebuild.
@@ -92,6 +92,7 @@ src_prepare() {
 
 	EPATCH_EXCLUDE="${excluded_patches}" EPATCH_SUFFIX="patch" \
 		epatch "${WORKDIR}/${PV}-${PATCHSET_REVISION}"
+	epatch "${FILESDIR}/${P}-solaris-ftbfs.patch"
 
 	sed -i -e "s:@@GENTOO_LIBDIR@@:$(get_libdir):g" \
 		Lib/distutils/command/install.py \
@@ -178,6 +179,9 @@ src_configure() {
 	# Needed on FreeBSD unless Python 2.6 is already installed.
 	# Please query BSD team before removing this!
 	append-ldflags "-L."
+
+	# ncurses headers are in /usr/include/ncurses on solaris.
+	use userland_solaris && append-cppflags "-I/usr/include/ncurses"
 
 	cd "${WORKDIR}"/${CHOST}
 	ECONF_SOURCE=${S} OPT="" \
