@@ -14,3 +14,6 @@ ACCEPT_KEYWORDS="x86-solaris ~x86-solaris"
 VIDEO_CARDS="apm ark chips cirrus cyrix dummy i128 intel mach64 mga \
 	nv r128 radeon rendition s3 s3virge savage siliconmotion sis \
 	sisusb tga trident tseng via vmware"
+
+# override because we only need the version required by illumos
+PYTHON_TARGETS="python2_6"
