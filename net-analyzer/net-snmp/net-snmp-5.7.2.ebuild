@@ -21,11 +21,11 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz
 # GPL-2 for the init scripts
 LICENSE="HPND BSD GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-solaris"
 IUSE="bzip2 doc elf ipv6 mfd-rewrites minimal perl python rpm selinux ssl tcpd X zlib lm_sensors ucd-compat pci netlink mysql"
 
 COMMON="ssl? ( >=dev-libs/openssl-0.9.6d )
-	tcpd? ( >=sys-apps/tcp-wrappers-7.6 )
+	tcpd? ( virtual/libwrap )
 	rpm? (
 		app-arch/rpm
 		dev-libs/popt
@@ -69,6 +69,7 @@ src_prepare() {
 	# snmpconf generates config files with proper selinux context
 	use selinux && epatch "${FILESDIR}"/${PN}-5.1.2-snmpconf-selinux.patch
 
+	epatch "${FILESDIR}"/${PN}-5.7.2-getnameinfo-socket.patch
 	epatch "${WORKDIR}"/patches/*.patch
 	eautoconf
 }
