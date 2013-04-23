@@ -359,7 +359,7 @@ xorg-2_reconf_source() {
 	debug-print-function ${FUNCNAME} "$@"
 
 	case ${CHOST} in
-		*-interix* | *-aix* | *-winnt*)
+		*-interix* | *-aix* | *-winnt* | *-solaris*)
 			# some hosts need full eautoreconf
 			[[ -e "./configure.ac" || -e "./configure.in" ]] \
 				&& AUTOTOOLS_AUTORECONF=1
