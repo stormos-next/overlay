@@ -35,7 +35,7 @@ pkg_setup() {
 	if use uuid ; then
 		case ${CHOST} in
 			*-solaris*|*-darwin*)
-				if [[ ! -d ${EROOT}usr/include/uuid ]] &&
+				if ([[ ! -d ${EROOT}usr/include/uuid ]] || [[ ${EROOT} = / ]]) &&
 					[[ -d ${ROOT}usr/include/uuid ]]
 				then
 					# Solaris and Darwin have uuid provided by the host
