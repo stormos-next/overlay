@@ -1,0 +1,35 @@
+--- dbus-1.6.8/configure.ac.bak	2013-04-22 17:49:58.178716563 -0700
++++ dbus-1.6.8/configure.ac	2013-04-22 17:52:41.508478436 -0700
+@@ -91,6 +91,10 @@
+         dbus_cygwin=yes
+         dbus_unix=yes
+         ;;
++    *-solaris*)
++    	dbus_solaris=yes
++	dbus_unix=yes
++	;;
+     *)
+         dbus_unix=yes
+        ;;
+@@ -1237,6 +1241,8 @@
+   else
+     NETWORK_libs="-lws2_32"
+   fi
++elif test x$dbus_solaris = xyes ; then
++  NETWORK_libs="-lsocket -lxnet"
+ fi
+ 
+ AC_SUBST([NETWORK_libs])
+--- dbus-1.6.8/tools/Makefile.am.bak	2013-04-22 18:08:08.491247713 -0700
++++ dbus-1.6.8/tools/Makefile.am	2013-04-22 18:09:52.665535931 -0700
+@@ -68,6 +68,10 @@
+ 	$(DBUS_X_LIBS) \
+ 	$(NULL)
+ 
++dbus_cleanup_sockets_LDADD = \
++	$(NETWORK_libs) \
++	$(NULL)
++
+ EXTRA_DIST = run-with-tmp-session-bus.sh strtoll.c strtoull.c
+ CLEANFILES = 				\
+ 	run-with-tmp-session-bus.conf

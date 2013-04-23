@@ -12,7 +12,7 @@ SRC_URI="http://dbus.freedesktop.org/releases/dbus/${P}.tar.gz"
 
 LICENSE="|| ( AFL-2.1 GPL-2 )"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux ~x86-solaris"
 IUSE="debug doc selinux static-libs systemd test X"
 
 RDEPEND=">=dev-libs/expat-2
@@ -43,8 +43,14 @@ BD=${WORKDIR}/${P}-build
 TBD=${WORKDIR}/${P}-tests-build
 
 pkg_setup() {
-	enewgroup messagebus
-	enewuser messagebus -1 -1 -1 messagebus
+	# solaris has a pathetic 8 character group name limit
+	if use kernel_SunOS; then
+		enewgroup daemon
+		enewuser daemon -1 -1 -1 daemon
+	else
+		enewgroup messagebus
+		enewuser messagebus -1 -1 -1 messagebus
+	fi
 
 	use test && python-any-r1_pkg_setup
 
@@ -56,6 +62,7 @@ pkg_setup() {
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-1.5.12-selinux-when-dropping-capabilities-only-include-AUDI.patch
+	epatch "${FILESDIR}"/${PN}-1.6.8-solaris-network-libs.patch
 
 	# Tests were restricted because of this
 	sed -i \
@@ -97,10 +104,16 @@ src_configure() {
 		--with-session-socket-dir=/tmp
 		--with-system-pid-file=/var/run/dbus.pid
 		--with-system-socket=/var/run/dbus/system_bus_socket
-		--with-dbus-user=messagebus
 		$(use_with X x)
 		"$(systemd_with_unitdir)"
 		)
+
+	# solaris has a pathetic 8 character group name limit
+	if use kernel_SunOS; then
+		myconf+=( --with-dbus-user=daemon )
+	else
+		myconf+=( --with-dbus-user=messagebus )
+	fi
 
 	mkdir "${BD}"
 	cd "${BD}"
