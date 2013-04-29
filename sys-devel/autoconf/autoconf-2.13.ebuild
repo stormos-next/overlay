@@ -10,8 +10,8 @@ SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="${PV:0:3}"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
-IUSE="userland_BSD"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x86-solaris"
+IUSE="userland_GNU"
 
 DEPEND=">=sys-apps/texinfo-4.3
 	sys-devel/autoconf-wrapper
@@ -46,7 +46,7 @@ src_compile() {
 	# happens to currently be installed, but might later be
 	# uninstalled (like mawk).  same for m4.
 	local prepend=""
-	use userland_BSD && prepend="g"
+	use userland_GNU || prepend="g"
 	ac_cv_path_M4="${prepend}m4" \
 	ac_cv_prog_AWK="${prepend}awk" \
 	LC_ALL=C \
