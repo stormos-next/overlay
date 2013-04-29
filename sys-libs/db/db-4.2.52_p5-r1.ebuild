@@ -26,7 +26,7 @@ done
 
 LICENSE="Sleepycat"
 SLOT="4.2"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~x86-fbsd ~x86-solaris"
 IUSE="tcl java doc cxx rpc"
 
 DEPEND="tcl? ( >=dev-lang/tcl-8.4 )
