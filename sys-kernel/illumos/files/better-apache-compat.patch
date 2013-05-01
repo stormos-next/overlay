@@ -1,0 +1,331 @@
+diff --git a/usr/src/lib/print/libipp-listener/common/ipp-listener.c b/usr/src/lib/print/libipp-listener/common/ipp-listener.c
+index 42f23f8..28a50d7 100644
+--- a/usr/src/lib/print/libipp-listener/common/ipp-listener.c
++++ b/usr/src/lib/print/libipp-listener/common/ipp-listener.c
+@@ -25,6 +25,10 @@
+  *
+  */
+ 
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
++
+ /* $Id: ipp-listener.c 146 2006-03-24 00:26:54Z njacobs $ */
+ 
+ #pragma ident	"%Z%%M%	%I%	%E% SMI"
+@@ -151,7 +155,7 @@ static struct {
+ };
+ 
+ static int
+-ipp_operation_name_to_index(char *name)
++ipp_operation_name_to_index(const char *name)
+ {
+ 	int i;
+ 
+@@ -233,7 +237,7 @@ ipp_operation_handler(papi_attribute_t **request, papi_attribute_t ***response)
+ }
+ 
+ static char
+-type_to_boolean(char *type)
++type_to_boolean(const char *type)
+ {
+ 	char result = PAPI_FALSE;
+ 
+@@ -276,7 +280,7 @@ ipp_configure_all_operations(papi_attribute_t ***list, char boolean)
+ }
+ 
+ papi_status_t
+-ipp_configure_operation(papi_attribute_t ***list, char *operation, char *type)
++ipp_configure_operation(papi_attribute_t ***list, const char *operation, const char *type)
+ {
+ 	papi_status_t result = PAPI_OPERATION_NOT_SUPPORTED;
+ 	char boolean = PAPI_FALSE;
+@@ -292,7 +296,7 @@ ipp_configure_operation(papi_attribute_t ***list, char *operation, char *type)
+ 		result = ipp_configure_required_operations(list, boolean);
+ 	} else if (ipp_operation_name_to_index(operation) != -1) {
+ 		result = papiAttributeListAddBoolean(list, PAPI_ATTR_REPLACE,
+-							operation, boolean);
++							(char *)operation, boolean);
+ 	}
+ 
+ 	return (result);
+diff --git a/usr/src/lib/print/libipp-listener/common/ipp-listener.h b/usr/src/lib/print/libipp-listener/common/ipp-listener.h
+index 5a87184..9fac03b 100644
+--- a/usr/src/lib/print/libipp-listener/common/ipp-listener.h
++++ b/usr/src/lib/print/libipp-listener/common/ipp-listener.h
+@@ -25,6 +25,10 @@
+  *
+  */
+ 
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
++
+ #ifndef	_IPP_LISTENER_H
+ #define	_IPP_LISTENER_H
+ 
+@@ -40,7 +44,8 @@ extern "C" {
+ 
+ /* exported functions */
+ extern papi_status_t ipp_configure_operation(papi_attribute_t ***list,
+-						char *operation, char *type);
++						const char *operation,
++						const char *type);
+ extern papi_status_t ipp_process_request(papi_attribute_t **request,
+ 					papi_attribute_t ***response,
+ 					ipp_reader_t iread, void *fd);
+diff --git a/usr/src/lib/print/mod_ipp/Makefile b/usr/src/lib/print/mod_ipp/Makefile
+index 8d6500f..8699418 100644
+--- a/usr/src/lib/print/mod_ipp/Makefile
++++ b/usr/src/lib/print/mod_ipp/Makefile
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ LIBRARY =		mod_ipp.a
+@@ -48,10 +49,14 @@ SRCS = $(OBJECTS:%.o = %.c)
+ CFLAGS +=	$(CCVERBOSE)
+ CPPFLAGS +=	-I../libipp-listener/common
+ CPPFLAGS +=	-I../libipp-core/common
+-CPPFLAGS +=	-I/usr/apache/include
++CPPFLAGS +=	-I/usr/include/apache2
++CPPFLAGS +=	-I/usr/include/apr-1
+ CPPFLAGS +=	-DEAPI
+ ZDEFS =		$(ZNODEFS)
+ 
++# Unfortunate bug in apache2 header files
++CERRWARN +=	-erroff=E_CONST_OBJ_SHOULD_HAVE_INITIZR
++
+ MAPFILES =	mapfile
+ 
+ LDLIBS +=	-lipp-listener -lipp-core -lpapi -lc
+diff --git a/usr/src/lib/print/mod_ipp/mod_ipp.c b/usr/src/lib/print/mod_ipp/mod_ipp.c
+index 2d9ece2..e1481c6 100644
+--- a/usr/src/lib/print/mod_ipp/mod_ipp.c
++++ b/usr/src/lib/print/mod_ipp/mod_ipp.c
+@@ -25,6 +25,10 @@
+  *
+  */
+ 
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
++
+ /* $Id: mod_ipp.c 149 2006-04-25 16:55:01Z njacobs $ */
+ 
+ #pragma ident	"%Z%%M%	%I%	%E% SMI"
+@@ -49,15 +53,24 @@
+ #include "http_log.h"
+ #include "http_main.h"
+ #include "papi.h"
+-#ifndef APACHE_RELEASE	/* appears to only exist in Apache 1.X */
+-#define	APACHE2
+-#include "apr_compat.h"
++
++/* Try and guess the version of apache */
++#ifdef APACHE_RELEASE
++# define AP_SERVER_MAJORVERSION_NUMBER 1
++# define AP_SERVER_MINORVERSION_NUMBER 0
++#else
++# ifndef AP_SERVER_MAJORVERSION_NUMBER
++#  define AP_SERVER_MAJORVERSION_NUMBER 2
++# endif
++# ifndef AP_SERVER_MINORVERSION_NUMBER
++#  define AP_SERVER_MINORVERSION_NUMBER 0
++# endif
+ #endif
+ 
+ #include <papi.h>
+ #include <ipp-listener.h>
+ 
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ module MODULE_VAR_EXPORT ipp_module;
+ #else
+ module AP_MODULE_DECLARE_DATA ipp_module;
+@@ -117,7 +130,7 @@ read_data(void *fd, void *buf, size_t siz)
+ 	request_rec *ap_r = (request_rec *)fd;
+ 
+ 	len_read = ap_get_client_block(ap_r, buf, siz);
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	ap_reset_timeout(ap_r);
+ #endif
+ 
+@@ -139,7 +152,7 @@ write_data(void *fd, void *buf, size_t siz)
+ 	ssize_t len_written;
+ 	request_rec *ap_r = (request_rec *)fd;
+ 
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	ap_reset_timeout(ap_r);
+ #endif
+ #ifdef DEBUG
+@@ -153,7 +166,7 @@ write_data(void *fd, void *buf, size_t siz)
+ static void
+ discard_data(request_rec *r)
+ {
+-#ifdef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER >= 2
+ 	(void) ap_discard_request_body(r);
+ #else
+ 	/*
+@@ -176,8 +189,13 @@ discard_data(request_rec *r)
+ #endif
+ }
+ 
++#if AP_SERVER_MAJORVERSION_NUMBER > 2 || AP_SERVER_MINORVERSION_NUMBER > 3
++void _log_rerror(const char *file, int line, int module_index,
++	int level, request_rec *r, const char *fmt, ...)
++#else
+ void _log_rerror(const char *file, int line, int level, request_rec *r,
+ 	const char *fmt, ...)
++#endif
+ {
+ 	va_list args;
+ 	size_t size;
+@@ -193,7 +211,9 @@ void _log_rerror(const char *file, int line, int level, request_rec *r,
+ 			vsnprintf(message, size, fmt, args);
+ 	va_end(args);
+ 
+-#ifdef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER > 2 || AP_SERVER_MINORVERSION_NUMBER > 3
++	ap_log_rerror(file, line, module_index, level, APR_SUCCESS, r, message);
++#elif AP_SERVER_MAJORVERSION_NUMBER > 1
+ 	ap_log_rerror(file, line, level, NULL, r, message);
+ #else
+ 	ap_log_rerror(file, line, level, r, message);
+@@ -212,7 +232,7 @@ ipp_handler(request_rec *r)
+ 	if (r->method_number != M_POST)
+ 		return (DECLINED);
+ 
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	/*
+ 	 * An IPP request must have a MIME type of "application/ipp"
+ 	 * (RFC-2910, Section 4, page 19).  If it doesn't match this
+@@ -235,7 +255,7 @@ ipp_handler(request_rec *r)
+ 	if (!ap_should_client_block(r))
+ 		return (HTTP_INTERNAL_SERVER_ERROR);
+ 
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	ap_soft_timeout("ipp_module: read/reply request ", r);
+ #endif
+ 	/* read the IPP request off the network */
+@@ -250,7 +270,7 @@ ipp_handler(request_rec *r)
+ 
+ 	(void) papiAttributeListAddString(&request, PAPI_ATTR_EXCL,
+ 		"originating-host", (char *)
+-#ifdef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER >= 2
+ 		ap_get_remote_host
+ 			(r->connection, r->per_dir_config, REMOTE_NAME, NULL));
+ #else
+@@ -261,7 +281,11 @@ ipp_handler(request_rec *r)
+ 	(void) papiAttributeListAddInteger(&request, PAPI_ATTR_EXCL,
+ 				"uri-port", ap_get_server_port(r));
+ 	if (r->headers_in != NULL) {
++#if AP_SERVER_MAJORVERSION_NUMBER > 2 || AP_SERVER_MINORVERSION_NUMBER > 2
++		char *host = (char *)apr_table_get(r->headers_in, "Host");
++#else
+ 		char *host = (char *)ap_table_get(r->headers_in, "Host");
++#endif
+ 
+ 		if ((host == NULL) || (host[0] == '\0'))
+ 			host = (char *)ap_get_server_name(r);
+@@ -288,6 +312,7 @@ ipp_handler(request_rec *r)
+ 					config->default_svc);
+ 	}
+ 
++#if AP_SERVER_MAJORVERSION_NUMBER < 2 || AP_SERVER_MINORVERSION_NUMBER <= 2
+ 	/*
+ 	 * For Trusted Solaris, pass the fd number of the socket connection
+ 	 * to the backend so the it can be forwarded to the backend print
+@@ -296,6 +321,7 @@ ipp_handler(request_rec *r)
+ 	 */
+ 	(void) papiAttributeListAddInteger(&request, PAPI_ATTR_EXCL,
+ 			"peer-socket", ap_bfileno(r->connection->client, B_RD));
++#endif
+ 
+ 	/* process the request */
+ 	status = ipp_process_request(request, &response, read_data, r);
+@@ -316,13 +342,17 @@ ipp_handler(request_rec *r)
+ 	 * remain in the post request.
+ 	 */
+ 	if ((r->read_chunked != 0) &&
++#if AP_SERVER_MAJORVERSION_NUMBER > 2 || AP_SERVER_MINORVERSION_NUMBER > 2
++	    (apr_table_get(r->headers_in, "Content-Length") == NULL))
++#else
+ 	    (ap_table_get(r->headers_in, "Content-Length") == NULL))
++#endif
+ 		discard_data(r);
+ 
+ 	/* write an IPP response back to the network */
+ 	r->content_type = "application/ipp";
+ 
+-#ifndef	APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	ap_send_http_header(r);
+ #endif
+ 
+@@ -338,7 +368,7 @@ ipp_handler(request_rec *r)
+ 	papiAttributeListFree(request);
+ 	papiAttributeListFree(response);
+ 
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	ap_kill_timeout(r);
+ 	if (ap_rflush(r) < 0)
+ 		_log_rerror(APLOG_MARK, APLOG_ERR, r,
+@@ -352,7 +382,7 @@ ipp_handler(request_rec *r)
+ /*ARGSUSED1*/
+ static void *
+ create_ipp_dir_config(
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 	pool *p,
+ #else
+ 	apr_pool_t *p,
+@@ -360,7 +390,7 @@ create_ipp_dir_config(
+ 	char *dirspec)
+ {
+ 	IPPListenerConfig *config =
+-#ifndef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER < 2
+ 		ap_pcalloc(p, sizeof (*config));
+ #else
+ 		apr_pcalloc(p, sizeof (*config));
+@@ -399,7 +429,7 @@ ipp_conformance(cmd_parms *cmd, void *cfg, const char *arg)
+ 
+ /*ARGSUSED0*/
+ static const char *
+-ipp_operation(cmd_parms *cmd, void *cfg, char *op, char *toggle)
++ipp_operation(cmd_parms *cmd, void *cfg, const char *op, const char *toggle)
+ {
+ 	IPPListenerConfig *config = (IPPListenerConfig *)cfg;
+ 	papi_status_t status;
+@@ -469,7 +499,7 @@ static const command_rec ipp_cmds[] =
+ 	{ NULL }
+ };
+ 
+-#ifdef APACHE2
++#if AP_SERVER_MAJORVERSION_NUMBER >= 2
+ /*ARGSUSED0*/
+ static const char *
+ ipp_method(const request_rec *r)
+@@ -494,7 +524,11 @@ ipp_register_hooks(apr_pool_t *p)
+ 	/* Need to make sure we don't get directory listings by accident */
+ 	ap_hook_handler(ipp_handler, NULL, modules, APR_HOOK_MIDDLE);
+ 	ap_hook_default_port(ipp_port, NULL, NULL, APR_HOOK_MIDDLE);
++#if AP_SERVER_MAJORVERSION_NUMBER >= 2
++	ap_hook_http_scheme(ipp_method, NULL, NULL, APR_HOOK_MIDDLE);
++#else
+ 	ap_hook_http_method(ipp_method, NULL, NULL, APR_HOOK_MIDDLE);
++#endif
+ }
+ 
+ module AP_MODULE_DECLARE_DATA ipp_module = {

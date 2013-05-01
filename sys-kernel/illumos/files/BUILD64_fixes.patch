@@ -1,0 +1,331 @@
+diff --git a/usr/src/lib/libaio/Makefile b/usr/src/lib/libaio/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libaio/Makefile
++++ b/usr/src/lib/libaio/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libdoor/Makefile b/usr/src/lib/libdoor/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libdoor/Makefile
++++ b/usr/src/lib/libdoor/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libintl/Makefile b/usr/src/lib/libintl/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libintl/Makefile
++++ b/usr/src/lib/libintl/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libkrb5/Makefile b/usr/src/lib/libkrb5/Makefile
+index 68feb56..d69f9bf 100644
+--- a/usr/src/lib/libkrb5/Makefile
++++ b/usr/src/lib/libkrb5/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ INSTALLED_HDRS = \
+ 		com_err.h krb5.h
+diff --git a/usr/src/lib/libmd/Makefile b/usr/src/lib/libmd/Makefile
+index ddd89d7..2466ded 100644
+--- a/usr/src/lib/libmd/Makefile
++++ b/usr/src/lib/libmd/Makefile
+@@ -21,13 +21,15 @@
+ 
+ #
+ # Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		$(SRC)/lib/Makefile.lib
+ 
+ $(SPARC_BLD)CAPDIR = capabilities
+ 
+-SUBDIRS=	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS=	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ HDRS =		md4.h md5.h sha1.h sha2.h
+ HDRDIR =	common
+diff --git a/usr/src/lib/libmd5/Makefile b/usr/src/lib/libmd5/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libmd5/Makefile
++++ b/usr/src/lib/libmd5/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libpthread/Makefile b/usr/src/lib/libpthread/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libpthread/Makefile
++++ b/usr/src/lib/libpthread/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/librt/Makefile b/usr/src/lib/librt/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/librt/Makefile
++++ b/usr/src/lib/librt/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libsched/Makefile b/usr/src/lib/libsched/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libsched/Makefile
++++ b/usr/src/lib/libsched/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libthread/Makefile b/usr/src/lib/libthread/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libthread/Makefile
++++ b/usr/src/lib/libthread/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libw/Makefile b/usr/src/lib/libw/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libw/Makefile
++++ b/usr/src/lib/libw/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/libxnet/Makefile b/usr/src/lib/libxnet/Makefile
+index 6cb7a4f..07acc2d 100644
+--- a/usr/src/lib/libxnet/Makefile
++++ b/usr/src/lib/libxnet/Makefile
+@@ -21,11 +21,13 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.lib
+ 
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
++SUBDIRS =	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/lib/pkcs11/libsoftcrypto/Makefile b/usr/src/lib/pkcs11/libsoftcrypto/Makefile
+index 96d8d81..6377109 100644
+--- a/usr/src/lib/pkcs11/libsoftcrypto/Makefile
++++ b/usr/src/lib/pkcs11/libsoftcrypto/Makefile
+@@ -21,12 +21,14 @@
+ 
+ #
+ # Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		$(SRC)/lib/Makefile.lib
+ 
+ CAPDIR =	capabilities
+-SUBDIRS =	$(MACH) $(BUILD64) $(MACH64) $(PLATFORMS)
++SUBDIRS =	$(MACH) $(PLATFORMS)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all :=		TARGET= all
+ clean :=	TARGET= clean
+diff --git a/usr/src/cmd/sgs/elfedit/modules/Makefile b/usr/src/cmd/sgs/elfedit/modules/Makefile
+index 8643152..516acdf 100644
+--- a/usr/src/cmd/sgs/elfedit/modules/Makefile
++++ b/usr/src/cmd/sgs/elfedit/modules/Makefile
+@@ -23,12 +23,14 @@
+ #
+ # Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		$(SRC)/Makefile.master
+ 
+ 
+ SUBDIRS=	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all:=		TARGET=	all
+ chkmsg:=	TARGET=	chkmsg
+@@ -46,9 +48,6 @@ package all chkmsg catalog clean clobber lint install: \
+ 
+ $(SUBDIRS):	FRC
+ 		@cd $@; pwd; $(MAKE) $(TARGET)
+-		@if [ -d $(MACH64) ]; then                      \
+-			cd $(MACH64); pwd; $(MAKE) $(TARGET);   \
+-		else /bin/true; fi
+ 
+ 
+ FRC:
+diff --git a/usr/src/cmd/sgs/link_audit/Makefile b/usr/src/cmd/sgs/link_audit/Makefile
+index 7239f05..6e93818 100644
+--- a/usr/src/cmd/sgs/link_audit/Makefile
++++ b/usr/src/cmd/sgs/link_audit/Makefile
+@@ -20,6 +20,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights resrved.
+ #
+ 
+ include		../../../Makefile.master
+@@ -61,6 +62,7 @@ $(ROOTDEMODIRS) :=	DIRMODE =	755
+ 
+ 
+ SUBDIRS=	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all:=		TARGET=	all
+ install:=	TARGET=	install
+@@ -81,9 +83,6 @@ package install : \
+ 
+ $(SUBDIRS):	FRC
+ 		@cd $@; pwd; $(MAKE) $(TARGET)
+-		@if [ -d $(MACH64) ]; then                      \
+-			cd $(MACH64); pwd; $(MAKE) $(TARGET);   \
+-		else /bin/true; fi
+ 
+ $(ROOTDEMODIRS):
+ 	$(INS.dir)
+diff --git a/usr/src/cmd/strings/Makefile b/usr/src/cmd/strings/Makefile
+index 48aa4d1..6ff5941 100644
+--- a/usr/src/cmd/strings/Makefile
++++ b/usr/src/cmd/strings/Makefile
+@@ -23,6 +23,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/strings/Makefile
+ 
+@@ -30,7 +31,8 @@ PROG:sh=	basename `pwd`
+ 
+ include ../Makefile.cmd
+ 
+-SUBDIRS	= 	$(MACH) $(MACH64)
++SUBDIRS	= 	$(MACH)
++$(BUILD64)SUBDIRS += $(MACH64)
+ 
+ all	:=	TARGET = all
+ install	:=	TARGET = install

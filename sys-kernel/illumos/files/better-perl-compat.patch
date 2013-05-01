@@ -1,0 +1,214 @@
+diff --git a/usr/src/cmd/perl/Makefile b/usr/src/cmd/perl/Makefile
+index 73217fa..a528dd0 100644
+--- a/usr/src/cmd/perl/Makefile
++++ b/usr/src/cmd/perl/Makefile
+@@ -21,6 +21,7 @@
+ 
+ #
+ # Copyright (c) 2001, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include ../Makefile.cmd
+@@ -32,7 +33,8 @@ clean	:= TARGET = clean
+ test	:= TARGET = test
+ 
+ # PERL_LEGACY is versions of Perl still delivered through ON
+-PERL_VERSIONS = 5.10.0
++PERL_VERSION_CMD = perl -e "use Config; print $Config{'version'};"
++PERL_VERSIONS = $(PERL_VERSION_CMD:sh)
+ 
+ .PARALLEL: $(PERL_VERSIONS)
+ 
+diff --git a/usr/src/cmd/perl/skel/Makefile b/usr/src/cmd/perl/skel/Makefile
+index 73f9ebd..762d492 100644
+--- a/usr/src/cmd/perl/skel/Makefile
++++ b/usr/src/cmd/perl/skel/Makefile
+@@ -20,6 +20,7 @@
+ #
+ #
+ # Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include ../../Makefile.cmd
+@@ -31,7 +32,7 @@ KEEP_STATE_OFF = unset KEEP_STATE SUNPRO_DEPENDENCIES
+ # staging area to postprocess and install the result to $(ROOT)
+ STAGE = $(SRC)/cmd/perl/$(PERL_VERSION)/staging
+ 
+-PERL=/usr/perl5/$(PERL_VERSION)/bin/perl
++PERL=/usr/bin/perl$(PERL_VERSION)
+ 
+ PERL_MM_ARGS = INSTALLDIRS=perl CC='$(CC)' LD='$(CC)'
+ 
+diff --git a/usr/src/cmd/dtrace/demo/mkdemo.pl b/usr/src/cmd/dtrace/demo/mkdemo.pl
+index f2bc3ec..41dea96 100755
+--- a/usr/src/cmd/dtrace/demo/mkdemo.pl
++++ b/usr/src/cmd/dtrace/demo/mkdemo.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # CDDL HEADER START
+ #
+@@ -22,8 +22,10 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++
++#
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+-# ident	"%Z%%M%	%I%	%E% SMI"
+ 
+ require 5.005;
+ 
+diff --git a/usr/src/cmd/dtrace/test/cmd/scripts/dstyle.pl b/usr/src/cmd/dtrace/test/cmd/scripts/dstyle.pl
+index c1075a3..679d6d6 100644
+--- a/usr/src/cmd/dtrace/test/cmd/scripts/dstyle.pl
++++ b/usr/src/cmd/dtrace/test/cmd/scripts/dstyle.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl
++#!/usr/bin/perl
+ #
+ # CDDL HEADER START
+ #
+@@ -25,6 +25,10 @@
+ # Use is subject to license terms.
+ #
+ 
++#
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
++
+ require 5.8.4;
+ 
+ $PNAME = $0;
+diff --git a/usr/src/cmd/dtrace/test/cmd/scripts/dtest.pl b/usr/src/cmd/dtrace/test/cmd/scripts/dtest.pl
+index d6f1c8c..6d328eb 100644
+--- a/usr/src/cmd/dtrace/test/cmd/scripts/dtest.pl
++++ b/usr/src/cmd/dtrace/test/cmd/scripts/dtest.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl
++#!/usr/bin/perl
+ #
+ # CDDL HEADER START
+ #
+@@ -28,6 +28,7 @@
+ #
+ # Copyright (c) 2011, Joyent, Inc. All rights reserved.
+ # Copyright (c) 2012 by Delphix. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ require 5.8.4;
+ 
+diff --git a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d
+index 547730a..9336163 100644
+--- a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d
++++ b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d
+@@ -24,7 +24,9 @@
+  * Use is subject to license terms.
+  */
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
+ 
+ #pragma D option quiet
+ 
+@@ -80,7 +82,7 @@ BEGIN
+ 	i++;
+ 
+ 	end = j = k = 0;
+-	printf("#!/usr/perl5/bin/perl\n\nBEGIN {\n");
++	printf("#!/usr/bin/perl\n\nBEGIN {\n");
+ }
+ 
+ tick-1ms
+diff --git a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d.out b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d.out
+index 276576c..40f360f 100644
+--- a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d.out
++++ b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.index.d.out
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl
++#!/usr/bin/perl
+ 
+ BEGIN {
+ 	if (index("foobarbaz", "barbaz") != 3) {
+diff --git a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d
+index edee644..615a5cc 100644
+--- a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d
++++ b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d
+@@ -24,7 +24,9 @@
+  * Use is subject to license terms.
+  */
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
+ 
+ #pragma D option quiet
+ #pragma D option strsize=32
+@@ -173,7 +175,7 @@ BEGIN
+ 
+ 	end = i;
+ 	i = 0;
+-	printf("#!/usr/perl5/bin/perl\n\nBEGIN {\n");
++	printf("#!/usr/bin/perl\n\nBEGIN {\n");
+ 
+ }
+ 
+diff --git a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d.out b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d.out
+index 5b498ef..94d94e7 100644
+--- a/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d.out
++++ b/usr/src/cmd/dtrace/test/tst/common/funcs/tst.substr.d.out
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl
++#!/usr/bin/perl
+ 
+ BEGIN {
+ 	if (substr("foobarbazbop", 3) ne "barbazbop") {
+diff --git a/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv4remote.pl b/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv4remote.pl
+index d2dc8fd..48487d2 100755
+--- a/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv4remote.pl
++++ b/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv4remote.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # CDDL HEADER START
+ #
+@@ -26,6 +26,10 @@
+ #
+ 
+ #
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
++
++#
+ # get.ipv4remote.pl [tcpport]
+ #
+ # Find an IPv4 reachable remote host using both ifconfig(1M) and ping(1M).
+diff --git a/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv6remote.pl b/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv6remote.pl
+index 3b1999f..02def5d 100755
+--- a/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv6remote.pl
++++ b/usr/src/cmd/dtrace/test/tst/common/ip/get.ipv6remote.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # CDDL HEADER START
+ #
+@@ -26,6 +26,10 @@
+ #
+ 
+ #
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
++
++#
+ # get.ipv6remote.pl
+ #
+ # Find an IPv6 reachable remote host using both ifconfig(1M) and ping(1M).

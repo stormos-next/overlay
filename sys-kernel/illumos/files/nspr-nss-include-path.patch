@@ -1,0 +1,121 @@
+diff --git a/usr/src/lib/libldap5/Makefile.com b/usr/src/lib/libldap5/Makefile.com
+index 9c28fae..3f834b1 100644
+--- a/usr/src/lib/libldap5/Makefile.com
++++ b/usr/src/lib/libldap5/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights resrved.
+ #
+ 
+ LIBRARY= libldap.a
+@@ -57,8 +58,8 @@ OBJECTS=	$(BEROBJS) $(LDAPOBJS) $(SSLDAPOBJS) $(PRLDAPOBJS) \
+ include ../../Makefile.lib
+ 
+ NSS_LIBS=	-lnspr4 -lplc4 -lnss3 -lssl3
+-NSS_HDRS=	/usr/include/mps
+-NSS_LDPATH=	/usr/lib/mps
++NSS_HDRS=	/usr/include/nspr /usr/include/nss
++NSS_LDPATH=	/usr/lib
+ NSS_LDPATH64=	$(NSS_LDPATH)/64	
+ 
+ 
+@@ -72,7 +73,7 @@ LDAP_FLAGS=     -DSVR4 -DSYSV -D__svr4 -D__svr4__ -DSOLARIS \
+ 
+ # Include directories for all files
+ COM_INC=	-I$(SRC)/lib/libldap5/include/ldap \
+-		-I$(NSS_HDRS)
++		$(NSS_HDRS:%=-I%)
+ 
+ SRCS=		$(BEROBJS:%.o=../sources/ldap/ber/%.c) \
+ 		$(LDAPOBJS:%.o=../sources/ldap/common/%.c) \
+diff --git a/usr/src/lib/libsldap/Makefile.com b/usr/src/lib/libsldap/Makefile.com
+index d03823d..afb41de 100644
+--- a/usr/src/lib/libsldap/Makefile.com
++++ b/usr/src/lib/libsldap/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ LIBRARY= libsldap.a
+@@ -47,7 +48,7 @@ SRCDIR =	../common
+ CFLAGS +=	$(CCVERBOSE)
+ LOCFLAGS +=	-D_REENTRANT -DSUNW_OPTIONS
+ CPPFLAGS +=	-I../common -I$(SRC)/lib/libldap5/include/ldap \
+-		-I/usr/include/mps $(LOCFLAGS)
++		-I/usr/include/nspr $(LOCFLAGS)
+ LINTFLAGS +=	-erroff=E_BAD_PTR_CAST_ALIGN
+ LINTFLAGS64 +=	-erroff=E_BAD_PTR_CAST_ALIGN
+ 
+diff --git a/usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com b/usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com
+index a3ab702..52711e0 100644
+--- a/usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com
++++ b/usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # Makefile for KMF Plugins
+ #
+@@ -34,7 +35,7 @@ include	$(SRC)/lib/Makefile.lib
+ 
+ MPSDIR=		/usr/lib/mps
+ KMFINC=		-I../../../include -I../../../ber_der/inc
+-NSSINC=		-I/usr/include/mps
++NSSINC=		-I/usr/include/nspr -I/usr/include/nss
+ BERLIB=		-lkmf -lkmfberder
+ BERLIB64=	$(BERLIB)
+ 
+diff --git a/usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c b/usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c
+index 8a0e6ba..b734d56 100644
+--- a/usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c
++++ b/usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c
+@@ -24,6 +24,7 @@
+  *
+  * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+  */
+ 
+ #include <sys/types.h>
+@@ -36,20 +37,20 @@
+ #include <ber_der.h>
+ /* NSS related headers */
+ 
+-#include <mps/nss.h>
+-#include <mps/cert.h>
+-#include <mps/certdb.h>
+-#include <mps/secoid.h>
+-#include <mps/secder.h>
+-#include <mps/secerr.h>
+-#include <mps/cryptohi.h>
+-#include <mps/keyhi.h>
+-#include <mps/keythi.h>
+-#include <mps/pk11func.h>
+-#include <mps/pk11pqg.h>
+-#include <mps/pkcs12.h>
+-#include <mps/p12plcy.h>
+-#include <mps/prerror.h>
++#include <nss/nss.h>
++#include <nss/cert.h>
++#include <nss/certdb.h>
++#include <nss/secoid.h>
++#include <nss/secder.h>
++#include <nss/secerr.h>
++#include <nss/cryptohi.h>
++#include <nss/keyhi.h>
++#include <nss/keythi.h>
++#include <nss/pk11func.h>
++#include <nss/pk11pqg.h>
++#include <nss/pkcs12.h>
++#include <nss/p12plcy.h>
++#include <nspr/prerror.h>
+ 
+ #define	NSS_OK		0
+ 

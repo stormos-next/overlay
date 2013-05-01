@@ -1,0 +1,36 @@
+diff --git a/usr/src/lib/libc/port/mapfile-vers b/usr/src/lib/libc/port/mapfile-vers
+index 9dc147a..34c1674 100644
+--- a/usr/src/lib/libc/port/mapfile-vers
++++ b/usr/src/lib/libc/port/mapfile-vers
+@@ -26,6 +26,8 @@
+ #
+ # Copyright (c) 2012 by Delphix. All rights reserved.
+ #
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
+ 
+ #
+ # MAPFILE HEADER START
+@@ -90,6 +92,22 @@ $if _x86 && _ELF64
+ $add amd64
+ $endif
+ 
++SYMBOL_VERSION STORMOS_0.1 {	# StormOS additions
++    global:
++$if _ELF32
++	connect { TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
++	socket { TYPE = FUNCTION;  FILTER = /usr/lib/libsocket.so.1 };
++$elif sparcv9
++	connect { TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
++	socket { TYPE = FUNCTION;  FILTER = /usr/lib/sparcv9/libsocket.so.1 };
++$elif amd64
++	connect { TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
++	socket { TYPE = FUNCTION;  FILTER = /usr/lib/amd64/libsocket.so.1 };
++$else
++$error unknown platform
++$endif
++} ILLUMOS_0.3;
++
+ SYMBOL_VERSION ILLUMOS_0.3 {	# Illumos additions
+     protected:
+         assfail3;

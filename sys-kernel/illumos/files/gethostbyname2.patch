@@ -1,0 +1,177 @@
+diff --git a/usr/src/head/netdb.h b/usr/src/head/netdb.h
+index 8c912d3..41aa155 100644
+--- a/usr/src/head/netdb.h
++++ b/usr/src/head/netdb.h
+@@ -62,6 +62,8 @@
+  * End BIND 4.9.3
+  */
+ 
++/* Copyright (c) 2013 Andrew Stormont.  All rights reserved. */
++
+ /*
+  * Structures returned by network data base library.
+  * All addresses are supplied in host order, and
+@@ -233,6 +235,8 @@ struct	servent {
+ #if !defined(_XPG4_2) || defined(__EXTENSIONS__)
+ struct hostent	*gethostbyname_r
+ 	(const char *, struct hostent *, char *, int, int *h_errnop);
++struct hostent	*gethostbyname2_r
++	(const char *, int, struct hostent *, char *, int, int *h_errnop);
+ struct hostent	*gethostbyaddr_r
+ 	(const char *, int, int, struct hostent *, char *, int, int *h_errnop);
+ struct hostent	*getipnodebyname(const char *, int, int, int *);
+@@ -263,6 +267,7 @@ int innetgr(const char *, const char *, const char *, const char *);
+ 
+ /* Old interfaces that return a pointer to a static area;  MT-unsafe */
+ struct hostent	*gethostbyname(const char *);
++struct hostent	*gethostbyname2(const char *, int);
+ struct hostent	*gethostent(void);
+ struct netent	*getnetbyaddr(in_addr_t, int);
+ struct netent	*getnetbyname(const char *);
+@@ -339,7 +344,6 @@ int rexec_af(char **, unsigned short,
+ int rresvport(int *);
+ int ruserok(const char *, int, const char *, const char *);
+ /* BIND */
+-struct hostent	*gethostbyname2(const char *, int);
+ void		herror(const char *);
+ const char	*hstrerror(int);
+ /* End BIND */
+@@ -355,6 +359,7 @@ void freeipsecalgent(struct ipsecalgent *ptr);
+ #endif /* !defined(_XPG4_2) || defined(__EXTENSIONS__) */
+ #else	/* __STDC__ */
+ struct hostent	*gethostbyname_r();
++struct hostent	*gethostbyname2_r();
+ struct hostent	*gethostbyaddr_r();
+ struct hostent	*getipnodebyname();
+ struct hostent	*getipnodebyaddr();
+@@ -374,6 +379,7 @@ int		 innetgr();
+ 
+ /* Old interfaces that return a pointer to a static area;  MT-unsafe */
+ struct hostent	*gethostbyname();
++struct hostent	*gethostbyname2();
+ struct hostent	*gethostbyaddr();
+ struct hostent	*gethostent();
+ struct netent	*getnetbyname();
+@@ -406,7 +412,6 @@ int rresvport_af();
+ int rresvport_addr();
+ int ruserok();
+ /* BIND */
+-struct hostent	*gethostbyname2();
+ void		herror();
+ char		*hstrerror();
+ /* IPv6 prototype definitons */
+diff --git a/usr/src/lib/libnsl/common/mapfile-vers b/usr/src/lib/libnsl/common/mapfile-vers
+index f875cd9..45ce1da 100644
+--- a/usr/src/lib/libnsl/common/mapfile-vers
++++ b/usr/src/lib/libnsl/common/mapfile-vers
+@@ -21,6 +21,7 @@
+ #
+ # Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
+ # Copyright 2011 Nexenta Systems, Inc. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ #
+@@ -39,6 +40,12 @@
+ 
+ $mapfile_version 2
+ 
++SYMBOL_VERSION STORMOS_0.1 {	# StormOS Next
++    global:
++	gethostbyname2;
++	gethostbyname2_r;
++} SUNW_1.10;
++
+ SYMBOL_VERSION SUNW_1.10 {	# SunOS 5.11 (Solaris 11)
+     global:
+ 	SUNW_1.10;
+diff --git a/usr/src/lib/libnsl/nss/gethostbyname_r.c b/usr/src/lib/libnsl/nss/gethostbyname_r.c
+index 7a3c5aa..c5034a0 100644
+--- a/usr/src/lib/libnsl/nss/gethostbyname_r.c
++++ b/usr/src/lib/libnsl/nss/gethostbyname_r.c
+@@ -24,6 +24,8 @@
+  * Use is subject to license terms.
+  */
+ 
++/* Copyright (c) 2013 Andrew Stormont.  All rights reserved. */
++
+ #pragma ident	"%Z%%M%	%I%	%E% SMI"
+ 
+ /*
+@@ -97,6 +99,10 @@ gethostbyname_r(const char *nam, struct hostent *result, char *buffer,
+ 	int buflen, int *h_errnop);
+ 
+ extern struct hostent *
++gethostbyname2_r(const char *nam, int af, struct hostent *result,
++	char *buffer, int buflen, int *h_errnop);
++
++extern struct hostent *
+ gethostbyaddr_r(const char *addr, int length, int type,
+ 	struct hostent *result, char *buffer, int buflen, int *h_errnop);
+ 
+@@ -104,6 +110,14 @@ struct hostent *
+ gethostbyname_r(const char *nam, struct hostent *result, char *buffer,
+ 	int buflen, int *h_errnop)
+ {
++	return gethostbyname2_r(nam, AF_INET, result, buffer, buflen,
++				h_errnop);
++}
++
++struct hostent *
++gethostbyname2_r(const char *nam, int af, struct hostent *result,
++	char *buffer, int buflen, int *h_errnop)
++{
+ 	struct netconfig *nconf;
+ 	struct	nss_netdirbyname_in nssin;
+ 	union	nss_netdirbyname_out nssout;
+@@ -123,7 +137,18 @@ gethostbyname_r(const char *nam, struct hostent *result, char *buffer,
+ 		return (NULL);
+ 	}
+ 
+-	nssin.op_t = NSS_HOST;
++	switch (af) {
++		case AF_INET:
++			nssin.op_t = NSS_HOST;
++			break;
++		case AF_INET6:
++			nssin.op_t = NSS_HOST6;
++			break;
++		default:
++			*h_errnop = HOST_NOT_FOUND;
++			return (NULL);
++	}
++
+ 	nssin.arg.nss.host.name = nam;
+ 	nssin.arg.nss.host.buf = buffer;
+ 	nssin.arg.nss.host.buflen = buflen;
+diff --git a/usr/src/lib/libnsl/nss/gethostent.c b/usr/src/lib/libnsl/nss/gethostent.c
+index c02c8c5..0b3d15f 100644
+--- a/usr/src/lib/libnsl/nss/gethostent.c
++++ b/usr/src/lib/libnsl/nss/gethostent.c
+@@ -24,6 +24,8 @@
+  * Use is subject to license terms.
+  */
+ 
++/* Copyright (c) 2013 Andrew Stormont.  All rights reserved. */
++
+ /*
+  * Ye olde non-reentrant interface (MT-unsafe, caveat utor)
+  */
+@@ -72,6 +74,17 @@ gethostbyname(const char *nam)
+ }
+ 
+ struct hostent *
++gethostbyname2(const char *nam, int af)
++{
++	nss_XbyY_buf_t  *b;
++
++	if ((b = GETBUF()) == 0)
++		return (NULL);
++	return (gethostbyname2_r(nam, af, b->result, b->buffer, b->buflen,
++		    &h_errno));
++}
++
++struct hostent *
+ gethostbyaddr(const void *addr, socklen_t len, int type)
+ {
+ 	nss_XbyY_buf_t	*b;

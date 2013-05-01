@@ -1,0 +1,22 @@
+diff --git a/usr/src/cmd/dtrace/demo/Makefile b/usr/src/cmd/dtrace/demo/Makefile
+index 7da281e..045471c 100644
+--- a/usr/src/cmd/dtrace/demo/Makefile
++++ b/usr/src/cmd/dtrace/demo/Makefile
+@@ -20,6 +20,7 @@
+ #
+ #
+ # Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include ../../Makefile.cmd
+@@ -130,8 +131,7 @@ HTMLFILES = index.html
+ 
+ DEMOFILES = \
+ 	$(DFILES) \
+-	$(HTMLFILES) \
+-	sunlogo.gif
++	$(HTMLFILES)
+ 
+ MKDEMO	= mkdemo
+ CLEANFILES += $(DFILES) $(MKDEMO)

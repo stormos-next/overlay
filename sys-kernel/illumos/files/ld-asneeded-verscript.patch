@@ -1,0 +1,94 @@
+diff --git a/usr/src/cmd/sgs/libld/common/libld.msg b/usr/src/cmd/sgs/libld/common/libld.msg
+index f0c5266..7287f48 100644
+--- a/usr/src/cmd/sgs/libld/common/libld.msg
++++ b/usr/src/cmd/sgs/libld/common/libld.msg
+@@ -27,6 +27,10 @@
+ # Copyright (c) 2012, Joyent, Inc.  All rights reserved.
+ #
+ 
++#
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
++
+ @ _START_
+ 
+ # Message file for cmd/sgs/libld.
+@@ -1441,6 +1445,8 @@
+ @ MSG_ARG_T_WL		"l,-"
+ 
+ @ MSG_ARG_T_AUXFLTR	"-auxiliary"
++@ MSG_ARG_T_ASNEEDED	"-as-needed"
++@ MSG_ARG_T_NOASNEEDED	"-no-as-needed"
+ @ MSG_ARG_T_MULDEFS	"-allow-multiple-definition"
+ @ MSG_ARG_T_INTERP	"-dynamic-linker"
+ @ MSG_ARG_T_ENDGROUP	"-end-group"
+@@ -1459,6 +1465,7 @@
+ @ MSG_ARG_T_STRIP	"-strip-all"
+ @ MSG_ARG_T_UNDEF	"-undefined"
+ @ MSG_ARG_T_VERSION	"-version"
++@ MSG_ARG_T_VERSCRIPT	"-version-script="
+ @ MSG_ARG_T_WHOLEARC	"-whole-archive"
+ @ MSG_ARG_T_WRAP	"-wrap"
+ @ MSG_ARG_T_OPAR	"("
+diff --git a/usr/src/cmd/sgs/libld/common/util.c b/usr/src/cmd/sgs/libld/common/util.c
+index 7b59734..5e29c9a 100644
+--- a/usr/src/cmd/sgs/libld/common/util.c
++++ b/usr/src/cmd/sgs/libld/common/util.c
+@@ -24,6 +24,10 @@
+  */
+ 
+ /*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
++
++/*
+  *	Copyright (c) 1988 AT&T
+  *	  All Rights Reserved
+  */
+@@ -469,6 +473,16 @@ ld_getopt(Lm_list *lml, int ndx, int argc, char **argv)
+ 				    arg, 'f', MSG_ORIG(MSG_ARG_T_AUXFLTR),
+ 				    MSG_ARG_T_AUXFLTR_SIZE, NULL)) != 0) {
+ 					return (c);
++
++				/*
++				 * Translate --as-needed to -z ignore
++				 */
++				} else if ((c = str2chr(lml, argc, ndx, argv,
++				    arg, 'z', MSG_ORIG(MSG_ARG_T_ASNEEDED),
++				    0, NULL)) != 0) {
++					optarg =
++					    (char *)MSG_ORIG(MSG_ARG_IGNORE);
++					return (c);
+ 				}
+ 				break;
+ 			case 'd':
+@@ -577,6 +591,16 @@ ld_getopt(Lm_list *lml, int ndx, int argc, char **argv)
+ 					optarg =
+ 					    (char *)MSG_ORIG(MSG_ARG_DFLEXTRT);
+ 					return (c);
++
++				/*
++				 * Translate --no-as-needed to -z record
++				 */
++				} else if ((c = str2chr(lml, ndx, argc, argv,
++				    arg, 'z', MSG_ORIG(MSG_ARG_T_NOASNEEDED),
++				    0, NULL)) != 0) {
++					optarg =
++					    (char *)MSG_ORIG(MSG_ARG_RECORD);
++					return (c);
+ 				}
+ 				break;
+ 			case 'o':
+@@ -631,6 +655,12 @@ ld_getopt(Lm_list *lml, int ndx, int argc, char **argv)
+ 				    0) {
+ 					return (c);
+ 				}
++				/* Translate --version-script=<optarg> to -M */
++				if ((c = str2chr(lml, ndx, argc, argv, arg, 'M',
++				    MSG_ORIG(MSG_ARG_T_VERSCRIPT),
++				    MSG_ARG_T_VERSCRIPT_SIZE - 1, NULL)) != 0) {
++					return (c);
++				}
+ 				break;
+ 			case 'w':
+ 				/*
