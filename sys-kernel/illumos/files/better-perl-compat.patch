@@ -212,3 +212,90 @@ index 3b1999f..02def5d 100755
  # get.ipv6remote.pl
  #
  # Find an IPv6 reachable remote host using both ifconfig(1M) and ping(1M).
+diff --git a/usr/src/cmd/auditrecord/filter_txt.pl b/usr/src/cmd/auditrecord/filter_txt.pl
+index 8003491..ade42ee 100644
+--- a/usr/src/cmd/auditrecord/filter_txt.pl
++++ b/usr/src/cmd/auditrecord/filter_txt.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # CDDL HEADER START
+ #
+@@ -23,6 +23,8 @@
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+ #
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
+ 
+ # local script to process audit_record_attr.txt -> audit_record_attr
+ #
+diff --git a/usr/src/cmd/auditrecord/mkmsg.pl b/usr/src/cmd/auditrecord/mkmsg.pl
+index 7fd3983..e8b5cd3 100644
+--- a/usr/src/cmd/auditrecord/mkmsg.pl
++++ b/usr/src/cmd/auditrecord/mkmsg.pl
+@@ -1,4 +1,4 @@
+-#!/usr/perl5/bin/perl -w
++#!/usr/bin/perl -w
+ #
+ # CDDL HEADER START
+ #
+@@ -23,6 +23,8 @@
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+ #
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++#
+ 
+ # mkmsg.pl -- generate message file content for strings that
+ # originate in audit_record_attr and audit_event
+diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Catalog.xs b/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Catalog.xs
+index 6d97405..63464cd 100644
+--- a/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Catalog.xs
++++ b/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Catalog.xs
+@@ -1,5 +1,6 @@
+ /*
+  * Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved.
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+  */
+ 
+ /*
+@@ -110,7 +111,7 @@ define_catalog_constants()
+ 	 * Populate %_Constants and %_Constants from the contents of the
+ 	 * generated constants array.
+ 	 */
+-	for (cvp = constants; cvp->name != NULL; cvp++) {
++	for (cvp = const_ary; cvp->name != NULL; cvp++) {
+ 		HV	*name_hv, *value_hv;
+ 		SV	*name, *value;
+ 
+diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL b/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
+index cbd36eb..57a6900 100644
+--- a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
++++ b/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
+@@ -21,6 +21,7 @@
+ 
+ #
+ # Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ require 5.8.4;
+@@ -48,14 +49,11 @@ my $rel = qx{uname -r}; chomp($rel);
+ my $arch = qx{uname -p}; chomp($arch);
+ my $pver = sprintf('%vd', $^V);
+ 
+-# Figure out the appropriate Config.pm.  Use an older version if necessary.
+-my $perlarch = ($arch eq "sparc") ? "sun4-solaris-64int":"i86pc-solaris-64int";
+-
+-my $configpm = "/usr/perl5/$pver/lib/$perlarch/Config.pm";
++my $configpm = "/usr/lib/perl5/vendor_perl/$pver/Sun/Solaris/PerlGcc/config/5.8.4/$rel/$arch/Config.pm";
+ if (! -f $configpm) {
+ 	my $p = "config/$pver";
+ 	my $dh;
+-	opendir($dh, $p) || die("Can't read directory $_: $!\n");
++	opendir($dh, $p) || die("Can't read directory $p: $!\n");
+ 	my $old_rel = (sort(cmp_os_ver
+ 	    grep(-d "$p/$_" && $_ =~ /^\d[\d.]+\d$/, readdir($dh))))[-1];
+ 	closedir($dh);

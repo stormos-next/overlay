@@ -11,14 +11,14 @@ IUSE="multilib debug"
 
 RDEPEND="dev-libs/libxml2[multilib?]
 	dev-libs/openssl[multilib?]
-	dev-libs/glib[multilib?]
+	dev-libs/glib
 	dev-libs/dbus-glib[multilib?]
 	sys-libs/zlib[multilib?]
 	sys-apps/dbus[multilib?]
-	dev-libs/nspr[mulitlib?]
+	dev-libs/nspr[multilib?]
 	dev-libs/nss[multilib?]
 	app-crypt/trousers[multilib?]
-	www-servers/apache-2[multilib?]"
+	www-servers/apache:2[multilib?]"
 DEPEND="${RDEPEND}
 	dev-lang/python:2.6
 	>=dev-lang/perl-5.10.0
@@ -31,21 +31,40 @@ EGIT_REPO_URI="git://github.com/illumos/illumos-gate.git"
 SRC_URI="http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins.i386.tar.bz2
 	http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins-nd.i386.tar.bz2"
 
+
+clean_env()
+{
+	# Keep some variables local so they don't interfere
+	# with the illumos build
+	export -n ED
+	export -n MAKE
+	export -n INSTALL
+	export -n CC
+	export -n CXX
+	export -n CFLAGS
+	export -n CXXFLAGS
+	export -n CPPFLAGS
+	export -n LDFLAGS
+}
+
 src_prepare()
 {
 	epatch "${FILESDIR}/better-apache-compat.patch" || die
 	epatch "${FILESDIR}/better-perl-compat.patch" || die
+	epatch "${FILESDIR}/binutils-path.patch" || die
 	epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	epatch "${FILESDIR}/connect-socket-in-libc.patch" || die
 	epatch "${FILESDIR}/egrep-q-option.patch" || die
 	epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
 	epatch "${FILESDIR}/find-path-option.patch" || die
+	epatch "${FILESDIR}/fix-krb5-typo.patch" || die
+	epatch "${FILESDIR}/flex-path.patch" || die
 	epatch "${FILESDIR}/gethostbyname2.patch" || die
 	epatch "${FILESDIR}/grep-H-option.patch" || die
 	epatch "${FILESDIR}/kmf_openssl_no_md2.patch" || die
 	epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
 	epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
-	epatch "${FILESDIR}/libicon-shim.patch" || die
+	epatch "${FILESDIR}/libiconv-shim.patch" || die
 	epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
 	epatch "${FILESDIR}/sun-logo-is-missing.patch" || die
 }
@@ -77,6 +96,8 @@ src_configure()
 	echo "export __SUNC='#'" >> illumos.sh
 	echo "export __GNUC=''" >> illumos.sh
 
+	clean_env
+
 	elog "Running make setup"
 	ksh usr/src/tools/scripts/bldenv.sh $(use debug && echo -d) -c illumos.sh \
 		'cd usr/src && dmake setup' || die
@@ -84,6 +105,8 @@ src_configure()
 
 src_compile()
 {
+	clean_env
+
 	elog "Starting build.  This may take a while"
 	ksh usr/src/tools/scripts/bldenv.sh $(use debug && echo -d) -c illumos.sh \
 		'cd usr/src && dmake install' || die

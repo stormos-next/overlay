@@ -18,25 +18,6 @@ index bae90c4,bae90c4..0000000
   	../cmd/sgs/librtld_db	\
   	libaio			\
   	libast			\
-diff --combined usr/src/lib/libaio/Makefile
-index 6cb7a4f,6cb7a4f..0000000
---- a/usr/src/lib/libaio/Makefile
-+++ b/usr/src/lib/libaio/Makefile
-@@@ -21,11 -21,11 +21,13 @@@
-  #
-  # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
-  # Use is subject to license terms.
-++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
-  #
-  
-  include		../Makefile.lib
-  
---SUBDIRS =	$(MACH) $(BUILD64) $(MACH64)
-++SUBDIRS =	$(MACH)
-++$(BUILD64)SUBDIRS += $(MACH64)
-  
-  all :=		TARGET= all
-  clean :=	TARGET= clean
 diff --git a/usr/src/lib/libiconv/Makefile b/usr/src/lib/libiconv/Makefile
 new file mode 100644
 index 0000000..d745bfe

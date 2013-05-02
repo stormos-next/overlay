@@ -1,0 +1,24 @@
+diff --git a/usr/src/cmd/krb5/kwarn/kwarndtest.c b/usr/src/cmd/krb5/kwarn/kwarndtest.c
+index f79fa95..f393596 100644
+--- a/usr/src/cmd/krb5/kwarn/kwarndtest.c
++++ b/usr/src/cmd/krb5/kwarn/kwarndtest.c
+@@ -3,7 +3,9 @@
+  * Use is subject to license terms.
+  */
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
+ 
+ /*
+  * Test client for kwarnd.  This program is not shipped on the binary
+@@ -96,7 +98,7 @@ do_kwarndtest(char *buf)
+ 	if (argc == 0) {
+ 		usage();
+ 		/*LINTED*/
+-		FREE(argv_array, (argc+1)*sizeof (char *));
++		FREE(argv, (argc+1)*sizeof (char *));
+ 		return (0);
+ 	}
+ 
