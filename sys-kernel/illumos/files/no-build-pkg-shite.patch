@@ -1,0 +1,71 @@
+diff --git a/usr/src/Makefile b/usr/src/Makefile
+index 722fa72..d9d3bb3 100644
+--- a/usr/src/Makefile
++++ b/usr/src/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright (c) 1989, 2010, Oracle and/or its affiliates. All rights reserved.
+ # Copyright (c) 2012 by Delphix. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ #
+@@ -93,7 +94,7 @@ check :=		TARGET= check
+ #	cd pkg and do a 'make install'
+ #
+ 
+-all: mapfiles closedbins sgs .WAIT $(SUBDIRS) pkg
++all: mapfiles closedbins sgs .WAIT $(SUBDIRS)
+ 
+ #
+ # The _msg build is a two-step process.  First, the _msg dependency
+@@ -107,13 +108,10 @@ all: mapfiles closedbins sgs .WAIT $(SUBDIRS) pkg
+ # packaging to be pulled from $(SRC) and $(CLOSED) and staged in
+ # $(ROOT)/licenses.
+ #
+-install: install1 install2 _msg stage-licenses
++install: install1 install2 _msg #stage-licenses
+ 	@cd msg; pwd; $(MAKE) _msg
+ 	@rm -rf "$(ROOT)/catalog"
+ 
+-stage-licenses: install2
+-	@cd pkg; pwd; $(MAKE) stage-licenses
+-
+ install1: mapfiles closedbins sgs
+ 
+ install2: install1 $(SUBDIRS)
+@@ -126,7 +124,7 @@ _msg: _msgdirs rootdirs install2 FRC
+ mapfiles: bldtools
+ 	@cd common/mapfiles; pwd; $(MAKE) install
+ 
+-clean clobber: $(SUBDIRS) head pkg
++clean clobber: $(SUBDIRS) head 
+ 
+ closedbins: bldtools $(ROOTDIRS) FRC
+ 	@CLOSED_ROOT="$$ON_CLOSED_BINS/root_$(MACH)$${RELEASE_BUILD+-nd}"; \
+@@ -155,7 +153,7 @@ closedbins: bldtools $(ROOTDIRS) FRC
+ .PARALLEL: $(PARALLEL_HEADERS) DUMMY
+ .PARALLEL: $(PARALLEL_DIRS) DUMMY
+ 
+-$(SUBDIRS) head pkg: FRC
++$(SUBDIRS) head: FRC
+ 	@cd $@; pwd; $(MAKE) $(TARGET)
+ 
+ # librpcsvc has a dependency on headers installed by
+@@ -222,7 +220,7 @@ check:	$(CHKHDRSUBDIRS) $(CHKMFSTSUBDIRS)
+ # don't contain actual source code.
+ #
+ $(CLOSED_BUILD)XRDIRS += ../closed
+-XRPRUNE = pkg prototypes xmod
++XRPRUNE = prototypes xmod
+ XRINCDIRS = uts/common head ucbhead
+ $(CLOSED_BUILD)XRINCDIRS = uts/common ../closed/uts/common head ucbhead
+ 
+@@ -281,7 +279,6 @@ EXPORT_SRC:
+ 	@cd uts/sun4u; pwd; $(MAKE) EXPORT_SRC
+ 	@cd $(CLOSED)/uts/sun4v/io/ncp;	pwd;	$(MAKE) EXPORT_SRC
+ 	@cd $(CLOSED)/uts/sun4v/io/n2cp; pwd;	$(MAKE) EXPORT_SRC
+-	@cd pkg; pwd;	$(MAKE) EXPORT_SRC
+ 	$(RM) -r $(XMOD_DELETE_FILES)
+ 	$(RM) Targetdirs+
+ 	sed -e "/^# EXPORT DELETE START/,/^# EXPORT DELETE END/d" \

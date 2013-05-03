@@ -1,0 +1,257 @@
+diff --git a/usr/src/Makefile.master b/usr/src/Makefile.master
+index 27de79e..570ee24 100644
+--- a/usr/src/Makefile.master
++++ b/usr/src/Makefile.master
+@@ -1102,7 +1103,7 @@ PKGPUBLISHER_NONREDIST=	on-extra
+ 	@[ $(<)c = $@ ] || $(MV) $(<)c $@
+ 
+ .py.po:
+-	$(GNUXGETTEXT) $(GNUXGETFLAGS) -d $(<F:%.py=%) $< ;
++	$(XGETTEXT) $(XGETFLAGS) -d $(<F:%.py=%) $< ;
+ 
+ .pl.po .pm.po:
+ 	$(XGETTEXT) $(XGETFLAGS) -d $(<F) $< ;
+diff --git a/usr/src/cmd/idmap/idmapd/Makefile b/usr/src/cmd/idmap/idmapd/Makefile
+index f1aef3d..2cf8e45 100644
+--- a/usr/src/cmd/idmap/idmapd/Makefile
++++ b/usr/src/cmd/idmap/idmapd/Makefile
+@@ -20,6 +20,7 @@
+ #
+ #
+ # Copyright (c) 2007, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG =		idmapd
+@@ -60,10 +61,6 @@ CERRWARN +=	-_gcc=-Wno-switch
+ CERRWARN +=	-_gcc=-Wno-uninitialized
+ 
+ TEXT_DOMAIN =	SUNW_OST_OSLIB
+-XGETTEXT =	$(GNUXGETTEXT)
+-XGETFLAGS =	--foreign-user --strict -n -E --width=72 \
+-		--omit-header --keyword=directoryError:2 \
+-		--language=C --force-po
+ 
+ C99MODE = $(C99_ENABLE)
+ POFILE =	$(PROG)_all.po
+diff --git a/usr/src/cmd/msgfmt/xgettext.c b/usr/src/cmd/msgfmt/xgettext.c
+index 8b91a2a..9a9aac2 100644
+--- a/usr/src/cmd/msgfmt/xgettext.c
++++ b/usr/src/cmd/msgfmt/xgettext.c
+@@ -24,7 +24,9 @@
+  * All rights reserved.
+  * Use is subject to license terms.
+  */
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
++/*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
+ 
+ #include	<ctype.h>
+ #include	<stdio.h>
+@@ -39,7 +41,7 @@
+ 
+ #define	USAGE	"Usage:	xgettext [-a [-x exclude-file]] [-jns]\
+ [-c comment-tag]\n	[-d default-domain] [-m prefix] \
+-[-M suffix] [-p pathname] files ...\n\
++[-M suffix] [-p pathname|-o filename] files ...\n\
+ 	xgettext -h\n"
+ 
+ #define	DEFAULT_DOMAIN	"messages"
+@@ -134,7 +136,9 @@ static int	Mflg = FALSE;
+ static char	*suffix = NULL;
+ static char	*prefix = NULL;
+ static int	nflg = FALSE;
++static int	oflg = FALSE;
+ static int	pflg = FALSE;
++static char	*filename = NULL;
+ static char	*pathname = NULL;
+ static int	sflg = FALSE;
+ static int	tflg = FALSE;	/* Undocumented option to extract dcgettext */
+@@ -261,7 +265,7 @@ main(int argc, char **argv)
+ 
+ 	initialize_globals();
+ 
+-	while ((c = getopt(argc, argv, "jhax:nsc:d:m:M:p:t")) != EOF) {
++	while ((c = getopt(argc, argv, "jhax:nsc:d:m:M:o:p:t")) != EOF) {
+ 		switch (c) {
+ 		case 'a':
+ 			aflg = TRUE;
+@@ -290,6 +294,10 @@ main(int argc, char **argv)
+ 		case 'n':
+ 			nflg = TRUE;
+ 			break;
++		case 'o':
++			oflg = TRUE;
++			filename = optarg;
++			break;
+ 		case 'p':
+ 			pflg = TRUE;
+ 			pathname = optarg;
+@@ -335,6 +343,13 @@ main(int argc, char **argv)
+ 		opterr = TRUE;
+ 	}
+ 
++	/* -o cannot be used with -p */
++	if ((oflg == TRUE) && (pflg == TRUE)) {
++		(void) fprintf(stderr,
++		"-o and -p options cannot be used together.\n");
++		opterr = TRUE;
++	}
++
+ 	if (opterr == TRUE) {
+ 		(void) fprintf(stderr, USAGE);
+ 		exit(2);
+@@ -426,6 +441,8 @@ print_help(void)
+ 	(void) fprintf(stderr,
+ 		"-n\t\t\tline# file name and line number info in output\n");
+ 	(void) fprintf(stderr,
++		"-o <filename>\t\tuse <filename> for output file name\n");
++	(void) fprintf(stderr,
+ 		"-p <pathname>\t\tuse <pathname> for output file directory\n");
+ 	(void) fprintf(stderr,
+ 		"-s\t\t\tgenerate sorted output files\n");
+@@ -1920,9 +1937,17 @@ write_one_file(struct domain_st *head)
+ 	if (pflg == TRUE) {
+ 		(void) strcat(fname, pathname);
+ 		(void) strcat(fname, "/");
++	} 
++	
++	/*
++	 * output file name.  Can be overriden by the -o option.
++	 */
++	if (oflg == TRUE) {
++                (void) strcat(fname, filename);
++	} else {
++		(void) strcat(fname, dname);
++		(void) strcat(fname, ".po");
+ 	}
+-	(void) strcat(fname, dname);
+-	(void) strcat(fname, ".po");
+ 
+ 	/*
+ 	 * If -j flag is specified, read exsiting .po file and
+diff --git a/usr/src/cmd/ssh/Makefile b/usr/src/cmd/ssh/Makefile
+index 8a53794..cb36bee 100644
+--- a/usr/src/cmd/ssh/Makefile
++++ b/usr/src/cmd/ssh/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include		../Makefile.cmd
+@@ -75,7 +76,7 @@ check: $(CHECKHDRS)
+ _msg:
+ 	$(RM) $(POFILE)
+ 	$(TOUCH) $(POFILE)
+-	$(MAKE) $(POFILE) XGETTEXT=/usr/bin/gxgettext
++	$(MAKE) $(POFILE)
+ 	$(CP) $(POFILE) $(MSGFILE)
+ 	$(CP) $(MSGFILE) $(MSGDOMAIN)
+ 
+diff --git a/usr/src/cmd/ssh/Makefile.msg.targ b/usr/src/cmd/ssh/Makefile.msg.targ
+index df56774..b4a3831 100644
+--- a/usr/src/cmd/ssh/Makefile.msg.targ
++++ b/usr/src/cmd/ssh/Makefile.msg.targ
+@@ -20,16 +20,10 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ POFILE = _messages.po
+-XGETFLAGS = -o $(POFILE_DIR)/$(POFILE) --foreign-user --strict -j -n -E \
+-	    --width=72 \
+-	    --omit-header \
+-	    --keyword=fatal \
+-	    --keyword=error \
+-	    --keyword=verbose \
+-	    --keyword=packet_send_debug \
+-	    --keyword=packet_disconnect
++XGETFLAGS = -o $(POFILE_DIR)/$(POFILE)
+ 
+ $(POFILE):
+ 	$(RM) $@
+diff --git a/usr/src/cmd/ssh/ssh/Makefile b/usr/src/cmd/ssh/ssh/Makefile
+index 7bdd4f6..6eab20a 100644
+--- a/usr/src/cmd/ssh/ssh/Makefile
++++ b/usr/src/cmd/ssh/ssh/Makefile
+@@ -20,6 +20,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/ssh/ssh/Makefile
+ 
+@@ -63,6 +64,4 @@ clean:
+ lint:	lint_SRCS
+ 
+ include ../Makefile.msg.targ
+-
+-XGETFLAGS += --keyword=log
+ include ../../Makefile.targ
+diff --git a/usr/src/lib/libidmap/Makefile b/usr/src/lib/libidmap/Makefile
+index a2a6ccc..8ec58f8 100644
+--- a/usr/src/lib/libidmap/Makefile
++++ b/usr/src/lib/libidmap/Makefile
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include $(SRC)/lib/Makefile.lib
+@@ -33,10 +34,6 @@ $(BUILD64)SUBDIRS += $(MACH64)
+ 
+ POFILE =	libidmap.po
+ MSGFILES:sh =	echo common/*.[ch]
+-XGETTEXT =	$(GNUXGETTEXT)
+-XGETFLAGS =	--foreign-user --strict -n -E --width=72 \
+-		--omit-header --keyword=directoryError:2 \
+-		--language=C --force-po
+ 
+ all := 		TARGET = all
+ clean :=	TARGET = clean
+diff --git a/usr/src/lib/pyzfs/Makefile b/usr/src/lib/pyzfs/Makefile
+index c39ef5b..da8b678 100644
+--- a/usr/src/lib/pyzfs/Makefile
++++ b/usr/src/lib/pyzfs/Makefile
+@@ -21,13 +21,12 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include	../Makefile.lib
+ 
+ SUBDIRS=	$(MACH)
+-XGETTEXT=	$(GNUXGETTEXT)
+-XGETFLAGS=	$(GNUXGETFLAGS)
+ 
+ all :=		TARGET= all
+ install :=	TARGET= install
+diff --git a/usr/src/lib/pysolaris/Makefile b/usr/src/lib/pysolaris/Makefile
+index f0c1832..264350c 100644
+--- a/usr/src/lib/pysolaris/Makefile
++++ b/usr/src/lib/pysolaris/Makefile
+@@ -21,13 +21,12 @@
+ #
+ # Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include	../Makefile.lib
+ 
+ SUBDIRS=	$(MACH)
+-XGETTEXT=	$(GNUXGETTEXT)
+-XGETFLAGS=	$(GNUXGETFLAGS)
+ 
+ all :=		TARGET= all
+ install :=	TARGET= install

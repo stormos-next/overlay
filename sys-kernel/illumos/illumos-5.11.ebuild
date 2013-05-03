@@ -65,6 +65,8 @@ src_prepare()
 	epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
 	epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
 	epatch "${FILESDIR}/libiconv-shim.patch" || die
+	epatch "${FILESDIR}/no-build-pkg-shite.patch" || die
+	epatch "${FILESDIR}/no-gnu-gettext.patch" || die
 	epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
 	epatch "${FILESDIR}/sun-logo-is-missing.patch" || die
 }
@@ -72,10 +74,11 @@ src_prepare()
 src_configure()
 {
 	elog "Generating illumos.sh file"
-	sed -e "s#^export GATE='.*'\$#export GATE=\"illumos-gate\"#g" \
-		-e "s#^export CODEMGR_WS=\".*\"\$#export CODEMGR_WS=\"${S}\"#g" \
- 		-e "s#^export VERSION=\".*\"\$#export VERSION=\"illumos-gate\"#g" \
- 		-e "s#^export ON_CLOSED_BINS=\".*\"\$#export ON_CLOSED_BINS=\"${WORKDIR}/closed\"#g" \
+	sed -e "s:^export GATE='.*'\$:export GATE=\"illumos-gate\":g" \
+		-e "s:^export CODEMGR_WS=\".*\"\$:export CODEMGR_WS=\"${S}\":g" \
+ 		-e "s:^export VERSION=\".*\"\$:export VERSION=\"illumos-gate\":g" \
+ 		-e "s:^export ON_CLOSED_BINS=\".*\"\$:export ON_CLOSED_BINS=\"${WORKDIR}/closed\":g" \
+		-e "s:^# \(export ENABLE_SMB_PRINTING='#'\):\1:g" \
  		usr/src/tools/env/illumos.sh > illumos.sh || die
 
 	# FIXME: Our version of openssl does not support this yet

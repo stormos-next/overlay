@@ -15,31 +15,10 @@ index 73217fa..a528dd0 100644
  
  # PERL_LEGACY is versions of Perl still delivered through ON
 -PERL_VERSIONS = 5.10.0
-+PERL_VERSION_CMD = perl -e "use Config; print $Config{'version'};"
-+PERL_VERSIONS = $(PERL_VERSION_CMD:sh)
++PERL_VERSIONS_CMD = ls /usr/lib/perl5 | grep -v vendor_perl
++PERL_VERSIONS = $(PERL_VERSIONS_CMD:sh)
  
  .PARALLEL: $(PERL_VERSIONS)
- 
-diff --git a/usr/src/cmd/perl/skel/Makefile b/usr/src/cmd/perl/skel/Makefile
-index 73f9ebd..762d492 100644
---- a/usr/src/cmd/perl/skel/Makefile
-+++ b/usr/src/cmd/perl/skel/Makefile
-@@ -20,6 +20,7 @@
- #
- #
- # Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
-+# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
- #
- 
- include ../../Makefile.cmd
-@@ -31,7 +32,7 @@ KEEP_STATE_OFF = unset KEEP_STATE SUNPRO_DEPENDENCIES
- # staging area to postprocess and install the result to $(ROOT)
- STAGE = $(SRC)/cmd/perl/$(PERL_VERSION)/staging
- 
--PERL=/usr/perl5/$(PERL_VERSION)/bin/perl
-+PERL=/usr/bin/perl$(PERL_VERSION)
- 
- PERL_MM_ARGS = INSTALLDIRS=perl CC='$(CC)' LD='$(CC)'
  
 diff --git a/usr/src/cmd/dtrace/demo/mkdemo.pl b/usr/src/cmd/dtrace/demo/mkdemo.pl
 index f2bc3ec..41dea96 100755
@@ -270,8 +249,51 @@ index 6d97405..63464cd 100644
  		HV	*name_hv, *value_hv;
  		SV	*name, *value;
  
+diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Makefile.PL b/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Makefile.PL
+index 24a44b9..4778671 100644
+--- a/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Makefile.PL
++++ b/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Makefile.PL
+@@ -1,5 +1,6 @@
+ #
+ # Copyright (c) 2002, 2008, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ #
+@@ -166,6 +167,7 @@ WriteMakefile(
+     DIR          => [ qw(Catalog File Object) ],
+     H            => [ 'exacct_common.xh' ],
+     LIBS         => [ '-lexacct' ],
++    MAKE         => 'gmake',
+     @defines,
+     @man3pods,
+     dynamic_lib  => { OTHERLDFLAGS => '-h $(DLBASE).$(DLEXT)' },
+diff --git a/usr/src/cmd/perl/skel/Makefile b/usr/src/cmd/perl/skel/Makefile
+index 73f9ebd..8e8cc74 100644
+--- a/usr/src/cmd/perl/skel/Makefile
++++ b/usr/src/cmd/perl/skel/Makefile
+@@ -20,6 +20,7 @@
+ #
+ #
+ # Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ include ../../Makefile.cmd
+@@ -31,9 +32,9 @@ KEEP_STATE_OFF = unset KEEP_STATE SUNPRO_DEPENDENCIES
+ # staging area to postprocess and install the result to $(ROOT)
+ STAGE = $(SRC)/cmd/perl/$(PERL_VERSION)/staging
+ 
+-PERL=/usr/perl5/$(PERL_VERSION)/bin/perl
++PERL=/usr/bin/perl$(PERL_VERSION)
+ 
+-PERL_MM_ARGS = INSTALLDIRS=perl CC='$(CC)' LD='$(CC)'
++PERL_MM_ARGS = INSTALLDIRS=perl CC='$(GCC_ROOT)/bin/gcc' LD='$(GCC_ROOT)/bin/gcc'
+ 
+ # Prefix for Solaris-specific extensions that are maintained by
+ # Sun/Oracle.
 diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL b/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
-index cbd36eb..57a6900 100644
+index cbd36eb..1b87d23 100644
 --- a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
 +++ b/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
 @@ -21,6 +21,7 @@
@@ -290,7 +312,7 @@ index cbd36eb..57a6900 100644
 -my $perlarch = ($arch eq "sparc") ? "sun4-solaris-64int":"i86pc-solaris-64int";
 -
 -my $configpm = "/usr/perl5/$pver/lib/$perlarch/Config.pm";
-+my $configpm = "/usr/lib/perl5/vendor_perl/$pver/Sun/Solaris/PerlGcc/config/5.8.4/$rel/$arch/Config.pm";
++my $configpm = "/usr/lib/perl5/$pver/-linux/Config.pm";
  if (! -f $configpm) {
  	my $p = "config/$pver";
  	my $dh;
@@ -299,3 +321,34 @@ index cbd36eb..57a6900 100644
  	my $old_rel = (sort(cmp_os_ver
  	    grep(-d "$p/$_" && $_ =~ /^\d[\d.]+\d$/, readdir($dh))))[-1];
  	closedir($dh);
+diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Makefile.PL b/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Makefile.PL
+index cbd36eb..1b87d23 100644
+--- a/usr/src/cmd/perl/control/Sun/Solaris/Exacct/Catalog/Makefile.PL
++++ b/usr/src/cmd/perl/contrib/Sun/Solaris/Exacct/Catalog/Makefile.PL
+@@ -1,5 +1,6 @@
+ #
+ # Copyright (c) 2002, 2008, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ #
+@@ -67,13 +68,13 @@
+ 	#
+ 	*postamble = sub {
+ 		return <<'EOF';
+-EXACCT_H:sh= \
+-	for dir in $ENVCPPFLAGS1 $ENVCPPFLAGS2 $ENVCPPFLAGS3 $ENVCPPFLAGS4 \
++EXACCT_H= $(shell \
++	for dir in $$ENVCPPFLAGS $$ENVCPPFLAGS2 $$ENVCPPFLAGS3 $$ENVCPPFLAGS4 \
+ 	    /usr/include; do \
+-		dir=`expr $dir : '^-I\(.*\)$' \| $dir`; \
+-		file="$dir/sys/exacct_catalog.h"; \
+-		test -f $file && echo $file && break; \
+-	done;
++	        dir=`expr $$dir : '^-I\(.*\)$$' \| $$dir`; \
++		file="$$dir/sys/exacct_catalog.h"; \
++		test -f $$file && echo $$file && break; \
++	done)
+ 
+ Catalog.c:	CatalogDefs.xi
+ 
