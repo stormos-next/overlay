@@ -1,0 +1,104 @@
+diff --git a/usr/src/cmd/egrep/egrep.y b/usr/src/cmd/egrep/egrep.y
+index 95e071e..83abe4f 100644
+--- a/usr/src/cmd/egrep/egrep.y
++++ b/usr/src/cmd/egrep/egrep.y
+@@ -26,6 +26,8 @@
+  * Use is subject to license terms.
+  */
+ 
++/* Copyright (c) 2013 Andrew Stormont.  All rights reserved. */
++
+ /*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
+ /*	  All Rights Reserved  	*/
+ 
+@@ -111,9 +113,11 @@ int	cflag;
+ int	eflag;
+ int	fflag;
+ int	hflag;
++int	Hflag;
+ int	iflag;
+ int	lflag;
+ int	nflag;
++int	qflag;
+ int	sflag;
+ int	vflag;
+ int	nfile;
+@@ -644,7 +648,7 @@ follow(int v)
+ 	}
+ }
+ 
+-#define USAGE "[ -bchilnsv ] [ -e exp ] [ -f file ] [ strings ] [ file ] ..." 
++#define USAGE "[ -bchHilnqsv ] [ -e exp ] [ -f file ] [ strings ] [ file ] ..." 
+ 
+ int
+ main(int argc, char **argv)
+@@ -660,7 +664,7 @@ main(int argc, char **argv)
+ #endif
+ 	(void) textdomain(TEXT_DOMAIN);
+ 
+-	while((c = getopt(argc, argv, "ybcie:f:hlnvs")) != -1)
++	while((c = getopt(argc, argv, "ybcie:f:hHlnqvs")) != -1)
+ 		switch(c) {
+ 
+ 		case 'b':
+@@ -690,6 +694,10 @@ main(int argc, char **argv)
+ 			hflag++;
+ 			continue;
+ 
++		case 'H':
++			Hflag++;
++			continue;
++
+ 		case 'y':
+ 		case 'i':
+ 			iflag++;
+@@ -703,6 +711,10 @@ main(int argc, char **argv)
+ 			nflag++;
+ 			continue;
+ 
++		case 'q':
++			qflag++;
++			continue;
++
+ 		case 's':
+ 			sflag++;
+ 			continue;
+@@ -808,7 +820,7 @@ execute(char *file)
+ 		fclose(f);
+ 
+ 		if (cflag) {
+-			if (nfile>1 && !hflag)
++			if ((nfile>1 || Hflag) && !hflag)
+ 				fprintf(stdout, "%s:", file);
+ 			fprintf(stdout, "%lld\n", tln);
+ 		}
+@@ -904,7 +916,10 @@ execute(char *file)
+ 		}
+ 		if(succ) {
+ 			nsucc = 1;
+-			if (cflag) tln++;
++			if (qflag)
++				return;
++			else if (cflag)
++				tln++;
+ 			else if (sflag)
+ 				;	/* ugh */
+ 			else if (lflag) {
+@@ -913,7 +928,7 @@ execute(char *file)
+ 				return;
+ 			}
+ 			else {
+-				if (nfile > 1 && !hflag) 
++				if ((nfile > 1 || Hflag) && !hflag) 
+ 					printf(gettext("%s:"), file);
+ 				if (bflag) {
+ 					nchars = blkno - (buf + count - ptrend) - 2;
+@@ -945,7 +960,7 @@ execute(char *file)
+ 	}
+ 	fclose(f);
+ 	if (cflag) {
+-		if (nfile > 1 && !hflag)
++		if ((nfile > 1 || Hflag) && !hflag)
+ 			printf(gettext("%s:"), file);
+ 		printf("%lld\n", tln);
+ 	}

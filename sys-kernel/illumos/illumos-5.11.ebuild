@@ -54,7 +54,7 @@ src_prepare()
 	epatch "${FILESDIR}/binutils-path.patch" || die
 	epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	epatch "${FILESDIR}/connect-socket-in-libc.patch" || die
-	epatch "${FILESDIR}/egrep-q-option.patch" || die
+	epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
 	epatch "${FILESDIR}/find-path-option.patch" || die
 	epatch "${FILESDIR}/fix-krb5-typo.patch" || die
@@ -113,4 +113,22 @@ src_compile()
 	elog "Starting build.  This may take a while"
 	ksh usr/src/tools/scripts/bldenv.sh $(use debug && echo -d) -c illumos.sh \
 		'cd usr/src && dmake install' || die
+}
+
+src_install()
+{
+	# Install the kernel bits.  We can do this because we're not running on
+	# a live system yet.  TODO: Check that is is actually true.
+	for dir in kernel platform system ; do
+		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
+	done
+
+	# Install everything else except for /dev /devices /proc - those belong
+	# to the host system so clobbering them would not be a good idea.
+	for dir in bin boot etc export home lib mnt opt root sbin usr var ; do
+		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
+	done
+
+	# Remove /var/run since that also belongs to the host system.
+	rm -rf "${D}/var/run" || die
 }
