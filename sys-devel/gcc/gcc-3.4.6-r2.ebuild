@@ -13,7 +13,7 @@ inherit toolchain eutils
 
 DESCRIPTION="The GNU Compiler Collection"
 
-KEYWORDS="-* alpha amd64 arm ~ia64 ~mips ppc ppc64 ~s390 sh sparc x86 ~x86-fbsd"
+KEYWORDS="-* alpha amd64 arm ~ia64 ~mips ppc ppc64 ~s390 sh sparc x86 ~x86-fbsd ~x86-solaris"
 IUSE="ip28 ip32r10k n32 n64"
 
 # we need a proper glibc version for the Scrt1.o provided to the pie-ssp specs
