@@ -82,3 +82,47 @@ index a8754e8..29f19af 100644
  			break;
  		}
  
+diff --git a/usr/src/man/man1/find.1 b/usr/src/man/man1/find.1
+index ef993a3..ec3b734 100644
+--- a/usr/src/man/man1/find.1
++++ b/usr/src/man/man1/find.1
+@@ -2,6 +2,7 @@
+ .\" Copyright 1989 AT&T
+ .\" Copyright (c) 2008, Sun Microsystems, Inc. All Rights Reserved
+ .\" Copyright 2011 Nexenta Systems, Inc. All rights reserved.
++.\" Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ .\" Portions Copyright (c) 1992, X/Open Company Limited All Rights Reserved
+ .\"
+ .\" Sun Microsystems, Inc. gratefully acknowledges The Open Group for
+@@ -312,6 +313,15 @@ True if the file has inode number \fIn\fR.
+ .sp
+ .ne 2
+ .na
++\fB\fB-ipath\fR \fIpattern\fR\fR
++.ad
++.RS 17n
++Like \fB-path\fR, but the match is case insensitive.
++.RE
++
++.sp
++.ne 2
++.na
+ \fB\fB-iregex\fR \fIpattern\fR\fR
+ .ad
+ .RS 17n
+@@ -528,6 +538,15 @@ question mark first, and is executed only if the response is affirmative.
+ .sp
+ .ne 2
+ .na
++\fB\fB-path\fR\fR
++.ad
++.RS 17n
++Like \fB-name\fR, but matches the entire file path and not just basename.
++.RE
++
++.sp
++.ne 2
++.na
+ \fB\fB-perm\fR [\fB-\fR]\fImode\fR\fR
+ .ad
+ .RS 17n
