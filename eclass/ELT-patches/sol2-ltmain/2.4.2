@@ -1,41 +1,5 @@
 --- libltdl/config/ltmain.sh
 +++ libltdl/config/ltmain.sh
-@@ -980,30 +980,21 @@
- # release of libtool.
- func_check_version_match ()
- {
--  if test "$package_revision" != "$macro_revision"; then
--    if test "$VERSION" != "$macro_version"; then
--      if test -z "$macro_version"; then
--        cat >&2 <<_LT_EOF
-+  if test "$VERSION" != "$macro_version"; then
-+    if test -z "$macro_version"; then
-+      cat >&2 <<_LT_EOF
- $progname: Version mismatch error.  This is $PACKAGE $VERSION, but the
- $progname: definition of this LT_INIT comes from an older release.
- $progname: You should recreate aclocal.m4 with macros from $PACKAGE $VERSION
- $progname: and run autoconf again.
- _LT_EOF
--      else
--        cat >&2 <<_LT_EOF
-+    else
-+      cat >&2 <<_LT_EOF
- $progname: Version mismatch error.  This is $PACKAGE $VERSION, but the
- $progname: definition of this LT_INIT comes from $PACKAGE $macro_version.
- $progname: You should recreate aclocal.m4 with macros from $PACKAGE $VERSION
- $progname: and run autoconf again.
- _LT_EOF
--      fi
--    else
--      cat >&2 <<_LT_EOF
--$progname: Version mismatch error.  This is $PACKAGE $VERSION, revision $package_revision,
--$progname: but the definition of this LT_INIT comes from revision $macro_revision.
--$progname: You should recreate aclocal.m4 with macros from revision $package_revision
--$progname: of $PACKAGE $VERSION and run autoconf again.
--_LT_EOF
-     fi
- 
-     exit $EXIT_MISMATCH
 @@ -1180,7 +1180,7 @@
    test "$opt_debug" = : || func_append preserve_args " --debug"
  
@@ -45,3 +9,13 @@
        # don't eliminate duplications in $postdeps and $predeps
        opt_duplicate_compiler_generated_deps=:
        ;;
+@@ -1181,9 +1181,6 @@
+   esac
+ 
+   $opt_help || {
+-    # Sanity checks first:
+-    func_check_version_match
+-
+     if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
+       func_fatal_configuration "not configured to build any kind of library"
+     fi
