@@ -28,4 +28,5 @@ RDEPEND="|| (	mail-mta/nullmailer
 				mail-mta/qmail-ldap
 				mail-mta/sendmail
 				mail-mta/opensmtpd
-				mail-mta/citadel[-postfix] )"
+				mail-mta/citadel[-postfix]
+				sys-kernel/illumos )"
