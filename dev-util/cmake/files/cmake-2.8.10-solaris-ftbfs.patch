@@ -1,0 +1,14 @@
+--- ../cmake-2.8.10.2/Source/CursesDialog/cmCursesWidget.cxx.bak	2013-04-30 10:27:18.984425942 -0700
++++ ../cmake-2.8.10.2/Source/CursesDialog/cmCursesWidget.cxx	2013-04-30 10:26:40.075140356 -0700
+@@ -49,7 +49,11 @@
+ void cmCursesWidget::SetValue(const char* value)
+ {
+   this->Value = value;
++#ifdef __sun
++  set_field_buffer(this->Field, 0, (char *)value);
++#else
+   set_field_buffer(this->Field, 0, value);
++#endif
+ }
+ 
+ const char* cmCursesWidget::GetValue()
