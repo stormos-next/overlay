@@ -19,5 +19,6 @@ DEPEND=""
 RDEPEND="
 	|| (
 		kernel_linux? ( sys-kernel/linux-headers:0 )
-		!prefix? ( sys-freebsd/freebsd-lib )
+		kernel_FreeBSD? ( sys-freebsd/freebsd-lib )
+		kernel_SunOS? ( sys-kernel/illumos )
 	)"
