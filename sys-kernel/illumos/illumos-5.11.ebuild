@@ -31,21 +31,10 @@ EGIT_REPO_URI="git://github.com/illumos/illumos-gate.git"
 SRC_URI="http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins.i386.tar.bz2
 	http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins-nd.i386.tar.bz2"
 
-
-clean_env()
-{
-	# Keep some variables local so they don't interfere
-	# with the illumos build
-	export -n ED
-	export -n MAKE
-	export -n INSTALL
-	export -n CC
-	export -n CXX
-	export -n CFLAGS
-	export -n CXXFLAGS
-	export -n CPPFLAGS
-	export -n LDFLAGS
-}
+# For now hold back to this commit.  The next commit
+# (the one that introduces support for pipe2) breaks
+# compatibility with older kernels.
+EGIT_COMMIT="6136c589445a3ea081bd34ab72db1060875b6bcc"
 
 src_prepare()
 {
@@ -98,17 +87,31 @@ src_configure()
 	echo "# Force GCC only build" >> illumos.sh
 	echo "export __SUNC='#'" >> illumos.sh
 	echo "export __GNUC=''" >> illumos.sh
-
-	clean_env
-
-	elog "Running make setup"
-	ksh usr/src/tools/scripts/bldenv.sh $(use debug && echo -d) -c illumos.sh \
-		'cd usr/src && dmake setup' || die
 }
 
 src_compile()
 {
-	clean_env
+	# Keep some variables local so they don't interfere with the illumos build
+	export -n ED
+	export -n MAKE
+	export -n INSTALL
+	export -n CC
+	export -n CXX
+	export -n CFLAGS
+	export -n CXXFLAGS
+	export -n CPPFLAGS
+	export -n LDFLAGS
+
+	# Check there is enough RAM installed to fully utilise available CPUs
+	if [ `prtconf | grep Memory | awk '{ print $3 }'` -lt 2048 ]; then
+		ewarn "You have less than 2048Mb of memory installed"
+		ewarn "This will cause your build to be throttled"
+		ewarn "For better build times - install more RAM"
+	fi
+	
+	elog "Running make setup"
+	ksh usr/src/tools/scripts/bldenv.sh $(use debug && echo -d) -c illumos.sh \
+		'cd usr/src && dmake setup' || die
 
 	elog "Starting build.  This may take a while"
 	ksh usr/src/tools/scripts/bldenv.sh $(use debug && echo -d) -c illumos.sh \
@@ -127,6 +130,11 @@ src_install()
 	# to the host system so clobbering them would not be a good idea.
 	for dir in bin boot etc export home lib mnt opt root sbin usr var ; do
 		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
+	done
+
+	# Make xpg4 (e)grep the default
+	for bin in grep egrep ; do
+		ln -f "${D}/usr/xpg4/bin/$bin" "${D}/usr/bin/$bin" || die
 	done
 
 	# Remove /var/run since that also belongs to the host system.
