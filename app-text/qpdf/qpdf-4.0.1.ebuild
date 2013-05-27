@@ -10,7 +10,7 @@ SRC_URI="mirror://sourceforge/qpdf/${P}.tar.gz"
 
 LICENSE="Artistic-2"
 SLOT="0/10" # subslot = libqpdf soname version
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~x86 ~amd64-fbsd ~x86-fbsd ~m68k-mint"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~x86 ~amd64-fbsd ~x86-fbsd ~m68k-mint ~x86-solaris"
 IUSE="doc examples static-libs test"
 
 RDEPEND="dev-libs/libpcre
