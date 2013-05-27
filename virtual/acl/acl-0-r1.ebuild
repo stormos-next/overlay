@@ -10,9 +10,10 @@ SRC_URI=""
 
 LICENSE=""
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~ia64-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~ia64-linux ~x86-linux ~x86-solaris"
 IUSE="static-libs"
 
 DEPEND=""
 RDEPEND="kernel_linux? ( sys-apps/acl[static-libs?] )
-	kernel_FreeBSD? ( sys-freebsd/freebsd-lib )"
+	kernel_FreeBSD? ( sys-freebsd/freebsd-lib )
+	kernel_SunOS? ( sys-kernel/illumos )"
