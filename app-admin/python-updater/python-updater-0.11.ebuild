@@ -15,7 +15,7 @@ if [[ "${PV}" == "9999" ]]; then
 	EGIT_REPO_URI="git://git.overlays.gentoo.org/proj/python-updater.git"
 else
 	SRC_URI="http://dev.gentoo.org/~floppym/dist/${P}.tar.bz2"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x86-solaris"
 fi
 
 LICENSE="GPL-2"
