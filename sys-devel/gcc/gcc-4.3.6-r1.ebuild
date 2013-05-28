@@ -20,7 +20,7 @@ inherit toolchain
 DESCRIPTION="The GNU Compiler Collection"
 
 LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ ) FDL-1.2+"
-KEYWORDS="alpha amd64 arm -hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm -hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~x86-fbsd ~x86-solaris"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -39,6 +39,8 @@ src_unpack() {
 	sed -i 's/use_fixproto=yes/:/' gcc/config.gcc #PR33200
 
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env.patch
+
+	[[ ${CHOST} == *-solaris2.1* ]] && epatch "${FILESDIR}"/4.3.6/gcc-4.3.6-gmon-hack.patch
 
 	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${FILESDIR}"/4.3.2/gcc-4.3.2-softfloat.patch
 }
