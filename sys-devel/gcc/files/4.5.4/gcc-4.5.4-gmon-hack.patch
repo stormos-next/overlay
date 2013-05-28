@@ -1,0 +1,12 @@
+--- gcc-4.5.4/libgcc/config/i386/t-sol2.bak	2013-05-28 05:52:00.172641733 -0700
++++ gcc-4.5.4/libgcc/config/i386/t-sol2	2013-05-28 05:53:57.193602593 -0700
+@@ -1,4 +1,8 @@
+-# gmon build rule:
++# gmon build rules:
++gmon.o:	$(gcc_srcdir)/config/i386/gmon-sol2.c $(GCC_PASSES) $(CONFIG_H)
++	$(GCC_FOR_TARGET) $(GCC_CFLAGS) $(INCLUDES) $(CFLAGS) \
++		-c $(gcc_srcdir)/config/i386/gmon-sol2.c -o gmon.o
++
+ $(T)gmon.o:	$(gcc_srcdir)/config/i386/gmon-sol2.c $(GCC_PASSES) $(CONFIG_H)
+ 	$(GCC_FOR_TARGET) $(GCC_CFLAGS) $(INCLUDES) $(CFLAGS) \
+ 		-c $(gcc_srcdir)/config/i386/gmon-sol2.c -o $(T)gmon.o

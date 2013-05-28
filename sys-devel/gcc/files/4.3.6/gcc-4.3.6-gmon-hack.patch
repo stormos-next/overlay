@@ -1,9 +1,0 @@
---- gcc-4.3.6/libgcc/config/i386/t-sol2.bak	2013-05-28 02:40:55.478980026 -0700
-+++ gcc-4.3.6/libgcc/config/i386/t-sol2		2013-05-28 02:41:07.438566193 -0700
-@@ -1,5 +1,5 @@
- # gmon build rule:
--$(T)gmon.o:	$(gcc_srcdir)/config/i386/gmon-sol2.c $(GCC_PASSES) $(CONFIG_H)
-+$(T)gmon.o gmon.o: $(gcc_srcdir)/config/i386/gmon-sol2.c $(GCC_PASSES) $(CONFIG_H)
- 	$(GCC_FOR_TARGET) $(GCC_CFLAGS) $(INCLUDES) $(MULTILIB_CFLAGS) \
- 		-c $(gcc_srcdir)/config/i386/gmon-sol2.c -o $(T)gmon.o
- 
