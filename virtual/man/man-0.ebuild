@@ -15,4 +15,5 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="|| ( sys-apps/man
-		sys-apps/man-db )"
+		sys-apps/man-db
+		sys-kernel/illumos )"
