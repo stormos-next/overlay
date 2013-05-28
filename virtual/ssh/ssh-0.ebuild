@@ -16,5 +16,5 @@ RDEPEND="minimal? (
 		|| ( net-misc/dropbear net-misc/openssh )
 	)
 	!minimal? (
-		|| ( net-misc/openssh net-misc/dropbear )
+		|| ( net-misc/openssh net-misc/dropbear sys-kernel/illumos )
 	)"
