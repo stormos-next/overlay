@@ -46,6 +46,7 @@ src_prepare()
 	epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
 	epatch "${FILESDIR}/find-path-option.patch" || die
+	epatch "${FILESDIR}/fix-cpp-path.patch" || die
 	epatch "${FILESDIR}/fix-krb5-typo.patch" || die
 	epatch "${FILESDIR}/flex-path.patch" || die
 	epatch "${FILESDIR}/gethostbyname2.patch" || die
@@ -136,6 +137,9 @@ src_install()
 	for bin in grep egrep ; do
 		ln -f "${D}/usr/xpg4/bin/$bin" "${D}/usr/bin/$bin" || die
 	done
+
+	# Drop hardlinks which cause conflict with app-arch/gzip
+	rm -f "${D}/bin/{uncompress,zcat}" || die
 
 	# Remove /var/run since that also belongs to the host system.
 	rm -rf "${D}/var/run" || die
