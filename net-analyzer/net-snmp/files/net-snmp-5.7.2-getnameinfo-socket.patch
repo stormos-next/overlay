@@ -1,0 +1,13 @@
+diff --git a/configure.d/config_os_libs2.bak b/configure.d/config_os_libs2
+index 6306f96..9fc9afe 100644
+--- a/configure.d/config_os_libs2.bak
++++ b/configure.d/config_os_libs2
+@@ -88,6 +88,8 @@ xwinsock2)
+   AC_CHECK_FUNCS(gethostbyname)
+   AC_SEARCH_LIBS(gethostbyaddr, [nsl socket])
+   AC_CHECK_FUNCS(gethostbyaddr)
++  AC_SEARCH_LIBS(getnameinfo, [nsl socket])
++  AC_CHECK_FUNCS(getnameinfo)
+   ;;
+ esac
+ 
