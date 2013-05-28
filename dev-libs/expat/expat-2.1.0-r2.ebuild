@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/expat/expat-2.1.0-r2.ebuild,v 1.8 2013/03/09 12:33:55 ssuominen Exp $
 
 EAPI=4
-inherit eutils libtool multilib toolchain-funcs
+inherit eutils autotools multilib toolchain-funcs
 
 DESCRIPTION="XML parsing libraries"
 HOMEPAGE="http://expat.sourceforge.net/"
@@ -15,7 +15,9 @@ KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd6
 IUSE="elibc_FreeBSD examples static-libs unicode"
 
 src_prepare() {
-	elibtoolize
+	epatch "${FILESDIR}"/${P}-configure-make-env.patch
+
+	eautoreconf
 
 	mkdir "${S}"-build{,u,w} || die
 }

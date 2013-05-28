@@ -1,0 +1,9 @@
+--- expat-2.1.0/configure.in.bak	2013-05-28 15:46:09.935057906 -0700
++++ expat-2.1.0/configure.in	2013-05-28 15:47:15.619843198 -0700
+@@ -151,5 +151,5 @@
+ abs_srcdir="`cd $srcdir && pwd`"
+ abs_builddir="`pwd`"
+ if test "$abs_srcdir" != "$abs_builddir"; then
+-  make mkdir-init
++  ${MAKE:-make} mkdir-init
+ fi
