@@ -32,7 +32,6 @@ sys-devel/binutils
 sys-devel/bison
 sys-devel/flex
 sys-devel/gcc
-dev-libs/libiconv
 sys-devel/gettext
 sys-devel/gnuconfig
 sys-devel/make
@@ -41,11 +40,4 @@ virtual/editor
 virtual/libc
 virtual/os-headers
 virtual/package-manager
-sys-freebsd/freebsd-mk-defs
-sys-freebsd/freebsd-lib
-sys-freebsd/freebsd-libexec
-sys-freebsd/freebsd-bin
-sys-freebsd/freebsd-sbin
-sys-freebsd/freebsd-ubin
-sys-freebsd/freebsd-usbin
-sys-freebsd/freebsd-contrib
+sys-kernel/illumos

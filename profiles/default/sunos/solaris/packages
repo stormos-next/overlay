@@ -6,18 +6,9 @@
 # minimal FreeBSD system. DO NOT change this without contacting
 # <bsd@gentoo.org>
 #
-*sys-freebsd/freebsd-mk-defs
-*sys-freebsd/freebsd-lib
-*sys-freebsd/freebsd-libexec
-*sys-freebsd/freebsd-bin
-*sys-freebsd/freebsd-sbin
-*sys-freebsd/freebsd-ubin
-*sys-freebsd/freebsd-usbin
-*sys-freebsd/freebsd-share
-*sys-freebsd/freebsd-contrib
+*sys-kernel/illumos
 
 *sys-devel/gettext
-*dev-libs/libiconv
 
 *app-arch/libarchive
 
