@@ -1060,6 +1060,25 @@ gcc_do_configure() {
 	[[ ${CTARGET} == *-darwin* ]] && \
 		confgcc+=" --enable-version-specific-runtime-libs"
 
+	# On Solaris we force use of the sun linker and assembler except on X86
+	# where we force use of the GNU assember instead.
+	case ${CTARGET} in
+		sparc-*-solaris2.1*|sparcv9-*-solaris2.1*)
+			confgcc+=" \
+				--without-gnu-ld \
+				--with-ld=/usr/bin/ld \
+				--without-gnu-as \
+				--with-as=/usr/bin/as"
+		;;
+		i[3456]86-*-solaris2.1*)
+			confgcc+=" \
+				--without-gnu-ld \
+				--with-ld=/usr/bin/ld \
+				--with-gnu-as \
+				--with-as=/usr/gnu/bin/as"
+		;;
+	esac
+
 	# All our cross-compile logic goes here !  woo !
 	confgcc+=" --host=${CHOST}"
 	if is_crosscompile || tc-is-cross-compiler ; then
