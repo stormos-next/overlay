@@ -869,7 +869,7 @@ gcc-compiler-configure() {
 		if use_if_iuse libssp ; then
 			confgcc+=" --enable-libssp"
 		else
-			export gcc_cv_libc_provides_ssp=yes
+			[[ ${CTARGET} == *-solaris* ]] || export gcc_cv_libc_provides_ssp=yes
 			confgcc+=" --disable-libssp"
 		fi
 
