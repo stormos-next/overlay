@@ -1,0 +1,26 @@
+--- foomatic-filters-4.0.17/process.c.bak	2013-05-27 18:38:56.868666172 -0700
++++ foomatic-filters-4.0.17/process.c	2013-05-27 18:40:47.201400031 -0700
+@@ -90,7 +90,7 @@
+     clear_proc_list();
+ }
+ 
+-static int _start_process(const char *name,
++static pid_t _start_process(const char *name,
+                           int (*proc_func)(FILE *, FILE *, void *),
+                           void *user_arg, FILE **pipe_in, FILE **pipe_out,
+                           int createprocessgroup)
+@@ -182,12 +182,12 @@
+     return EXIT_PRNERR_NORETRY_BAD_SETTINGS;
+ }
+ 
+-int start_system_process(const char *name, const char *command, FILE **fdin, FILE **fdout)
++pid_t start_system_process(const char *name, const char *command, FILE **fdin, FILE **fdout)
+ {
+     return _start_process(name, exec_command, (void*)command, fdin, fdout, 1);
+ }
+ 
+-int start_process(const char *name, int (*proc_func)(FILE *, FILE *, void *), void *user_arg, FILE **fdin, FILE **fdout)
++pid_t start_process(const char *name, int (*proc_func)(FILE *, FILE *, void *), void *user_arg, FILE **fdin, FILE **fdout)
+ {
+     return _start_process(name, proc_func, user_arg, fdin, fdout, 0);
+ }

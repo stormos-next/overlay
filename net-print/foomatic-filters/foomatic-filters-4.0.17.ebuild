@@ -12,7 +12,7 @@ SRC_URI="http://www.openprinting.org/download/foomatic/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-solaris"
 IUSE="cups dbus"
 
 RDEPEND="
@@ -43,6 +43,8 @@ src_prepare() {
 
 	# Search for libs in ${libdir}, not just /usr/lib
 	epatch "${FILESDIR}"/${PN}-4.0.9-multilib.patch
+	# Fix int/pid_t type mismatch in func prototypes
+	epatch "${FILESDIR}"/${PN}-4.0.17-wonky-prototypes.patch
 	eautoreconf
 
 	export CUPS_BACKENDS=${CUPS_SERVERBIN}/backend \
