@@ -280,7 +280,7 @@ multibuild_merge_root() {
 		# Prevents deadlock if we aren't in a subshell.
 		eval "exec ${lock_fd}>&-"
 	else
-		die "Unsupported userland (${USERLAND}), please report."
+		ewarn "Unsupported userland (${USERLAND}), please report."
 	fi
 
 	if [[ ${ret} -ne 0 ]]; then
