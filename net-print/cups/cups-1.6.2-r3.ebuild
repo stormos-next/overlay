@@ -13,7 +13,7 @@ MY_PV=${PV/_beta/b}
 
 if [[ "${PV}" != "9999" ]]; then
 	SRC_URI="mirror://easysw/${PN}/${MY_PV}/${MY_P}-source.tar.bz2"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~x86-solaris"
 else
 	inherit subversion
 	ESVN_REPO_URI="http://svn.easysw.com/public/cups/trunk"
@@ -25,7 +25,7 @@ HOMEPAGE="http://www.cups.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="acl dbus debug +filters gnutls java kerberos pam
+IUSE="elibc_SunOS acl dbus debug +filters gnutls java kerberos pam
 	python selinux +ssl static-libs +threads usb X xinetd zeroconf"
 
 LANGS="ca es fr ja ru"
@@ -83,6 +83,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-1.4.4-nostrip.patch"
 	"${FILESDIR}/${PN}-1.5.0-systemd-socket-2.patch"	# systemd support
 	"${FILESDIR}/${PN}-1.6.2-statedir.patch"
+	"${FILESDIR}/${PN}-1.6.2-search-libsocket.patch"	# fix solaris build
 )
 
 pkg_setup() {
@@ -155,6 +156,13 @@ src_configure() {
 		myconf+="
 			--disable-gnutls
 			--disable-openssl
+		"
+	fi
+
+	# disable LFS on solaris as it breaks the build
+	if use elibc_SunOS ; then
+		myconf+="
+			--disable-largefile
 		"
 	fi
 

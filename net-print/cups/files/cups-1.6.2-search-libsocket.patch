@@ -1,0 +1,15 @@
+--- cups-1.6.2/config-scripts/cups-network.m4.bak	2013-04-30 13:21:55.363349977 -0700
++++ cups-1.6.2/config-scripts/cups-network.m4	2013-04-30 13:22:55.451933411 -0700
+@@ -15,10 +15,10 @@
+ 
+ AC_CHECK_HEADER(resolv.h,AC_DEFINE(HAVE_RESOLV_H))
+ AC_SEARCH_LIBS(socket, socket)
+-AC_SEARCH_LIBS(gethostbyaddr, nsl)
++AC_SEARCH_LIBS(gethostbyaddr, nsl socket)
+ AC_SEARCH_LIBS(getifaddrs, nsl, AC_DEFINE(HAVE_GETIFADDRS))
+ AC_SEARCH_LIBS(hstrerror, nsl socket resolv, AC_DEFINE(HAVE_HSTRERROR))
+-AC_SEARCH_LIBS(rresvport_af, nsl, AC_DEFINE(HAVE_RRESVPORT_AF))
++AC_SEARCH_LIBS(rresvport_af, nsl socket, AC_DEFINE(HAVE_RRESVPORT_AF))
+ AC_SEARCH_LIBS(__res_init, resolv bind, AC_DEFINE(HAVE_RES_INIT),
+ 	AC_SEARCH_LIBS(res_9_init, resolv bind, AC_DEFINE(HAVE_RES_INIT),
+ 	AC_SEARCH_LIBS(res_init, resolv bind, AC_DEFINE(HAVE_RES_INIT))))
