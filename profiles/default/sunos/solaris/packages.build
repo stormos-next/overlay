@@ -18,7 +18,6 @@ net-misc/wget
 sys-devel/autoconf
 sys-devel/automake
 sys-devel/libtool
-sys-apps/openrc
 sys-apps/baselayout
 sys-apps/diffutils
 sys-apps/file
@@ -32,7 +31,6 @@ sys-devel/binutils
 sys-devel/bison
 sys-devel/flex
 sys-devel/gcc
-sys-devel/gettext
 sys-devel/gnuconfig
 sys-devel/make
 sys-devel/patch

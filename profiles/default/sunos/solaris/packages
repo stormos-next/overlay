@@ -8,10 +8,4 @@
 #
 *sys-kernel/illumos
 
-*sys-devel/gettext
-
 *app-arch/libarchive
-
-*sys-libs/timezone-data
-
-*sys-process/pidof-bsd
