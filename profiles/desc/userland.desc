@@ -8,3 +8,4 @@
 
 GNU - USERLAND setting for systems that use the GNU userland tools
 BSD - USERLAND setting for systems using BSDish userland (FreeBSD OpenBSD NetBSD DragonFly)
+SunOS - USERLAND setting for systems using the SunOS userland (OpenSolaris, illumos, etc)

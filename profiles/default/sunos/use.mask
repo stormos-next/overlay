@@ -47,7 +47,7 @@ ifp
 ipod
 
 # Mask extraneous elibc/kernel combinations
--userland_solaris
+-userland_SunOS
 elibc_glibc
 kernel_linux
 userland_GNU
