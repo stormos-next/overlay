@@ -19,7 +19,7 @@ IUSE="nls readline"
 RDEPEND="!<sys-apps/baselayout-2.0.1
 	readline? ( sys-libs/readline )"
 DEPEND="${RDEPEND}
-	nls? ( sys-devel/gettext )"
+	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
 
 src_prepare() {
 	# use symlinks rather than hardlinks, and disable version links
