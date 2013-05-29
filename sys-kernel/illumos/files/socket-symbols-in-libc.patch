@@ -11,7 +11,7 @@ index 9dc147a..34c1674 100644
  
  #
  # MAPFILE HEADER START
-@@ -90,6 +92,46 @@ $if _x86 && _ELF64
+@@ -90,6 +92,58 @@ $if _x86 && _ELF64
  $add amd64
  $endif
  
@@ -23,8 +23,12 @@ index 9dc147a..34c1674 100644
 +	connect		{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	freeaddrinfo	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	getaddrinfo	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
++	getsockname	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
++	getsockopt	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	listen		{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
++	recv		{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	recvfrom	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
++	send		{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	setsockopt	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	shutdown	{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
 +	socket		{ TYPE = FUNCTION; FILTER = /usr/lib/libsocket.so.1 };
@@ -34,8 +38,12 @@ index 9dc147a..34c1674 100644
 +	connect		{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	freeaddrinfo	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	getaddrinfo	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
++	getsockname	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
++	getsockopt	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	listen		{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
++	recv		{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	recvfrom	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
++	send		{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	setsockopt	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	shutdown	{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
 +	socket		{ TYPE = FUNCTION; FILTER = /usr/lib/sparcv9/libsocket.so.1 };
@@ -45,8 +53,12 @@ index 9dc147a..34c1674 100644
 +	connect		{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	freeaddrinfo	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	getaddrinfo	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
++	getsockname	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
++	getsockopt	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	listen		{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
++	recv		{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	recvfrom	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
++	send		{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	setsockopt	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	shutdown	{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };
 +	socket		{ TYPE = FUNCTION; FILTER = /usr/lib/amd64/libsocket.so.1 };

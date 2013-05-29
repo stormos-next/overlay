@@ -24,7 +24,7 @@ index 722fa72..d9d3bb3 100644
  # $(ROOT)/licenses.
  #
 -install: install1 install2 _msg stage-licenses
-+install: install1 install2 _msg #stage-licenses
++install: install1 install2 _msg
  	@cd msg; pwd; $(MAKE) _msg
  	@rm -rf "$(ROOT)/catalog"
  

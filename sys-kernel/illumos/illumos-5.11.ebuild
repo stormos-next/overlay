@@ -138,8 +138,14 @@ src_install()
 		ln -f "${D}/usr/xpg4/bin/$bin" "${D}/usr/bin/$bin" || die
 	done
 
-	# Drop hardlinks which cause conflict with app-arch/gzip
-	rm -f "${D}/bin/{uncompress,zcat}" || die
+	# Drop uncompress/zcat.  We want to use sys/gzip version instead
+	rm -f "${D}/usr/bin/{uncompress,zcat}" || die
+	rm -f "${D}/usr/share/man/man1/{uncompress,zcat}.1" || die
+
+	# Drop file.  We want to use sys-apps/file version instead
+	rm -f "${D}/usr/bin/file" "${D}/etc/magic" || die
+	rm -f "${D}/usr/share/man/man1/file.1" || die
+	rm -f "${D}/usr/share/man/man4/magic.4" || die
 
 	# Remove /var/run since that also belongs to the host system.
 	rm -rf "${D}/var/run" || die
