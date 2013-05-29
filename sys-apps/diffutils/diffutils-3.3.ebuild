@@ -17,7 +17,7 @@ KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~spar
 IUSE="nls static"
 
 DEPEND="app-arch/xz-utils
-	nls? ( sys-devel/gettext )"
+	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
 
 DOCS=( AUTHORS ChangeLog NEWS README THANKS TODO )
 
