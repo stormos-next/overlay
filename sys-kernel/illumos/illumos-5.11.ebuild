@@ -9,7 +9,7 @@ inherit git-2 eutils
 KEYWORDS="~x86-solaris"
 IUSE="multilib debug"
 
-RDEPEND="dev-libs/libxml2[multilib?]
+RDEPEND="dev-libs/libxml2
 	dev-libs/openssl[multilib?]
 	dev-libs/glib
 	dev-libs/dbus-glib[multilib?]
@@ -42,7 +42,6 @@ src_prepare()
 	epatch "${FILESDIR}/better-perl-compat.patch" || die
 	epatch "${FILESDIR}/binutils-path.patch" || die
 	epatch "${FILESDIR}/BUILD64_fixes.patch" || die
-	epatch "${FILESDIR}/connect-socket-in-libc.patch" || die
 	epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
 	epatch "${FILESDIR}/find-path-option.patch" || die
@@ -58,6 +57,7 @@ src_prepare()
 	epatch "${FILESDIR}/no-build-pkg-shite.patch" || die
 	epatch "${FILESDIR}/no-gnu-gettext.patch" || die
 	epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
+	epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
 	epatch "${FILESDIR}/sun-logo-is-missing.patch" || die
 }
 
