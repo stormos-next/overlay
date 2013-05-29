@@ -62,6 +62,7 @@ pkg_setup() {
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-1.5.12-selinux-when-dropping-capabilities-only-include-AUDI.patch
+	epatch "${FILESDIR}"/${PN}-1.6.8-disable-systemd-crud.patch
 	epatch "${FILESDIR}"/${PN}-1.6.8-solaris-network-libs.patch
 
 	# Tests were restricted because of this

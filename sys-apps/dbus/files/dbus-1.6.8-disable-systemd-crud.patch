@@ -1,0 +1,36 @@
+--- dbus-1.6.8/dbus/dbus-sysdeps-unix.c.bak	2013-05-28 17:06:37.222397539 -0700
++++ dbus-1.6.8/dbus/dbus-sysdeps-unix.c	2013-05-28 17:07:16.204367852 -0700
+@@ -1139,6 +1139,7 @@
+   return listen_fd;
+ }
+ 
++#ifdef HAVE_SYSTEMD
+ /**
+  * Acquires one or more sockets passed in from systemd. The sockets
+  * are set to be nonblocking.
+@@ -1237,6 +1238,7 @@
+   dbus_free (new_fds);
+   return -1;
+ }
++#endif
+ 
+ /**
+  * Creates a socket and connects to a socket at the given host
+--- dbus-1.6.8/dbus/dbus-server-unix.c.bak	2013-05-28 17:07:35.134989108 -0700
++++ dbus-1.6.8/dbus/dbus-server-unix.c	2013-05-28 17:08:23.412903942 -0700
+@@ -147,6 +147,7 @@
+           return DBUS_SERVER_LISTEN_DID_NOT_CONNECT;
+         }
+     }
++#ifdef HAVE_SYSTEMD
+   else if (strcmp (method, "systemd") == 0)
+     {
+       int n, *fds;
+@@ -180,6 +181,7 @@
+ 
+       return DBUS_SERVER_LISTEN_OK;
+ 	}
++#endif
+ #ifdef DBUS_ENABLE_LAUNCHD
+   else if (strcmp (method, "launchd") == 0)
+     {
