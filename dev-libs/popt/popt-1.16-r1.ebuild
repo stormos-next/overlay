@@ -15,7 +15,7 @@ KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd6
 IUSE="nls static-libs"
 
 RDEPEND="nls? ( virtual/libintl )"
-DEPEND="nls? ( sys-devel/gettext )"
+DEPEND="nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
 
 src_prepare() {
 	epatch "${FILESDIR}"/fix-popt-pkgconfig-libdir.patch #349558
