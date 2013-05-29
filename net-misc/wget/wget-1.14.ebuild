@@ -28,7 +28,10 @@ DEPEND="${RDEPEND}
 	app-arch/xz-utils
 	virtual/pkgconfig
 	static? ( ${LIB_DEPEND} )
-	nls? ( sys-devel/gettext )"
+	nls? ( || (
+		sys-devel/gettext
+		sys-kernel/illumos
+	) )"
 
 REQUIRED_USE="ntlm? ( !gnutls ssl ) gnutls? ( ssl )"
 
