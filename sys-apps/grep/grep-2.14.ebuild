@@ -18,11 +18,11 @@ RDEPEND="nls? ( virtual/libintl )
 	pcre? ( >=dev-libs/libpcre-7.8-r1 )
 	virtual/libiconv"
 DEPEND="${RDEPEND}
-	nls? ( sys-devel/gettext )"
+	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
 
 src_configure() {
 	local myconf
-	use userland_solaris && myconf="--program-prefix=g"
+	use userland_SunOS && myconf="--program-prefix=g"
 
 	econf \
 		--bindir="${EPREFIX}"/bin \
