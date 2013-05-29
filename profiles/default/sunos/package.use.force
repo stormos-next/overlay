@@ -2,6 +2,10 @@
 # lprng deps on a p.masked package, force xarchiver to use cups
 xfce-base/xfprint cups
 
+# Force ghostscript to use cups or it'll mess up the dependency
+# graph and make updating a complete pain in the ass.
+app-text/ghostscript-gpl cups
+
 # Javier Villavicencio <the_paya@gentoo.org> (22 Jan 2009)
 # Otherwise useless tar.
 app-arch/libarchive bzip2 zlib lzma
