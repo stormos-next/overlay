@@ -12,7 +12,7 @@ IUSE="multilib debug"
 RDEPEND="dev-libs/libxml2
 	dev-libs/openssl[multilib?]
 	dev-libs/glib
-	dev-libs/dbus-glib[multilib?]
+	dev-libs/dbus-glib
 	sys-libs/zlib[multilib?]
 	sys-apps/dbus[multilib?]
 	dev-libs/nspr[multilib?]
