@@ -28,7 +28,7 @@ LIB_DEPEND="acl? ( sys-apps/acl[static-libs] )
 	xattr? ( !userland_BSD? ( sys-apps/attr[static-libs] ) )"
 RDEPEND="!static? ( ${LIB_DEPEND//\[static-libs]} )
 	selinux? ( sys-libs/libselinux )
-	nls? ( >=sys-devel/gettext-0.15 )
+	nls? ( || (  >=sys-devel/gettext-0.15 >=sys-kernel/illumos-5.11 ) )
 	!app-misc/realpath
 	!<sys-apps/util-linux-2.13
 	!sys-apps/stat
@@ -148,7 +148,7 @@ src_install() {
 		for x in ${com} uname ; do
 			dosym /bin/${x} /usr/bin/${x} || die
 		done
-	elif [[ ${USERLAND} == "solaris" ]] ; then
+	elif [[ ${USERLAND} == "SunOS" ]] ; then
 		# solaris does not provide readlink or stat
 		for x in readlink stat ; do
 			dosym /usr/bin/g${x} /usr/bin/${x} || die
