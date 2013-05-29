@@ -23,7 +23,7 @@ RDEPEND="
 "
 DEPEND="
 	${RDEPEND}
-	nls? ( sys-devel/gettext )
+	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )
 	!minimal? ( sys-devel/libtool )
 	!<=sys-freebsd/freebsd-contrib-8.9999
 "
