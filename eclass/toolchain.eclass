@@ -130,7 +130,10 @@ fi
 #---->> DEPEND <<----
 
 RDEPEND="sys-libs/zlib
-	nls? ( sys-devel/gettext )"
+	nls? ( || (
+		sys-devel/gettext
+		sys-kernel/illumos
+	) )"
 if tc_version_is_at_least 3 ; then
 	RDEPEND+=" virtual/libiconv"
 fi
@@ -144,7 +147,14 @@ if tc_version_is_at_least 4 ; then
 	if tc_version_is_at_least 4.5 ; then
 		RDEPEND+=" >=dev-libs/mpc-0.8.1"
 	fi
-	in_iuse lto && RDEPEND+=" lto? ( || ( >=dev-libs/elfutils-0.143 dev-libs/libelf ) )"
+	if in_iuse lto ; then
+		RDEPEND+="
+			lto? ( || (
+				>=dev-libs/elfutils-0.143
+				dev-libs/libelf
+				sys-kernel/illumos
+			) )"
+	fi
 fi
 if in_iuse graphite ; then
 	if tc_version_is_at_least 4.8 ; then
