@@ -27,10 +27,7 @@ DEPEND="${RDEPEND}
 	doc? ( dev-python/docutils )"
 RDEPEND="!app-admin/eselect-news
 	${RDEPEND}
-	|| (
-		sys-apps/file
-		sys-kernel/illumos
-	)
+	sys-apps/file
 	sys-libs/ncurses"
 
 # Commented out: only few users of eselect will edit its source
