@@ -31,34 +31,32 @@ EGIT_REPO_URI="git://github.com/illumos/illumos-gate.git"
 SRC_URI="http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins.i386.tar.bz2
 	http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins-nd.i386.tar.bz2"
 
-# For now hold back to this commit.  The next commit
-# (the one that introduces support for pipe2) breaks
-# compatibility with older kernels.
-EGIT_COMMIT="6136c589445a3ea081bd34ab72db1060875b6bcc"
+EGIT_COMMIT="aad02571bc59671aa3103bb070ae365f531b0b62"
 
 src_prepare()
 {
-	epatch "${FILESDIR}/better-apache-compat.patch" || die
-	epatch "${FILESDIR}/better-perl-compat.patch" || die
-	epatch "${FILESDIR}/binutils-path.patch" || die
-	epatch "${FILESDIR}/BUILD64_fixes.patch" || die
-	epatch "${FILESDIR}/egrep-Hq-options.patch" || die
-	epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
-	epatch "${FILESDIR}/find-path-option.patch" || die
-	epatch "${FILESDIR}/fix-cpp-path.patch" || die
-	epatch "${FILESDIR}/fix-krb5-typo.patch" || die
-	epatch "${FILESDIR}/flex-path.patch" || die
-	epatch "${FILESDIR}/gethostbyname2.patch" || die
-	epatch "${FILESDIR}/grep-H-option.patch" || die
-	epatch "${FILESDIR}/kmf_openssl_no_md2.patch" || die
-	epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
-	epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
-	epatch "${FILESDIR}/libiconv-shim.patch" || die
-	epatch "${FILESDIR}/no-build-pkg-shite.patch" || die
-	epatch "${FILESDIR}/no-gnu-gettext.patch" || die
-	epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
-	epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
-	epatch "${FILESDIR}/sun-logo-is-missing.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/binutils-path.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/flex-path.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/gethostbyname2.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/kmf_openssl_no_md2.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libiconv-shim.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-build-pkg-shite.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-echo-043.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-gnu-gettext.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/sun-logo-is-missing.patch" || die
 }
 
 src_configure()

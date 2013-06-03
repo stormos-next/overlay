@@ -1,0 +1,1915 @@
+diff --git a/usr/src/cmd/truss/codes.c b/usr/src/cmd/truss/codes.c
+index 87fae4f..dcab90e 100644
+--- a/usr/src/cmd/truss/codes.c
++++ b/usr/src/cmd/truss/codes.c
+@@ -146,8 +146,8 @@ const char *const FCNTLname[] = {
+ 	"F_GETLK64",
+ 	"F_SETLK64",
+ 	"F_SETLKW64",
+-	"F_DUP2FD_CLOEXEC",
+-	"F_DUPFD_CLOEXEC",
++	NULL,		/* 36 */
++	NULL,		/* 37 */
+ 	NULL,		/* 38 */
+ 	NULL,		/* 39 */
+ 	"F_SHARE",
+diff --git a/usr/src/cmd/truss/print.c b/usr/src/cmd/truss/print.c
+index ed39e33..b149c42 100644
+--- a/usr/src/cmd/truss/print.c
++++ b/usr/src/cmd/truss/print.c
+@@ -371,48 +371,6 @@ prt_ioa(private_t *pri, int raw, long val)	/* print ioctl argument */
+ }
+ 
+ void
+-prt_pip(private_t *pri, int raw, long val)	/* print pipe code */
+-{
+-	const char *s = NULL;
+-
+-	if (!raw) {
+-		switch (val) {
+-		case O_CLOEXEC:
+-			s = "O_CLOEXEC";
+-			break;
+-		case O_NONBLOCK:
+-			s = "O_NONBLOCK";
+-			break;
+-		case O_CLOEXEC|O_NONBLOCK:
+-			s = "O_CLOEXEC|O_NONBLOCK";
+-			break;
+-		}
+-	}
+-
+-	if (s == NULL)
+-		prt_dex(pri, 0, val);
+-	else
+-		outstring(pri, s);
+-}
+-
+-void
+-prt_pfd(private_t *pri, int raw, long val)	/* print pipe code */
+-{
+-	int fds[2];
+-	char str[32];
+-
+-	/* the fds only have meaning if the return value is 0 */
+-	if (!raw &&
+-	    pri->Rval1 >= 0 &&
+-	    Pread(Proc, fds, sizeof (fds), (long)val) == sizeof (fds)) {
+-		(void) snprintf(str, sizeof (str), "[%d,%d]", fds[0], fds[1]);
+-		outstring(pri, str);
+-	} else {
+-		prt_hex(pri, 0, val);
+-	}
+-}
+-
+-void
+ prt_fcn(private_t *pri, int raw, long val)	/* print fcntl code */
+ {
+ 	const char *s = raw? NULL : fcntlname(val);
+@@ -1783,32 +1741,6 @@ prt_skv(private_t *pri, int raw, long val)
+ 	}
+ }
+ 
+-/*
+- * Print accept4() flags argument.
+- */
+-void
+-prt_acf(private_t *pri, int raw, long val)
+-{
+-	int first = 1;
+-	if (raw || !val ||
+-	    (val & ~(SOCK_CLOEXEC|SOCK_NDELAY|SOCK_NONBLOCK))) {
+-		prt_dex(pri, 0, val);
+-		return;
+-	}
+-
+-	if (val & SOCK_CLOEXEC) {
+-		outstring(pri, "|SOCK_CLOEXEC" + first);
+-		first = 0;
+-	}
+-	if (val & SOCK_NDELAY) {
+-		outstring(pri, "|SOCK_NDELAY" + first);
+-		first = 0;
+-	}
+-	if (val & SOCK_NONBLOCK) {
+-		outstring(pri, "|SOCK_NONBLOCK" + first);
+-	}
+-}
+-
+ 
+ /*
+  * Print setsockopt()/getsockopt() 2nd argument.
+@@ -2767,7 +2699,7 @@ void (* const Print[])() = {
+ 	prt_rst,	/* RST -- print string returned by syscall */
+ 	prt_smf,	/* SMF -- print streams message flags */
+ 	prt_ioa,	/* IOA -- print ioctl argument */
+-	prt_pip,	/* PIP -- print pipe flags */
++	prt_nov,	/* Was SIX, now available for reuse */
+ 	prt_mtf,	/* MTF -- print mount flags */
+ 	prt_mft,	/* MFT -- print mount file system type */
+ 	prt_iob,	/* IOB -- print contents of I/O buffer */
+@@ -2842,7 +2774,5 @@ void (* const Print[])() = {
+ 	prt_mob,	/* MOB -- print mmapobj() flags */
+ 	prt_snf,	/* SNF -- print AT_SYMLINK_[NO]FOLLOW flag */
+ 	prt_skc,	/* SKC -- print sockconfig() subcode */
+-	prt_acf,	/* ACF -- print accept4 flags */
+-	prt_pfd,	/* PFD -- print pipe fds */
+ 	prt_dec,	/* HID -- hidden argument, make this the last one */
+ };
+diff --git a/usr/src/cmd/truss/print.h b/usr/src/cmd/truss/print.h
+index 9a9a43b..98c2223 100644
+--- a/usr/src/cmd/truss/print.h
++++ b/usr/src/cmd/truss/print.h
+@@ -26,7 +26,6 @@
+ /*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
+ /*	  All Rights Reserved  	*/
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All right reserved. */
+ 
+ #ifndef	_TRUSS_PRINT_H
+ #define	_TRUSS_PRINT_H
+@@ -62,7 +61,7 @@ extern "C" {
+ #define	RST	21		/* print string returned by sys call */
+ #define	SMF	22		/* print streams message flags */
+ #define	IOA	23		/* print ioctl argument */
+-#define	PIP	24		/* print pipe flags */
++/* Number 24 now available for reuse */
+ #define	MTF	25		/* print mount flags */
+ #define	MFT	26		/* print mount file system type */
+ #define	IOB	27		/* print contents of I/O buffer */
+@@ -137,9 +136,7 @@ extern "C" {
+ #define	MOB	96		/* print mmapobj() flags */
+ #define	SNF	97		/* print AT_SYMLINK_[NO]FOLLOW flag */
+ #define	SKC	98		/* print sockconfig subcode */
+-#define	ACF	99		/* accept4 flags */
+-#define	PFD	100		/* pipe fds[2] */
+-#define	HID	101		/* hidden argument, don't print */
++#define	HID	99		/* hidden argument, don't print */
+ 				/* make sure HID is always the last member */
+ 
+ /*
+diff --git a/usr/src/cmd/truss/systable.c b/usr/src/cmd/truss/systable.c
+index 3cd07c6..66ae252 100644
+--- a/usr/src/cmd/truss/systable.c
++++ b/usr/src/cmd/truss/systable.c
+@@ -26,8 +26,6 @@
+ /*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
+ /*	  All Rights Reserved  	*/
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <fcntl.h>
+@@ -260,7 +258,7 @@ const struct systable systable[] = {
+ {"pgrpsys",	3, DEC, NOV, DEC, DEC, DEC},			/*  39 */
+ {"uucopystr",	3, DEC, NOV, STG, RST, UNS},			/*  40 */
+ { NULL,		8, HEX, HEX, HEX, HEX, HEX, HEX, HEX, HEX, HEX, HEX},
+-{"pipe",	2, DEC, NOV, PFD, PIP},				/*  42 */
++{"pipe",	0, DEC, DEC},					/*  42 */
+ {"times",	1, DEC, NOV, HEX},				/*  43 */
+ {"profil",	4, DEC, NOV, HEX, UNS, HEX, OCT},		/*  44 */
+ {"faccessat",	4, DEC, NOV, ATC, STG, ACC, FAT},		/*  45 */
+@@ -452,7 +450,7 @@ const struct systable systable[] = {
+ {"so_socketpair", 1, DEC, NOV, HEX},				/* 231 */
+ {"bind",	4, DEC, NOV, DEC, HEX, DEC, SKV},		/* 232 */
+ {"listen",	3, DEC, NOV, DEC, DEC, SKV},			/* 233 */
+-{"accept",	5, DEC, NOV, DEC, HEX, HEX, SKV, ACF},		/* 234 */
++{"accept",	4, DEC, NOV, DEC, HEX, HEX, SKV},		/* 234 */
+ {"connect",	4, DEC, NOV, DEC, HEX, DEC, SKV},		/* 235 */
+ {"shutdown",	3, DEC, NOV, DEC, SHT, SKV},			/* 236 */
+ {"recv",	4, DEC, NOV, DEC, IOB, DEC, DEC},		/* 237 */
+diff --git a/usr/src/head/stdlib.h b/usr/src/head/stdlib.h
+index 329f654..66a4bb4 100644
+--- a/usr/src/head/stdlib.h
++++ b/usr/src/head/stdlib.h
+@@ -23,8 +23,6 @@
+  * Copyright (c) 1989, 2010, Oracle and/or its affiliates. All rights reserved.
+  */
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ /*	Copyright (c) 1988 AT&T	*/
+ /*	  All Rights Reserved  	*/
+ 
+@@ -218,7 +216,6 @@ extern int clearenv(void);
+ extern void closefrom(int);
+ extern int daemon(int, int);
+ extern int dup2(int, int);
+-extern int dup3(int, int, int);
+ extern int fdwalk(int (*)(void *, int), void *);
+ extern char *qecvt(long double, int, int *, int *);
+ extern char *qfcvt(long double, int, int *, int *);
+@@ -326,7 +323,6 @@ extern int clearenv();
+ extern void closefrom();
+ extern int daemon();
+ extern int dup2();
+-extern int dup3();
+ extern int fdwalk();
+ extern char *qecvt();
+ extern char *qfcvt();
+diff --git a/usr/src/head/unistd.h b/usr/src/head/unistd.h
+index 04725ea..75078dd 100644
+--- a/usr/src/head/unistd.h
++++ b/usr/src/head/unistd.h
+@@ -26,8 +26,6 @@
+ /*	Copyright (c) 1988 AT&T	*/
+ /*	  All Rights Reserved  	*/
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ #ifndef _UNISTD_H
+ #define	_UNISTD_H
+ 
+@@ -276,7 +274,6 @@ extern char *cuserid(char *);
+ #endif
+ extern int dup(int);
+ extern int dup2(int, int);
+-extern int dup3(int, int, int);
+ #if defined(_XPG4) || defined(__EXTENSIONS__)
+ extern void encrypt(char *, int);
+ #endif /* defined(XPG4) || defined(__EXTENSIONS__) */
+@@ -418,7 +415,6 @@ extern int mincore(caddr_t, size_t, char *);
+ extern long pathconf(const char *, int);
+ extern int pause(void);
+ extern int pipe(int *);
+-extern int pipe2(int *, int);
+ #if !defined(_POSIX_C_SOURCE) || defined(_XPG5) || \
+ 	(defined(_LARGEFILE_SOURCE) && _FILE_OFFSET_BITS == 64) || \
+ 	defined(__EXTENSIONS__)
+@@ -612,7 +608,6 @@ extern char *cuserid();
+ #endif
+ extern int dup();
+ extern int dup2();
+-extern int dup3();
+ #if defined(_XPG4) || defined(__EXTENSIONS__)
+ extern void encrypt();
+ #endif /* defined(_XPG4) || defined(__EXTENSIONS__) */
+diff --git a/usr/src/lib/libc/amd64/Makefile b/usr/src/lib/libc/amd64/Makefile
+index 9ddd748..eba3088 100644
+--- a/usr/src/lib/libc/amd64/Makefile
++++ b/usr/src/lib/libc/amd64/Makefile
+@@ -21,7 +21,6 @@
+ #
+ # Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
+ #
+-# Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ # Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+ #
+@@ -223,7 +222,6 @@ COMSYSOBJS=			\
+ 	pathconf.o		\
+ 	pause.o			\
+ 	pcsample.o		\
+-	pipe2.o			\
+ 	pollsys.o		\
+ 	pread.o			\
+ 	priocntlset.o		\
+@@ -280,6 +278,7 @@ SYSOBJS=			\
+ 	gettimeofday.o		\
+ 	lwp_private.o		\
+ 	nuname.o		\
++	pipe.o			\
+ 	syscall.o		\
+ 	sysi86.o		\
+ 	tls_get_addr.o		\
+@@ -468,7 +467,6 @@ PORTGEN=			\
+ 	pfmt.o			\
+ 	pfmt_data.o		\
+ 	pfmt_print.o		\
+-	pipe.o			\
+ 	plock.o			\
+ 	poll.o			\
+ 	posix_fadvise.o		\
+diff --git a/usr/src/lib/libc/amd64/sys/pipe.s b/usr/src/lib/libc/amd64/sys/pipe.s
+new file mode 100644
+index 0000000..fd659be
+--- /dev/null
++++ b/usr/src/lib/libc/amd64/sys/pipe.s
+@@ -0,0 +1,42 @@
++/*
++ * CDDL HEADER START
++ *
++ * The contents of this file are subject to the terms of the
++ * Common Development and Distribution License (the "License").
++ * You may not use this file except in compliance with the License.
++ *
++ * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
++ * or http://www.opensolaris.org/os/licensing.
++ * See the License for the specific language governing permissions
++ * and limitations under the License.
++ *
++ * When distributing Covered Code, include this CDDL HEADER in each
++ * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
++ * If applicable, add the following below this CDDL HEADER, with the
++ * fields enclosed by brackets "[]" replaced with your own identifying
++ * information: Portions Copyright [yyyy] [name of copyright owner]
++ *
++ * CDDL HEADER END
++ */
++/*
++ * Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
++ * Use is subject to license terms.
++ */
++
++	.file	"pipe.s"
++
++#include <sys/asm_linkage.h>
++
++	ANSI_PRAGMA_WEAK(pipe,function)
++
++#include "SYS.h"
++
++	ENTRY(pipe)
++	pushq	%rdi		/* preserve the pointer */
++	SYSTRAP_2RVALS(pipe)
++	popq	%rdi
++	SYSCERROR
++	movl	%eax, (%rdi)
++	movl	%edx, 4(%rdi)
++	RETC
++	SET_SIZE(pipe)
+diff --git a/usr/src/lib/libc/common/sys/_so_accept.s b/usr/src/lib/libc/common/sys/_so_accept.s
+index ea5abbe..75759fa 100644
+--- a/usr/src/lib/libc/common/sys/_so_accept.s
++++ b/usr/src/lib/libc/common/sys/_so_accept.s
+@@ -27,15 +27,10 @@
+  * Use is subject to license terms.
+  */
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ 	.file	"_so_accept.s"
+ 
+ /* C library -- __so_accept						*/
+-/*
+- * int __so_accept(int sock, struct sockaddr *addr, int *addrlen, int vers,
+- *     int flags)
+- */
++/* int __so_accept(int sock, struct sockaddr *addr, int *addrlen, int vers) */
+ 
+ #include "SYS.h"
+ 
+diff --git a/usr/src/lib/libc/common/sys/pipe2.s b/usr/src/lib/libc/common/sys/pipe2.s
+deleted file mode 100644
+index 939fa51..0000000
+--- a/usr/src/lib/libc/common/sys/pipe2.s
++++ /dev/null
+@@ -1,32 +0,0 @@
+-/*
+- * CDDL HEADER START
+- *
+- * The contents of this file are subject to the terms of the
+- * Common Development and Distribution License (the "License").
+- * You may not use this file except in compliance with the License.
+- *
+- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+- * or http://www.opensolaris.org/os/licensing.
+- * See the License for the specific language governing permissions
+- * and limitations under the License.
+- *
+- * When distributing Covered Code, include this CDDL HEADER in each
+- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+- * If applicable, add the following below this CDDL HEADER, with the
+- * fields enclosed by brackets "[]" replaced with your own identifying
+- * information: Portions Copyright [yyyy] [name of copyright owner]
+- *
+- * CDDL HEADER END
+- */
+-
+-/* Copyright 2013 OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+-/* int pipe2 (int *fds, int flags)                              */
+-
+-#include "SYS.h"
+-
+-	.file   "pipe2.s"
+-
+-	SYSCALL2(pipe2,pipe);
+-	RET
+-	SET_SIZE(pipe2)
+diff --git a/usr/src/lib/libc/i386/Makefile.com b/usr/src/lib/libc/i386/Makefile.com
+index 31a7bc9..758b75a 100644
+--- a/usr/src/lib/libc/i386/Makefile.com
++++ b/usr/src/lib/libc/i386/Makefile.com
+@@ -20,7 +20,6 @@
+ #
+ #
+ # Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ #
+ # Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+@@ -245,7 +244,6 @@ COMSYSOBJS=			\
+ 	pathconf.o		\
+ 	pause.o			\
+ 	pcsample.o		\
+-	pipe2.o			\
+ 	pollsys.o		\
+ 	pread.o			\
+ 	priocntlset.o		\
+@@ -302,6 +300,7 @@ SYSOBJS=			\
+ 	gettimeofday.o		\
+ 	lwp_private.o		\
+ 	nuname.o		\
++	pipe.o			\
+ 	ptrace.o		\
+ 	syscall.o		\
+ 	sysi86.o		\
+@@ -499,7 +498,6 @@ PORTGEN=			\
+ 	pfmt.o			\
+ 	pfmt_data.o		\
+ 	pfmt_print.o		\
+-	pipe.o			\
+ 	plock.o			\
+ 	poll.o			\
+ 	posix_fadvise.o		\
+diff --git a/usr/src/lib/libc/i386/sys/pipe.s b/usr/src/lib/libc/i386/sys/pipe.s
+new file mode 100644
+index 0000000..d17b720
+--- /dev/null
++++ b/usr/src/lib/libc/i386/sys/pipe.s
+@@ -0,0 +1,41 @@
++/*
++ * CDDL HEADER START
++ *
++ * The contents of this file are subject to the terms of the
++ * Common Development and Distribution License (the "License").
++ * You may not use this file except in compliance with the License.
++ *
++ * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
++ * or http://www.opensolaris.org/os/licensing.
++ * See the License for the specific language governing permissions
++ * and limitations under the License.
++ *
++ * When distributing Covered Code, include this CDDL HEADER in each
++ * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
++ * If applicable, add the following below this CDDL HEADER, with the
++ * fields enclosed by brackets "[]" replaced with your own identifying
++ * information: Portions Copyright [yyyy] [name of copyright owner]
++ *
++ * CDDL HEADER END
++ */
++/*
++ * Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
++ * Use is subject to license terms.
++ */
++
++	.file	"pipe.s"
++
++#include <sys/asm_linkage.h>
++
++	ANSI_PRAGMA_WEAK(pipe,function)
++
++#include "SYS.h"
++
++	ENTRY(pipe)
++	SYSTRAP_2RVALS(pipe)
++	SYSCERROR
++	movl	4(%esp), %ecx
++	movl	%eax, (%ecx)
++	movl	%edx, 4(%ecx)
++	RETC
++	SET_SIZE(pipe)
+diff --git a/usr/src/lib/libc/port/gen/dup.c b/usr/src/lib/libc/port/gen/dup.c
+index 4fd5629..8b5db30 100644
+--- a/usr/src/lib/libc/port/gen/dup.c
++++ b/usr/src/lib/libc/port/gen/dup.c
+@@ -19,8 +19,6 @@
+  * CDDL HEADER END
+  */
+ 
+-/* Copyright 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ /*
+  * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
+@@ -32,7 +30,6 @@
+ #include 	"lint.h"
+ #include 	<sys/types.h>
+ #include	<fcntl.h>
+-#include	<errno.h>
+ 
+ #pragma weak _dup = dup
+ int
+@@ -47,27 +44,3 @@ dup2(int fildes, int fildes2)
+ {
+ 	return (fcntl(fildes, F_DUP2FD, fildes2));
+ }
+-
+-int
+-dup3(int fildes, int fildes2, int flags)
+-{
+-	/*
+-	 * The only valid flag is O_CLOEXEC.
+-	 */
+-	if (flags & ~O_CLOEXEC) {
+-		errno = EINVAL;
+-		return (-1);
+-	}
+-
+-	/*
+-	 * This call differs from dup2 such that it is an error when
+-	 * fildes == fildes2
+-	 */
+-	if (fildes == fildes2) {
+-		errno = EINVAL;
+-		return (-1);
+-	}
+-
+-	return (fcntl(fildes, (flags == 0) ? F_DUP2FD : F_DUP2FD_CLOEXEC,
+-	    fildes2));
+-}
+diff --git a/usr/src/lib/libc/port/gen/mkstemp.c b/usr/src/lib/libc/port/gen/mkstemp.c
+index d9de436..72c79ac 100644
+--- a/usr/src/lib/libc/port/gen/mkstemp.c
++++ b/usr/src/lib/libc/port/gen/mkstemp.c
+@@ -19,8 +19,6 @@
+  * CDDL HEADER END
+  */
+ 
+-/* Copyright (c) 2013 OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ /*
+  * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
+@@ -35,13 +33,13 @@
+  * California.
+  */
+ 
++#pragma ident	"%Z%%M%	%I%	%E% SMI"
++
+ #include <sys/feature_tests.h>
+ 
+ #if !defined(_LP64) && _FILE_OFFSET_BITS == 64
+ #define	mkstemp		mkstemp64
+ #define	mkstemps	mkstemps64
+-#define	mkostemp	mkostemp64
+-#define	mkostemps	mkostemps64
+ #define	libc_mkstemps	libc_mkstemps64		/* prefer unique statics */
+ #pragma weak _mkstemp64 = mkstemp64
+ #else
+@@ -61,7 +59,7 @@
+ extern char *libc_mktemps(char *, int);
+ 
+ static int
+-libc_mkstemps(char *as, int slen, int flags)
++libc_mkstemps(char *as, int slen)
+ {
+ 	int	fd;
+ 	int	len;
+@@ -93,13 +91,11 @@ libc_mkstemps(char *as, int slen, int flags)
+ 			}
+ 		}
+ #if _FILE_OFFSET_BITS == 64
+-		if ((fd = open64(as, O_CREAT|O_EXCL|O_RDWR|flags,
+-		    0600)) != -1) {
++		if ((fd = open64(as, O_CREAT|O_EXCL|O_RDWR, 0600)) != -1) {
+ 			return (fd);
+ 		}
+ #else
+-		if ((fd = open(as, O_CREAT|O_EXCL|O_RDWR|flags,
+-		    0600)) != -1) {
++		if ((fd = open(as, O_CREAT|O_EXCL|O_RDWR, 0600)) != -1) {
+ 			return (fd);
+ 		}
+ #endif  /* _FILE_OFFSET_BITS == 64 */
+@@ -120,23 +116,11 @@ libc_mkstemps(char *as, int slen, int flags)
+ int
+ mkstemp(char *as)
+ {
+-	return (libc_mkstemps(as, 0, 0));
++	return (libc_mkstemps(as, 0));
+ }
+ 
+ int
+ mkstemps(char *as, int slen)
+ {
+-	return (libc_mkstemps(as, slen, 0));
+-}
+-
+-int
+-mkostemp(char *as, int flags)
+-{
+-	return (libc_mkstemps(as, 0, flags));
+-}
+-
+-int
+-mkostemps(char *as, int slen, int flags)
+-{
+-	return (libc_mkstemps(as, slen, flags));
++	return (libc_mkstemps(as, slen));
+ }
+diff --git a/usr/src/lib/libc/port/gen/pipe.c b/usr/src/lib/libc/port/gen/pipe.c
+deleted file mode 100644
+index 66e16de..0000000
+--- a/usr/src/lib/libc/port/gen/pipe.c
++++ /dev/null
+@@ -1,35 +0,0 @@
+-/*
+- * CDDL HEADER START
+- *
+- * The contents of this file are subject to the terms of the
+- * Common Development and Distribution License (the "License").
+- * You may not use this file except in compliance with the License.
+- *
+- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+- * or http://www.opensolaris.org/os/licensing.
+- * See the License for the specific language governing permissions
+- * and limitations under the License.
+- *
+- * When distributing Covered Code, include this CDDL HEADER in each
+- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+- * If applicable, add the following below this CDDL HEADER, with the
+- * fields enclosed by brackets "[]" replaced with your own identifying
+- * information: Portions Copyright [yyyy] [name of copyright owner]
+- *
+- * CDDL HEADER END
+- */
+-
+-/*
+- * Copyright 2013 OmniTI Computer Consulting, Inc.  All rights reserved.
+- */
+-
+-#pragma weak _pipe	= pipe
+-
+-#include "lint.h"
+-#include <unistd.h>
+-
+-int
+-pipe(int *fds)
+-{
+-	return (pipe2(fds, 0));
+-}
+diff --git a/usr/src/lib/libc/port/llib-lc b/usr/src/lib/libc/port/llib-lc
+index 1781f34..117009a 100644
+--- a/usr/src/lib/libc/port/llib-lc
++++ b/usr/src/lib/libc/port/llib-lc
+@@ -22,7 +22,6 @@
+ /*
+  * Copyright (c) 1991, 2010, Oracle and/or its affiliates. All rights reserved.
+  * Copyright 2011 Nexenta Systems, Inc. All rights reserved.
+- * Copyright 2013 OmniTI Computer Consulting, Inc. All rights reserved.
+  */
+ 
+ /* LINTLIBRARY */
+@@ -380,10 +379,8 @@ void lcong48(unsigned short param[7]);
+ long nrand48(unsigned short *xsubi);
+ long jrand48(unsigned short *xsubi);
+ 
+-/* dup.c */
+-int dup(int fildes);
++/* dup2.c */
+ int dup2(int fildes, int fildes2);
+-int dup3(int fildes, int fildes2, int flags);
+ 
+ /* ecvt.c */
+ char *ecvt(double value, int ndigit, int *_RESTRICT_KYWD decpt,
+@@ -744,9 +741,6 @@ DIR *opendir(const char *filename);
+ /* perror.c */
+ void perror(const char *s);
+ 
+-/* pipe.c */
+-int pipe(int *fds);
+-
+ /* psiginfo.c */
+ void psiginfo(siginfo_t *sip, char *s);
+ 
+diff --git a/usr/src/lib/libc/port/mapfile-vers b/usr/src/lib/libc/port/mapfile-vers
+index fccca8b..9dc147a 100644
+--- a/usr/src/lib/libc/port/mapfile-vers
++++ b/usr/src/lib/libc/port/mapfile-vers
+@@ -25,7 +25,7 @@
+ # Use is subject to license terms.
+ #
+ # Copyright (c) 2012 by Delphix. All rights reserved.
+-# Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
++#
+ 
+ #
+ # MAPFILE HEADER START
+@@ -90,19 +90,6 @@ $if _x86 && _ELF64
+ $add amd64
+ $endif
+ 
+-SYMBOL_VERSION ILLUMOS_0.4 {	# Illumos additions
+-    protected:
+-        pipe2;
+-        dup3;
+-        mkostemp;
+-        mkostemps;
+-
+-$if lf64
+-        mkostemp64;
+-        mkostemps64;
+-$endif
+-} ILLUMOS_0.3;
+-
+ SYMBOL_VERSION ILLUMOS_0.3 {	# Illumos additions
+     protected:
+         assfail3;
+diff --git a/usr/src/lib/libc/port/threads/scalls.c b/usr/src/lib/libc/port/threads/scalls.c
+index 18b6b1c..afcdb4b 100644
+--- a/usr/src/lib/libc/port/threads/scalls.c
++++ b/usr/src/lib/libc/port/threads/scalls.c
+@@ -24,8 +24,6 @@
+  * Use is subject to license terms.
+  */
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+-
+ #include "lint.h"
+ #include "thr_uberdata.h"
+ #include <stdarg.h>
+@@ -1024,13 +1022,12 @@ sigqueue(pid_t pid, int signo, const union sigval value)
+ }
+ 
+ int
+-_so_accept(int sock, struct sockaddr *addr, uint_t *addrlen, int version,
+-    int flags)
++_so_accept(int sock, struct sockaddr *addr, uint_t *addrlen, int version)
+ {
+-	extern int __so_accept(int, struct sockaddr *, uint_t *, int, int);
++	extern int __so_accept(int, struct sockaddr *, uint_t *, int);
+ 	int rv;
+ 
+-	PERFORM(__so_accept(sock, addr, addrlen, version, flags))
++	PERFORM(__so_accept(sock, addr, addrlen, version))
+ }
+ 
+ int
+diff --git a/usr/src/lib/libc/sparc/Makefile.com b/usr/src/lib/libc/sparc/Makefile.com
+index cc6bae0..0edfd64 100644
+--- a/usr/src/lib/libc/sparc/Makefile.com
++++ b/usr/src/lib/libc/sparc/Makefile.com
+@@ -20,7 +20,6 @@
+ #
+ #
+ # Copyright (c) 1989, 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ #
+ # Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+@@ -266,7 +265,6 @@ COMSYSOBJS=			\
+ 	pathconf.o		\
+ 	pause.o			\
+ 	pcsample.o		\
+-	pipe2.o			\
+ 	pollsys.o		\
+ 	pread.o			\
+ 	priocntlset.o		\
+@@ -320,6 +318,7 @@ SYSOBJS=			\
+ 	forkx.o			\
+ 	forkallx.o		\
+ 	gettimeofday.o		\
++	pipe.o			\
+ 	ptrace.o		\
+ 	syscall.o		\
+ 	tls_get_addr.o		\
+@@ -532,7 +531,6 @@ PORTGEN=			\
+ 	pfmt.o			\
+ 	pfmt_data.o		\
+ 	pfmt_print.o		\
+-	pipe.o			\
+ 	plock.o			\
+ 	poll.o			\
+ 	posix_fadvise.o		\
+diff --git a/usr/src/lib/libc/sparc/sys/pipe.s b/usr/src/lib/libc/sparc/sys/pipe.s
+new file mode 100644
+index 0000000..d9eadc0
+--- /dev/null
++++ b/usr/src/lib/libc/sparc/sys/pipe.s
+@@ -0,0 +1,52 @@
++/*
++ * CDDL HEADER START
++ *
++ * The contents of this file are subject to the terms of the
++ * Common Development and Distribution License, Version 1.0 only
++ * (the "License").  You may not use this file except in compliance
++ * with the License.
++ *
++ * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
++ * or http://www.opensolaris.org/os/licensing.
++ * See the License for the specific language governing permissions
++ * and limitations under the License.
++ *
++ * When distributing Covered Code, include this CDDL HEADER in each
++ * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
++ * If applicable, add the following below this CDDL HEADER, with the
++ * fields enclosed by brackets "[]" replaced with your own identifying
++ * information: Portions Copyright [yyyy] [name of copyright owner]
++ *
++ * CDDL HEADER END
++ */
++/*	Copyright (c) 1988 AT&T	*/
++/*	  All Rights Reserved	*/
++
++
++/*
++ * Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
++ * Use is subject to license terms.
++ */
++
++	.ident	"%Z%%M%	%I%	%E% SMI"
++
++/* C library -- pipe						*/
++/* int pipe (int fildes[2]);					*/
++
++	.file	"pipe.s"
++
++#include <sys/asm_linkage.h>
++
++	ANSI_PRAGMA_WEAK(pipe,function)
++
++#include "SYS.h"
++
++	ENTRY(pipe)
++	mov	%o0, %o2		/* save ptr to array	*/
++	SYSTRAP_2RVALS(pipe)
++	SYSCERROR
++	st	%o0, [%o2]
++	st	%o1, [%o2 + 4]
++	RETC
++
++	SET_SIZE(pipe)
+diff --git a/usr/src/lib/libc/sparcv9/Makefile.com b/usr/src/lib/libc/sparcv9/Makefile.com
+index 54b3258..b00e69b 100644
+--- a/usr/src/lib/libc/sparcv9/Makefile.com
++++ b/usr/src/lib/libc/sparcv9/Makefile.com
+@@ -20,7 +20,6 @@
+ #
+ #
+ # Copyright (c) 1989, 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ #
+ # Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+@@ -251,7 +250,6 @@ COMSYSOBJS=			\
+ 	pathconf.o		\
+ 	pause.o			\
+ 	pcsample.o		\
+-	pipe2.o			\
+ 	pollsys.o		\
+ 	pread.o			\
+ 	priocntlset.o		\
+@@ -305,6 +303,7 @@ SYSOBJS=			\
+ 	forkx.o			\
+ 	forkallx.o		\
+ 	gettimeofday.o		\
++	pipe.o			\
+ 	sparc_utrap_install.o	\
+ 	syscall.o		\
+ 	tls_get_addr.o		\
+@@ -494,7 +493,6 @@ PORTGEN=			\
+ 	pfmt.o			\
+ 	pfmt_data.o		\
+ 	pfmt_print.o		\
+-	pipe.o			\
+ 	plock.o			\
+ 	poll.o			\
+ 	posix_fadvise.o		\
+diff --git a/usr/src/lib/libsocket/common/llib-lsocket b/usr/src/lib/libsocket/common/llib-lsocket
+index 3e2bc0a..104dc78 100644
+--- a/usr/src/lib/libsocket/common/llib-lsocket
++++ b/usr/src/lib/libsocket/common/llib-lsocket
+@@ -22,7 +22,6 @@
+  * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
+  */
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
+ 
+ /* LINTLIBRARY */
+ /* PROTOLIB1 */
+@@ -83,7 +82,6 @@ int __xnet_socketpair(int domain, int type, int protocol, int *sv);
+ int bind(int s, const struct sockaddr *name, socklen_t namelen);
+ int listen(int s, int backlog);
+ int accept(int s, struct sockaddr *addr, Psocklen_t addrlen);
+-int accept4(int s, struct sockaddr *addr, Psocklen_t addrlen, int flags);
+ int connect(int s, const struct sockaddr *name, socklen_t namelen);
+ int shutdown(int s, int how);
+ ssize_t recv(int s, void *buf, size_t len, int flags);
+@@ -102,7 +100,6 @@ int setsockopt(int s, int level, int optname, const void *optval, socklen_t optl
+ int _bind(int s, const struct sockaddr *name, int namelen);
+ int _listen(int s, int backlog);
+ int _accept(int s, struct sockaddr *addr, int *addrlen);
+-int _accept4(int s, struct sockaddr *addr, int *addrlen, int flags);
+ int _connect(int s, struct sockaddr *name, int namelen);
+ int _shutdown(int s, int how);
+ int _recv(int s, char *buf, int len, int flags);
+diff --git a/usr/src/lib/libsocket/common/mapfile-vers b/usr/src/lib/libsocket/common/mapfile-vers
+index 2f7777f..4ecd935 100644
+--- a/usr/src/lib/libsocket/common/mapfile-vers
++++ b/usr/src/lib/libsocket/common/mapfile-vers
+@@ -21,7 +21,6 @@
+ #
+ # Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
+ #
+-# Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ 
+ #
+ # MAPFILE HEADER START
+@@ -39,11 +38,6 @@
+ 
+ $mapfile_version 2
+ 
+-SYMBOL_VERSION ILLUMOS_0.1 {    # Illumos additions
+-    global:
+-        accept4;
+-} SUNW_1.7;
+-
+ SYMBOL_VERSION SUNW_1.7 {
+     global:
+ 	freeifaddrs;
+@@ -197,7 +191,6 @@ $endif
+ 
+ SYMBOL_VERSION SUNWprivate_1.3 {
+     global:
+-        _accept4;
+ 	_link_aton;
+ 	_link_ntoa;
+ 	_nss_initf_ethers;
+diff --git a/usr/src/lib/libsocket/socket/weaks.c b/usr/src/lib/libsocket/socket/weaks.c
+index 51e8d13..ffd7946 100644
+--- a/usr/src/lib/libsocket/socket/weaks.c
++++ b/usr/src/lib/libsocket/socket/weaks.c
+@@ -24,7 +24,7 @@
+  * Use is subject to license terms.
+  */
+ 
+-/* Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved. */
++#pragma ident	"%Z%%M%	%I%	%E% SMI"
+ 
+ #include <sys/types.h>
+ #include <sys/socket.h>
+@@ -44,7 +44,6 @@
+ #pragma weak bind = _bind
+ #pragma weak listen = _listen
+ #pragma weak accept = _accept
+-#pragma weak accept4 = _accept4
+ #pragma weak connect = _connect
+ #pragma weak shutdown = _shutdown
+ #pragma weak recv = _recv
+@@ -93,13 +92,7 @@ _listen(int sock, int backlog)
+ int
+ _accept(int sock, struct sockaddr *addr, int *addrlen)
+ {
+-	return (_so_accept(sock, addr, addrlen, SOV_DEFAULT, 0));
+-}
+-
+-int
+-_accept4(int sock, struct sockaddr *addr, int *addrlen, int flags)
+-{
+-	return (_so_accept(sock, addr, addrlen, SOV_DEFAULT, flags));
++	return (_so_accept(sock, addr, addrlen, SOV_DEFAULT));
+ }
+ 
+ int
+diff --git a/usr/src/man/man2/Makefile b/usr/src/man/man2/Makefile
+index 8e93920..449177c 100644
+--- a/usr/src/man/man2/Makefile
++++ b/usr/src/man/man2/Makefile
+@@ -10,7 +10,6 @@
+ #
+ 
+ # Copyright 2011, Richard Lowe
+-# Copyright 2013, OmniTI Computer Consulting, Inc
+ 
+ include ../../Makefile.master
+ 
+@@ -208,7 +207,6 @@ MANSOFILES =	_Exit.2				\
+ 	 	lstat.2				\
+ 	 	openat.2			\
+ 	 	pathconf.2			\
+-	 	pipe2.2			\
+ 	 	pread.2				\
+ 	 	pset_assign.2			\
+ 	 	pset_destroy.2			\
+@@ -330,8 +328,6 @@ setustack.2			:= SOSRC = man2/getustack.2
+ 
+ openat.2			:= SOSRC = man2/open.2
+ 
+-pipe2.2				:= SOSRC = man2/pipe.2
+-
+ pset_assign.2			:= SOSRC = man2/pset_create.2
+ pset_destroy.2			:= SOSRC = man2/pset_create.2
+ 
+diff --git a/usr/src/man/man2/fcntl.2 b/usr/src/man/man2/fcntl.2
+index c7d769f..637a62e 100644
+--- a/usr/src/man/man2/fcntl.2
++++ b/usr/src/man/man2/fcntl.2
+@@ -1,5 +1,4 @@
+ '\" te
+-.\" Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ .\" Copyright (c) 2007, Sun Microsystems, Inc.  All Rights Reserved.
+ .\" Copyright 1989 AT&T
+ .\" Portions Copyright (c) 1992, X/Open Company Limited.  All Rights Reserved.
+@@ -10,7 +9,7 @@
+ .\" The contents of this file are subject to the terms of the Common Development and Distribution License (the "License").  You may not use this file except in compliance with the License.
+ .\" You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE or http://www.opensolaris.org/os/licensing.  See the License for the specific language governing permissions and limitations under the License.
+ .\" When distributing Covered Code, include this CDDL HEADER in each file and include the License file at usr/src/OPENSOLARIS.LICENSE.  If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+-.TH FCNTL 2 "Apr 19, 2013"
++.TH FCNTL 2 "Jan 17, 2007"
+ .SH NAME
+ fcntl \- file control
+ .SH SYNOPSIS
+@@ -65,27 +64,6 @@ equivalent to \fBdup2\fR(\fIfildes\fR, \fIarg\fR).
+ .sp
+ .ne 2
+ .na
+-\fB\fBF_DUPFD_CLOEXEC\fR\fR
+-.ad
+-.RS 15n
+-Similar to \fBF_DUPFD\fR except that instead of clearing \fBFD_CLOEXEC\fR
+-it is explicitly set on the returned file descriptor.
+-.RE
+-
+-.sp
+-.ne 2
+-.na
+-\fB\fBF_DUP2FD_CLOEXEC\fR\fR
+-.ad
+-.RS 15n
+-Similar to \fBF_DUP2FD\fR with two exceptions. The \fBFD_CLOEXEC\fR flag is
+-explicitly set on the returned file descriptor.  If \fIfiledes\fR equals
+-\fIarg\fR, the call will fail setting \fBerrno\fR to \fBEINVAL\fR.
+-.RE
+-
+-.sp
+-.ne 2
+-.na
+ \fB\fBF_FREESP\fR\fR
+ .ad
+ .RS 15n
+@@ -784,9 +762,6 @@ or equal to \fBOPEN_MAX\fR; or the \fIcmd\fR argument is \fBF_GETLK\fR,
+ .sp
+ The \fIcmd\fR argument is \fBF_UNSHARE\fR and a reservation with this
+ \fBf_id\fR for this process does not exist.
+-.sp
+-The \fIcmd\fR argument is \fBF_DUP2FD_CLOEXEC\fR and \fIfildes\fR is equal
+-to \fBarg\fR.
+ .RE
+ 
+ .sp
+diff --git a/usr/src/man/man2/pipe.2 b/usr/src/man/man2/pipe.2
+index 88b625b..c2e8d94 100644
+--- a/usr/src/man/man2/pipe.2
++++ b/usr/src/man/man2/pipe.2
+@@ -2,7 +2,6 @@
+ .\" Copyright (c) 2002, Sun Microsystems, Inc.  All Rights Reserved.
+ .\" Copyright 1989 AT&T
+ .\" Portions Copyright (c) 2001, the Institute of Electrical and Electronics Engineers, Inc. and The Open Group. All Rights Reserved.
+-.\" Portions Copyright (c) 2013, OmniTI Computer Consulting, Inc. All Rights Reserved
+ .\" Sun Microsystems, Inc. gratefully acknowledges The Open Group for permission to reproduce portions of its copyrighted documentation. Original documentation from The Open Group can be obtained online at
+ .\" http://www.opengroup.org/bookstore/.
+ .\" The Institute of Electrical and Electronics Engineers and The Open Group, have given us permission to reprint portions of their documentation. In the following statement, the phrase "this text" refers to portions of the system documentation. Portions of this text are reprinted and reproduced in electronic form in the Sun OS Reference Manual, from IEEE Std 1003.1, 2004 Edition, Standard for Information Technology -- Portable Operating System Interface (POSIX), The Open Group Base Specifications Issue 6, Copyright (C) 2001-2004 by the Institute of Electrical and Electronics Engineers, Inc and The Open Group. In the event of any discrepancy between these versions and the original IEEE and The Open Group Standard, the original IEEE and The Open Group Standard is the referee document. The original Standard can be obtained online at http://www.opengroup.org/unix/online.html.
+@@ -10,7 +9,7 @@
+ .\" The contents of this file are subject to the terms of the Common Development and Distribution License (the "License").  You may not use this file except in compliance with the License.
+ .\" You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE or http://www.opensolaris.org/os/licensing.  See the License for the specific language governing permissions and limitations under the License.
+ .\" When distributing Covered Code, include this CDDL HEADER in each file and include the License file at usr/src/OPENSOLARIS.LICENSE.  If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+-.TH PIPE 2 "Apr 19, 2013"
++.TH PIPE 2 "Apr 23, 2002"
+ .SH NAME
+ pipe \- create an interprocess channel
+ .SH SYNOPSIS
+@@ -19,50 +18,17 @@ pipe \- create an interprocess channel
+ #include <unistd.h>
+ 
+ \fBint\fR \fBpipe\fR(\fBint\fR \fIfildes\fR[2]);
+-
+-\fBint\fR \fBpipe2\fR(\fBint\fR \fIfildes\fR[2], \fBint\fR \fIflags\fR);
+ .fi
+ 
+ .SH DESCRIPTION
+ .sp
+ .LP
+-The \fBpipe()\fR and pipe2() functions create an I/O mechanism called a
+-pipe and returns two file descriptors, \fIfildes\fR[\fB0\fR] and
+-\fIfildes\fR[\fB1\fR]. The files associated with \fIfildes\fR[\fB0\fR]
+-and \fIfildes\fR[\fB1\fR] are streams and are both opened for reading and
+-writing.  The \fBpipe()\fR call will clear the \fBO_NDELAY\fR,
+-\fBO_NONBLOCK\fR, and \fBFD_CLOEXEC\fR flags on both file descriptors. The
+-\fBfcntl\fR(2) function can be used to set these flags.
+-.sp
+-.LP
+-The \fBpipe2()\fR call will clear the \fBO_NDELAY\fR on both filedescriptors.
+-The \fIflags\fR argument may be used to specify attributes on both file
+-descriptors.  \fBpipe2()\fR called with a \fIflags\fR value of 0 will
+-behave identically to \fBpipe()\fR.  Values for \fIflags\fR are constructed
+-by a bitwise-inclusive-OR of flags from the following list, defined in
+-<\fBfcntl.h\fR>.
+-.RE
+-
+-.sp
+-.ne 2
+-.na
+-\fB\fBO_NONBLOCK\fR\fR
+-.ad
+-.RS 12n
+-Both file descriptors will be placed in non-blocking mode. This corresponds
+-to the \fBO_NONBLOCK\fR flag to \fBfcntl\fR(2).
+-.RE
+-
+-.sp
+-.ne 2
+-.na
+-\fB\fBO_CLOEXEC\fR\fR
+-.ad
+-.RS 12n
+-Both file descriptors will be opened with the FD_CLOEXEC flag set. Both file
+-descriptors will be closed prior to any future exec() calls.
+-.RE
+-
++The \fBpipe()\fR function creates an I/O mechanism called a pipe and returns
++two file descriptors, \fIfildes\fR[\fB0\fR] and \fIfildes\fR[\fB1\fR]. The
++files associated with \fIfildes\fR[\fB0\fR] and \fIfildes\fR[\fB1\fR] are
++streams and are both opened for reading and writing.  The \fBO_NDELAY\fR,
++\fBO_NONBLOCK\fR, and \fBFD_CLOEXEC\fR flags are cleared on both file
++descriptors. The \fBfcntl\fR(2) function can be used to set these flags.
+ .sp
+ .LP
+ A read from \fIfildes\fR[\fB0\fR] accesses the data written to
+@@ -81,7 +47,7 @@ returned and \fBerrno\fR is set to indicate the error.
+ .SH ERRORS
+ .sp
+ .LP
+-The \fBpipe()\fR and \fBpipe2()\fR functions will fail if:
++The \fBpipe()\fR function will fail if:
+ .sp
+ .ne 2
+ .na
+@@ -101,29 +67,6 @@ The number of simultaneously open files in the system would exceed a
+ system-imposed limit.
+ .RE
+ 
+-.sp
+-.ne 2
+-.na
+-\fB\fBEFAULT\fR\fR
+-.ad
+-.RS 10n
+-The \fIfildes[2]\fR argument points to an illegal address.
+-.RE
+-
+-.sp
+-.LP
+-The \fBpipe2()\fR function will also fail if:
+-.sp
+-.ne 2
+-.na
+-\fB\fBEINVAL\fR\fR
+-.ad
+-.RS 10n
+-The \fIflags\fR argument is illegal. Valid \fIflags\fR are zero or a
+-bitwise inclusive-OR of \fBO_CLOEXEC\fR and \fBO_NONBLOCK\fR.
+-.RE
+-
+-
+ .SH ATTRIBUTES
+ .sp
+ .LP
+@@ -146,8 +89,8 @@ MT-Level	Async-Signal-Safe
+ .sp
+ .LP
+ \fBsh\fR(1), \fBfcntl\fR(2), \fBfstat\fR(2), \fBgetmsg\fR(2), \fBpoll\fR(2),
+-\fBputmsg\fR(2), \fBread\fR(2), \fBwrite\fR(2), \fBopen\fR(2),
+-\fBattributes\fR(5), \fBstandards\fR(5), \fBstreamio\fR(7I)
++\fBputmsg\fR(2), \fBread\fR(2), \fBwrite\fR(2), \fBattributes\fR(5),
++\fBstandards\fR(5), \fBstreamio\fR(7I)
+ .SH NOTES
+ .sp
+ .LP
+diff --git a/usr/src/man/man3c/Makefile b/usr/src/man/man3c/Makefile
+index 7d7113d..4f16272 100644
+--- a/usr/src/man/man3c/Makefile
++++ b/usr/src/man/man3c/Makefile
+@@ -10,7 +10,6 @@
+ #
+ 
+ # Copyright 2011, Richard Lowe
+-# Copyright 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ 
+ include ../../Makefile.master
+ 
+@@ -671,7 +670,6 @@ MANSOFILES =	FD_CLR.3c				\
+ 	 	csetno.3c				\
+ 	 	ctermid_r.3c				\
+ 	 	ctime_r.3c				\
+-		dup3.3c					\
+ 	 	dbm_clearerr.3c				\
+ 	 	dbm_close.3c				\
+ 	 	dbm_delete.3c				\
+@@ -848,8 +846,6 @@ MANSOFILES =	FD_CLR.3c				\
+ 	 	memset.3c				\
+ 	 	minor.3c				\
+ 	 	mkdtemp.3c				\
+-	 	mkostemp.3c				\
+-	 	mkostemps.3c				\
+ 	 	mkstemps.3c				\
+ 	 	mq_reltimedreceive_np.3c		\
+ 	 	mq_reltimedsend_np.3c			\
+@@ -1651,8 +1647,6 @@ memset.3c				:= SOSRC = man3c/memory.3c
+ 
+ mkdtemp.3c				:= SOSRC = man3c/mkstemp.3c
+ mkstemps.3c				:= SOSRC = man3c/mkstemp.3c
+-mkostemp.3c				:= SOSRC = man3c/mkstemp.3c
+-mkostemps.3c				:= SOSRC = man3c/mkstemp.3c
+ 
+ munlock.3c				:= SOSRC = man3c/mlock.3c
+ 
+@@ -1680,8 +1674,6 @@ dbm_nextkey.3c				:= SOSRC = man3c/ndbm.3c
+ dbm_open.3c				:= SOSRC = man3c/ndbm.3c
+ dbm_store.3c				:= SOSRC = man3c/ndbm.3c
+ 
+-dup3.3c					:= SOSRC = man3c/dup2.3c
+-
+ fdopendir.3c				:= SOSRC = man3c/opendir.3c
+ 
+ errno.3c				:= SOSRC = man3c/perror.3c
+diff --git a/usr/src/man/man3c/dup2.3c b/usr/src/man/man3c/dup2.3c
+index a2742a7..eb19b74 100644
+--- a/usr/src/man/man3c/dup2.3c
++++ b/usr/src/man/man3c/dup2.3c
+@@ -1,13 +1,12 @@
+ '\" te
+-.\" Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ .\" Copyright (c) 2003, Sun Microsystems, Inc. All Rights Reserved.
+ .\" Copyright 1989 AT&T
+ .\" The contents of this file are subject to the terms of the Common Development and Distribution License (the "License").  You may not use this file except in compliance with the License.
+ .\" You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE or http://www.opensolaris.org/os/licensing.  See the License for the specific language governing permissions and limitations under the License.
+ .\" When distributing Covered Code, include this CDDL HEADER in each file and include the License file at usr/src/OPENSOLARIS.LICENSE.  If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+-.TH DUP2 3C "Apr 19, 2013"
++.TH DUP2 3C "Dec 19, 2003"
+ .SH NAME
+-dup2, dup3 \- duplicate an open file descriptor
++dup2 \- duplicate an open file descriptor
+ .SH SYNOPSIS
+ .LP
+ .nf
+@@ -16,11 +15,6 @@ dup2, dup3 \- duplicate an open file descriptor
+ \fBint\fR \fBdup2\fR(\fBint\fR \fIfildes\fR, \fBint\fR \fIfildes2\fR);
+ .fi
+ 
+-.LP
+-.nf
+-\fBint\fR \fBdup3\fR(\fBint\fR \fIfildes\fR, \fBint\fR \fIfildes2\fR, \dBint\fR \fIflags\fR);
+-.fi
+-
+ .SH DESCRIPTION
+ .sp
+ .LP
+@@ -36,14 +30,6 @@ to \fIfildes\fR, or if \fIfildes\fR is not a valid open file descriptor,
+ .LP
+ The \fBdup2()\fR function is equivalent to  \fBfcntl\fR(\fIfildes\fR,
+ \fBF_DUP2FD\fR, \fIfildes2\fR).
+-.sp
+-.LP
+-Ths \fBdup3()\fR function works similarly to the \fBdup2()\fR function with
+-two exceptions.  If \fIfildes\fR and \fIfildes2\fR point to the same file
+-descriptor, -1 is returned and errno set to \fBEINVAL\fR.  If \fIflags\fR
+-is \fBO_CLOEXEC\fR, then \fIfiledes2\fB will have the \fBFD_CLOEXEC\fR flag
+-set causing the file descriptor to be closed during any future call of
+-\fBexec\fR(2).
+ .SH RETURN VALUES
+ .sp
+ .LP
+@@ -53,7 +39,7 @@ set to indicate the error.
+ .SH ERRORS
+ .sp
+ .LP
+-The \fBdup2()\fR and \fBdup3()\fR functions will fail if:
++The \fBdup2()\fR function will fail if:
+ .sp
+ .ne 2
+ .na
+@@ -91,18 +77,6 @@ A signal was caught during the \fBdup2()\fR call.
+ The process has too many open files.  See  \fBfcntl\fR(2).
+ .RE
+ 
+-.sp
+-.LP
+-Additionally, the \fBdup3()\fR function will fail if:
+-.sp
+-.ne 2
+-.na
+-\fB\fBEINVAL\fR\fR
+-.ad
+-.RS 10n
+-\fIflags\fR has a value other than 0 or \fBO_CLOEXEC\fR or \fIfildes\fR and \fIfildes2\fB point to the same file descriptor.
+-.RE
+-
+ .SH ATTRIBUTES
+ .sp
+ .LP
+diff --git a/usr/src/man/man3c/mkstemp.3c b/usr/src/man/man3c/mkstemp.3c
+index 4d7f4c5..697cba2 100644
+--- a/usr/src/man/man3c/mkstemp.3c
++++ b/usr/src/man/man3c/mkstemp.3c
+@@ -1,5 +1,4 @@
+ '\" te
+-.\" Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ .\" Copyright (c) 1992, X/Open Company Limited. All Rights Reserved.  Portions Copyright (c) 2006, Sun Microsystems, Inc.  All Rights Reserved.
+ .\" Sun Microsystems, Inc. gratefully acknowledges The Open Group for permission to reproduce portions of its copyrighted documentation. Original documentation from The Open Group can be obtained online at
+ .\" http://www.opengroup.org/bookstore/.
+@@ -8,9 +7,9 @@
+ .\" The contents of this file are subject to the terms of the Common Development and Distribution License (the "License").  You may not use this file except in compliance with the License.
+ .\" You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE or http://www.opensolaris.org/os/licensing.  See the License for the specific language governing permissions and limitations under the License.
+ .\" When distributing Covered Code, include this CDDL HEADER in each file and include the License file at usr/src/OPENSOLARIS.LICENSE.  If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+-.TH MKSTEMP 3C "Apr 19, 2013"
++.TH MKSTEMP 3C "Feb 22, 2006"
+ .SH NAME
+-mkstemp, mkstemps, mkostemp, mkostemps, mkdtemp \- make a unique file name from a template and open
++mkstemp, mkstemps, mkdtemp \- make a unique file name from a template and open
+ the file
+ .SH SYNOPSIS
+ .LP
+@@ -22,21 +21,11 @@ the file
+ 
+ .LP
+ .nf
+-\fBint\fR \fBmkostemp\fR(\fBchar *\fR\fItemplate\fR, \fBint\fR \fIflags\fR);
+-.fi
+-
+-.LP
+-.nf
+ \fBint\fR \fBmkstemps\fR(\fBchar *\fR\fItemplate\fR, \fBint\fR \fIslen\fR);
+ .fi
+ 
+ .LP
+ .nf
+-\fBint\fR \fBmkostemps\fR(\fBchar *\fR\fItemplate\fR, \fBint\fR \fIslen\fR, \fBint\fR \fIflags\fR);
+-.fi
+-
+-.LP
+-.nf
+ \fBchar *\fR\fBmkdtemp\fR(\fBchar *\fR\fItemplate\fR);
+ .fi
+ 
+@@ -59,12 +48,6 @@ permits a suffix to exist in the template. The template should be of the form
+ specifies the length of the suffix string.
+ .sp
+ .LP
+-The \fBmkostemp()\fR and \fBmkostemps\fR are like their \fBmkstemp()\fR and
+-\fBmkstemps()\fR couterparts except that the \fIflags\fR argument is present
+-and used to supplement (as a bitwise inclusive-OR) flags to internal
+-\fBopen()\fR calls.  (e.g. \fBO_SYNC\fR, \fBO_APPEND\fR, and \fBO_CLOEXEC\fR).
+-.sp
+-.LP
+ The \fBmkdtemp()\fR function makes the same replacement to the template as in
+ \fBmktemp\fR(3C) and creates the template directory using \fBmkdir\fR(2),
+ passing a \fImode\fR argument of 0700.
+diff --git a/usr/src/man/man3socket/Makefile b/usr/src/man/man3socket/Makefile
+index c54af7b..8f45ee3 100644
+--- a/usr/src/man/man3socket/Makefile
++++ b/usr/src/man/man3socket/Makefile
+@@ -10,7 +10,6 @@
+ #
+ 
+ # Copyright 2011, Richard Lowe
+-# Copyright 2013, OmniTI Computer Consulting, Inc.
+ 
+ include ../../Makefile.master
+ 
+@@ -53,8 +52,7 @@ MANFILES = 	accept.3socket		\
+ 		socketpair.3socket	\
+ 		spray.3socket
+ 
+-MANSOFILES =	accept4.3socket			\
+-		endnetent.3socket		\
++MANSOFILES =	endnetent.3socket		\
+ 		endprotoent.3socket		\
+ 		endservent.3socket		\
+ 		ether_aton.3socket		\
+@@ -135,8 +133,6 @@ MANSOFILES =	accept4.3socket			\
+ 
+ MANFILES +=	$(MANSOFILES)
+ 
+-accept4.3socket			:= SOSRC = man3socket/accept.3socket
+-
+ htonl.3socket			:= SOSRC = man3socket/byteorder.3socket
+ htonll.3socket			:= SOSRC = man3socket/byteorder.3socket
+ htons.3socket			:= SOSRC = man3socket/byteorder.3socket
+diff --git a/usr/src/man/man3socket/accept.3socket b/usr/src/man/man3socket/accept.3socket
+index c6afea7..e9ff5df 100644
+--- a/usr/src/man/man3socket/accept.3socket
++++ b/usr/src/man/man3socket/accept.3socket
+@@ -1,11 +1,10 @@
+ '\" te
+ .\" Copyright 1989 AT&T
+ .\" Copyright (C) 2002, Sun Microsystems, Inc. All Rights Reserved
+-.\" Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+ .\" The contents of this file are subject to the terms of the Common Development and Distribution License (the "License").  You may not use this file except in compliance with the License.
+ .\" You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE or http://www.opensolaris.org/os/licensing.  See the License for the specific language governing permissions and limitations under the License.
+ .\" When distributing Covered Code, include this CDDL HEADER in each file and include the License file at usr/src/OPENSOLARIS.LICENSE.  If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+-.TH ACCEPT 3SOCKET "Apr 19, 2013"
++.TH ACCEPT 3SOCKET "Jan 24, 2002"
+ .SH NAME
+ accept \- accept a connection on a socket
+ .SH SYNOPSIS
+@@ -16,9 +15,6 @@ accept \- accept a connection on a socket
+ #include <sys/socket.h>
+ 
+ \fBint\fR \fBaccept\fR(\fBint\fR \fIs\fR, \fBstruct sockaddr *\fR\fIaddr\fR, \fBsocklen_t *\fR\fIaddrlen\fR);
+-
+-\fBint\fR \fBaccept4\fR(\fBint\fR \fIs\fR, \fBstruct sockaddr *\fR\fIaddr\fR, \fBsocklen_t *\fR\fIaddrlen\fR,
+-    \fBint\fR \fIflags\fR);
+ .fi
+ 
+ .SH DESCRIPTION
+@@ -57,47 +53,6 @@ The \fBaccept()\fR function is used with connection-based socket types,
+ currently with \fBSOCK_STREAM\fR.
+ .sp
+ .LP
+-The \fBaccept4()\fR function allows flags that control the behavior of a
+-successfully accepted socket.  If \fIflags\fR is 0, \fBaccept4()\fR acts
+-identically to \fBaccept()\fR. Values for \fIflags\fR are constructed by
+-a bitwise-inclusive-OR of flags from the following list, defined in
+-<sys/socketvar.h>.
+-.sp
+-.ne 2
+-.na
+-\fB\fBSOCK_CLOEXEC\fR\fR
+-.ad
+-.RS 12n
+-The accepted socket will have the FD_CLOEXEC flag set as if \fBfcntl()\fR
+-was called on it.  This flag is set before the socket is passed to the
+-caller thus avoiding the race condition between \fBaccept()\fR and
+-\fBfcntl()\fR.  See, \fBO_CLOEXEC\fR in \fBopen(2)\fR for more details.
+-.RE
+-
+-.sp
+-.ne 2
+-.na
+-\fB\fBSOCK_NDELAY\fR\fR
+-.ad
+-.RS 12n
+-The accepted socket will have the \fBO_NDELAY\fR flag set as if \fBfcntl()\fR
+-was called on it.  This sets the socket into non-blocking mode.  See
+-\fBO_NDELAY\fR in \fBfcntl.h(3HEAD)\fR for more details.
+-.RE
+-
+-.sp
+-.ne 2
+-.na
+-\fB\fBSOCK_NONBLOCK\fR\fR
+-.ad
+-.RS 12n
+-The accepted socket will have the \fBO_NONBLOCK\fR flag set as if
+-\fBfcntl()\fR was called on it.  This sets the socket into non-blocking mode
+-(POSIX; see \fBstandards(5)\fR).  See \fBO_NONBLOCK\fR in \fBfcntl.h(3HEAD)\fR
+-for more details.
+-.RE
+-.sp
+-.LP
+ It is possible to \fBselect\fR(3C) or \fBpoll\fR(2) a socket for the purpose of
+ an \fBaccept()\fR by selecting or polling it for a read. However, this will
+ only indicate when a connect indication is pending; it is still necessary to
+@@ -110,7 +65,7 @@ returns a non-negative integer that is a descriptor for the accepted socket.
+ .SH ERRORS
+ .sp
+ .LP
+-\fBaccept()\fR and \fBaccept4()\fR will fail if:
++\fBaccept()\fR will fail if:
+ .sp
+ .ne 2
+ .na
+@@ -224,20 +179,6 @@ The socket is marked as non-blocking and no connections are present to be
+ accepted.
+ .RE
+ 
+-.sp
+-.LP
+-\fBAdditionally, \fBaccept4()\fR will fail if:
+-.sp
+-.ne 2
+-.na
+-\fB\fBEINVAL\fR\fR
+-.ad
+-.RS 16n
+-The \fIflags\fR value is invalid. The \fIflags\fR argument can only be the
+-bitwise inclusive-OR of \fBSOCK_CLOEXEC\fR, \fBSOCK_NONBLOCK\fR, and
+-\fBSOCK_NDELAY\fR.
+-.RE
+-
+ .SH ATTRIBUTES
+ .sp
+ .LP
+@@ -259,5 +200,4 @@ MT-Level	Safe
+ .LP
+ \fBpoll\fR(2), \fBbind\fR(3SOCKET), \fBconnect\fR(3SOCKET),
+ \fBlisten\fR(3SOCKET), \fBselect\fR(3C), \fBsocket.h\fR(3HEAD),
+-\fBsocket\fR(3SOCKET), \fBnetconfig\fR(4), \fBattributes\fR(5),
+-\fBfcntl.h(3HEAD)\fR, \fBfcntl(2)\fR, \fBstandards(5)\fR
++\fBsocket\fR(3SOCKET), \fBnetconfig\fR(4), \fBattributes\fR(5)
+diff --git a/usr/src/pkg/manifests/system-kernel.man2.inc b/usr/src/pkg/manifests/system-kernel.man2.inc
+index 53928ed..a5028ab 100644
+--- a/usr/src/pkg/manifests/system-kernel.man2.inc
++++ b/usr/src/pkg/manifests/system-kernel.man2.inc
+@@ -10,7 +10,6 @@
+ #
+ 
+ # Copyright 2011, Richard Lowe
+-# Copyright 2013, OmniTI Computer Consulting, Inc.
+ 
+ file path=usr/share/man/man2/Intro.2
+ file path=usr/share/man/man2/_Exit.2
+@@ -138,7 +137,6 @@ file path=usr/share/man/man2/pathconf.2
+ file path=usr/share/man/man2/pause.2
+ file path=usr/share/man/man2/pcsample.2
+ file path=usr/share/man/man2/pipe.2
+-file path=usr/share/man/man2/pipe2.2
+ file path=usr/share/man/man2/poll.2
+ file path=usr/share/man/man2/pread.2
+ file path=usr/share/man/man2/priocntl.2
+diff --git a/usr/src/pkg/manifests/system-library.man3c.inc b/usr/src/pkg/manifests/system-library.man3c.inc
+index 4f8e3ac..57c67ee 100644
+--- a/usr/src/pkg/manifests/system-library.man3c.inc
++++ b/usr/src/pkg/manifests/system-library.man3c.inc
+@@ -12,7 +12,6 @@
+ #
+ # Copyright 2011, Richard Lowe
+ # Copyright 2011 Nexenta Systems, Inc. All rights reserved.
+-# Copyright 2013 OmniTI Computer Consulting, Inc. All rights reserved.
+ #
+ 
+ file path=usr/share/man/man3c/FD_CLR.3c
+@@ -283,7 +282,6 @@ file path=usr/share/man/man3c/door_unbind.3c
+ file path=usr/share/man/man3c/double_to_decimal.3c
+ file path=usr/share/man/man3c/drand48.3c
+ file path=usr/share/man/man3c/dup2.3c
+-file path=usr/share/man/man3c/dup3.3c
+ file path=usr/share/man/man3c/econvert.3c
+ file path=usr/share/man/man3c/ecvt.3c
+ file path=usr/share/man/man3c/edata.3c
+@@ -557,8 +555,6 @@ file path=usr/share/man/man3c/memset.3c
+ file path=usr/share/man/man3c/minor.3c
+ file path=usr/share/man/man3c/mkdtemp.3c
+ file path=usr/share/man/man3c/mkfifo.3c
+-file path=usr/share/man/man3c/mkostemp.3c
+-file path=usr/share/man/man3c/mkostemps.3c
+ file path=usr/share/man/man3c/mkstemp.3c
+ file path=usr/share/man/man3c/mkstemps.3c
+ file path=usr/share/man/man3c/mktemp.3c
+diff --git a/usr/src/pkg/manifests/system-library.man3socket.inc b/usr/src/pkg/manifests/system-library.man3socket.inc
+index afdb8b4..915eb9f 100644
+--- a/usr/src/pkg/manifests/system-library.man3socket.inc
++++ b/usr/src/pkg/manifests/system-library.man3socket.inc
+@@ -10,10 +10,8 @@
+ #
+ 
+ # Copyright 2011, Richard Lowe
+-# Copyright 2013, OmniTI Computer Consulting, Inc.
+ 
+ file path=usr/share/man/man3socket/accept.3socket
+-file path=usr/share/man/man3socket/accept4.3socket
+ file path=usr/share/man/man3socket/bind.3socket
+ file path=usr/share/man/man3socket/byteorder.3socket
+ file path=usr/share/man/man3socket/connect.3socket
+diff --git a/usr/src/uts/common/fs/sockfs/socksyscalls.c b/usr/src/uts/common/fs/sockfs/socksyscalls.c
+index fa55a4f..d4f3647 100644
+--- a/usr/src/uts/common/fs/sockfs/socksyscalls.c
++++ b/usr/src/uts/common/fs/sockfs/socksyscalls.c
+@@ -599,8 +588,7 @@ listen(int sock, int backlog, int version)
+ 
+ /*ARGSUSED3*/
+ int
+-accept(int sock, struct sockaddr *name, socklen_t *namelenp, int version,
+-    int flags)
++accept(int sock, struct sockaddr *name, socklen_t *namelenp, int version)
+ {
+ 	struct sonode *so;
+ 	file_t *fp;
+@@ -610,24 +598,12 @@ accept(int sock, struct sockaddr *name, socklen_t *namelenp, int version,
+ 	struct vnode *nvp;
+ 	struct file *nfp;
+ 	int nfd;
+-	int ssflags;
+ 	struct sockaddr *addrp;
+ 	socklen_t addrlen;
+ 
+ 	dprint(1, ("accept(%d, %p, %p)\n",
+ 	    sock, (void *)name, (void *)namelenp));
+ 
+-	if (flags & ~(SOCK_CLOEXEC|SOCK_NONBLOCK|SOCK_NDELAY)) {
+-		return (set_errno(EINVAL));
+-	}
+-
+-	/* Translate SOCK_ flags to their SS_ variant */
+-	ssflags = 0;
+-	if (flags & SOCK_NONBLOCK)
+-		ssflags |= SS_NONBLOCK;
+-	if (flags & SOCK_NDELAY)
+-		ssflags |= SS_NDELAY;
+-
+ 	if ((so = getsonode(sock, &error, &fp)) == NULL)
+ 		return (set_errno(error));
+ 
+@@ -706,23 +682,15 @@ accept(int sock, struct sockaddr *name, socklen_t *namelenp, int version,
+ 	setf(nfd, nfp);
+ 
+ 	/*
+-	 * Act on SOCK_CLOEXEC from flags
+-	 */
+-	if (flags & SOCK_CLOEXEC) {
+-		f_setfd(nfd, FD_CLOEXEC);
+-	}
+-
+-	/*
+ 	 * Copy FNDELAY and FNONBLOCK from listener to acceptor
+-	 * and from ssflags
+ 	 */
+-	if ((ssflags | so->so_state) & (SS_NDELAY|SS_NONBLOCK)) {
++	if (so->so_state & (SS_NDELAY|SS_NONBLOCK)) {
+ 		uint_t oflag = nfp->f_flag;
+ 		int arg = 0;
+ 
+-		if ((ssflags | so->so_state) & SS_NONBLOCK)
++		if (so->so_state & SS_NONBLOCK)
+ 			arg |= FNONBLOCK;
+-		else if ((ssflags | so->so_state) & SS_NDELAY)
++		else if (so->so_state & SS_NDELAY)
+ 			arg |= FNDELAY;
+ 
+ 		/*
+diff --git a/usr/src/uts/common/os/sysent.c b/usr/src/uts/common/os/sysent.c
+index bf62a79..a79b101 100644
+--- a/usr/src/uts/common/os/sysent.c
++++ b/usr/src/uts/common/os/sysent.c
+@@ -24,7 +24,6 @@
+ /*
+  * Copyright (c) 1988, 2010, Oracle and/or its affiliates. All rights reserved.
+  * Copyright 2012 Milan Jurik. All rights reserved.
+- * Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+  */
+ 
+ /*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
+@@ -316,7 +315,7 @@ int	so_socket(int, int, int, char *, int);
+ int	so_socketpair(int[2]);
+ int	bind(int, struct sockaddr *, socklen_t, int);
+ int	listen(int, int, int);
+-int	accept(int, struct sockaddr *, socklen_t *, int, int);
++int	accept(int, struct sockaddr *, socklen_t *, int);
+ int	connect(int, struct sockaddr *, socklen_t, int);
+ int	shutdown(int, int, int);
+ ssize_t	recv(int, void *, size_t, int);
+@@ -743,7 +742,7 @@ struct sysent sysent[NSYSCALL] =
+ 	/* 231 */ SYSENT_CI("so_socketpair",	so_socketpair,	1),
+ 	/* 232 */ SYSENT_CI("bind",		bind,		4),
+ 	/* 233 */ SYSENT_CI("listen",		listen,		3),
+-	/* 234 */ SYSENT_CI("accept",		accept,		5),
++	/* 234 */ SYSENT_CI("accept",		accept,		4),
+ 	/* 235 */ SYSENT_CI("connect",		connect,	4),
+ 	/* 236 */ SYSENT_CI("shutdown",		shutdown,	3),
+ 	/* 237 */ SYSENT_CL("recv",		recv,		4),
+@@ -1074,7 +1073,7 @@ struct sysent sysent32[NSYSCALL] =
+ 	/* 231 */ SYSENT_CI("so_socketpair",	so_socketpair,	1),
+ 	/* 232 */ SYSENT_CI("bind",		bind,		4),
+ 	/* 233 */ SYSENT_CI("listen",		listen,		3),
+-	/* 234 */ SYSENT_CI("accept",		accept,		5),
++	/* 234 */ SYSENT_CI("accept",		accept,		4),
+ 	/* 235 */ SYSENT_CI("connect",		connect,	4),
+ 	/* 236 */ SYSENT_CI("shutdown",		shutdown,	3),
+ 	/* 237 */ SYSENT_CI("recv",		recv32,		4),
+diff --git a/usr/src/uts/common/sys/fcntl.h b/usr/src/uts/common/sys/fcntl.h
+index aa74cab..f3ca84f 100644
+--- a/usr/src/uts/common/sys/fcntl.h
++++ b/usr/src/uts/common/sys/fcntl.h
+@@ -120,9 +120,6 @@ extern "C" {
+ 
+ #define	F_CHKFL		8	/* Unused */
+ #define	F_DUP2FD	9	/* Duplicate fildes at third arg */
+-#define	F_DUP2FD_CLOEXEC	36	/* Like F_DUP2FD with O_CLOEXEC set */
+-					/* EINVAL is fildes matches arg1 */
+-#define	F_DUPFD_CLOEXEC	37	/* Like F_DUPFD with O_CLOEXEC set */
+ 
+ #define	F_ISSTREAM	13	/* Is the file desc. a stream ? */
+ #define	F_PRIV		15	/* Turn on private access to file */
+diff --git a/usr/src/uts/common/sys/socket.h b/usr/src/uts/common/sys/socket.h
+index 2733c50..0b91740 100644
+--- a/usr/src/uts/common/sys/socket.h
++++ b/usr/src/uts/common/sys/socket.h
+@@ -106,7 +106,7 @@ typedef	void		*_RESTRICT_KYWD Psocklen_t;
+ #define	SOCK_TYPE_MASK	0xffff		/* type reside in these bits only */
+ 
+ /*
+- * Flags for socket() and accept4()
++ * Flags for socket()
+  */
+ #define	SOCK_CLOEXEC	0x080000	/* like open(2) O_CLOEXEC for socket */
+ #define	SOCK_NONBLOCK	0x100000	/* like O_NONBLOCK */
+@@ -524,7 +522,6 @@ struct cmsghdr {
+ #if !defined(_KERNEL) || defined(_BOOT)
+ #ifdef	__STDC__
+ extern int accept(int, struct sockaddr *_RESTRICT_KYWD, Psocklen_t);
+-extern int accept4(int, struct sockaddr *_RESTRICT_KYWD, Psocklen_t, int);
+ extern int bind(int, const struct sockaddr *, socklen_t);
+ extern int connect(int, const struct sockaddr *, socklen_t);
+ extern int getpeername(int, struct sockaddr *_RESTRICT_KYWD, Psocklen_t);
+@@ -549,7 +546,6 @@ extern int sockatmark(int);
+ #endif /* !defined(_XPG4_2) || defined(_XPG6) || defined(__EXTENSIONS__) */
+ #else	/* __STDC__ */
+ extern int accept();
+-extern int accept4();
+ extern int bind();
+ extern int connect();
+ extern int getpeername();
+diff --git a/usr/src/uts/common/syscall/fcntl.c b/usr/src/uts/common/syscall/fcntl.c
+index cc0d785..4a6e58f 100644
+--- a/usr/src/uts/common/syscall/fcntl.c
++++ b/usr/src/uts/common/syscall/fcntl.c
+@@ -22,7 +22,6 @@
+ /* ONC_PLUS EXTRACT START */
+ /*
+  * Copyright (c) 1994, 2010, Oracle and/or its affiliates. All rights reserved.
+- * Copyright (c) 2013, OmniTI Computer Consulting, Inc. All rights reserved.
+  */
+ 
+ /*	Copyright (c) 1983, 1984, 1985, 1986, 1987, 1988, 1989 AT&T	*/
+@@ -33,7 +32,6 @@
+  * under license from the Regents of the University of California.
+  */
+ 
+-
+ /* ONC_PLUS EXTRACT END */
+ 
+ #include <sys/param.h>
+@@ -153,7 +151,6 @@ fcntl(int fdes, int cmd, intptr_t arg)
+ /* ONC_PLUS EXTRACT END */
+ 
+ 	case F_DUPFD:
+-	case F_DUPFD_CLOEXEC:
+ 		p = curproc;
+ 		if ((uint_t)iarg >= p->p_fno_ctl) {
+ 			if (iarg >= 0)
+@@ -181,21 +178,9 @@ fcntl(int fdes, int cmd, intptr_t arg)
+ 			fp->f_count--;
+ 			mutex_exit(&fp->f_tlock);
+ 			error = EMFILE;
+-		} else {
+-			if (cmd == F_DUPFD_CLOEXEC) {
+-				f_setfd(retval, FD_CLOEXEC);
+-			}
+ 		}
+ 		goto done;
+ 
+-	case F_DUP2FD_CLOEXEC:
+-		if (fdes == iarg) {
+-			error = EINVAL;
+-			goto done;
+-		}
+-
+-		/*FALLTHROUGH*/
+-
+ 	case F_DUP2FD:
+ 		p = curproc;
+ 		if (fdes == iarg) {
+@@ -223,9 +208,6 @@ fcntl(int fdes, int cmd, intptr_t arg)
+ 			mutex_exit(&fp->f_tlock);
+ 			releasef(fdes);
+ 			if ((error = closeandsetf(iarg, fp)) == 0) {
+-				if (cmd == F_DUP2FD_CLOEXEC) {
+-					f_setfd(iarg, FD_CLOEXEC);
+-				}
+ 				retval = iarg;
+ 			} else {
+ 				mutex_enter(&fp->f_tlock);
+diff --git a/usr/src/uts/common/syscall/pipe.c b/usr/src/uts/common/syscall/pipe.c
+index 15b4953..a626b23 100644
+--- a/usr/src/uts/common/syscall/pipe.c
++++ b/usr/src/uts/common/syscall/pipe.c
+@@ -19,7 +19,6 @@
+  * CDDL HEADER END
+  */
+ /*
+- * Copyright 2013 OmniTI Computer Consulting, Inc. All rights reserved.
+  * Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
+  * Copyright (c) 2011 Bayard G. Bell. All rights reserved.
+@@ -42,7 +41,6 @@
+ #include <sys/errno.h>
+ #include <sys/debug.h>
+ #include <sys/fs/fifonode.h>
+-#include <sys/fcntl.h>
+ 
+ /*
+  * This is the loadable module wrapper.
+@@ -50,11 +48,11 @@
+ #include <sys/modctl.h>
+ #include <sys/syscall.h>
+ 
+-int pipe(intptr_t fds, int);
++longlong_t pipe();
+ 
+ static struct sysent pipe_sysent = {
+-	2,
+-	SE_ARGC | SE_32RVAL1 | SE_NOUNLOAD,
++	0,
++	SE_32RVAL1 | SE_32RVAL2 | SE_NOUNLOAD | SE_ARGC,
+ 	(int (*)())pipe
+ };
+ 
+@@ -104,22 +102,16 @@ _info(struct modinfo *modinfop)
+  * each end of the pipe with a vnode, a file descriptor and
+  * one of the streams.
+  */
+-int
+-pipe(intptr_t arg, int flags)
++longlong_t
++pipe()
+ {
+ 	vnode_t *vp1, *vp2;
+ 	struct file *fp1, *fp2;
+ 	int error = 0;
+-	int flag1, flag2, iflags;
+ 	int fd1, fd2;
++	rval_t	r;
+ 
+ 	/*
+-	 * Validate allowed flags.
+-	 */
+-	if ((flags & ~(FCLOEXEC|FNONBLOCK)) != 0) {
+-		return (set_errno(EINVAL));
+-	}
+-	/*
+ 	 * Allocate and initialize two vnodes.
+ 	 */
+ 	makepipe(&vp1, &vp2);
+@@ -132,7 +124,7 @@ pipe(intptr_t arg, int flags)
+ 	if (error = falloc(vp1, FWRITE|FREAD, &fp1, &fd1)) {
+ 		VN_RELE(vp1);
+ 		VN_RELE(vp2);
+-		return (set_errno(error));
++		return ((longlong_t)set_errno(error));
+ 	}
+ 
+ 	if (error = falloc(vp2, FWRITE|FREAD, &fp2, &fd2))
+@@ -155,36 +147,6 @@ pipe(intptr_t arg, int flags)
+ 	VTOF(vp1)->fn_ino = VTOF(vp2)->fn_ino = fifogetid();
+ 
+ 	/*
+-	 * Set the O_NONBLOCK flag if requested.
+-	 */
+-	if (flags & FNONBLOCK) {
+-		flag1 = fp1->f_flag;
+-		flag2 = fp2->f_flag;
+-		iflags = flags & FNONBLOCK;
+-
+-		if (error = VOP_SETFL(vp1, flag1, iflags, fp1->f_cred, NULL)) {
+-			goto out_vop_close;
+-		}
+-		fp1->f_flag |= iflags;
+-
+-		if (error = VOP_SETFL(vp2, flag2, iflags, fp2->f_cred, NULL)) {
+-			goto out_vop_close;
+-		}
+-		fp2->f_flag |= iflags;
+-	}
+-
+-	/*
+-	 * Return the file descriptors to the user. They now
+-	 * point to two different vnodes which have different
+-	 * stream heads.
+-	 */
+-	if (copyout(&fd1, &((int *)arg)[0], sizeof (int)) ||
+-	    copyout(&fd2, &((int *)arg)[1], sizeof (int))) {
+-		error = EFAULT;
+-		goto out_vop_close;
+-	}
+-
+-	/*
+ 	 * Now fill in the entries that falloc reserved
+ 	 */
+ 	mutex_exit(&fp1->f_tlock);
+@@ -193,24 +155,20 @@ pipe(intptr_t arg, int flags)
+ 	setf(fd2, fp2);
+ 
+ 	/*
+-	 * Optionally set the FCLOEXEC flag
++	 * Return the file descriptors to the user. They now
++	 * point to two different vnodes which have different
++	 * stream heads.
+ 	 */
+-	if ((flags & FCLOEXEC) != 0) {
+-		f_setfd(fd1, FD_CLOEXEC);
+-		f_setfd(fd2, FD_CLOEXEC);
+-	}
+-
+-	return (0);
+-out_vop_close:
+-	(void) VOP_CLOSE(vp1, FWRITE|FREAD, 1, (offset_t)0, fp1->f_cred, NULL);
+-	(void) VOP_CLOSE(vp2, FWRITE|FREAD, 1, (offset_t)0, fp2->f_cred, NULL);
++	r.r_val1 = fd1;
++	r.r_val2 = fd2;
++	return (r.r_vals);
+ out:
+-	setf(fd2, NULL);
+ 	unfalloc(fp2);
++	setf(fd2, NULL);
+ out2:
+-	setf(fd1, NULL);
+ 	unfalloc(fp1);
++	setf(fd1, NULL);
+ 	VN_RELE(vp1);
+ 	VN_RELE(vp2);
+-	return (set_errno(error));
++	return ((longlong_t)set_errno(error));
+ }
