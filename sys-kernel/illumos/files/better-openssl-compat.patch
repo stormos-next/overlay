@@ -1,0 +1,64 @@
+diff --git a/usr/src/lib/libkmf/plugins/kmf_openssl/common/openssl_spi.c b/usr/src/lib/libkmf/plugins/kmf_openssl/common/openssl_spi.c
+index fc3da4b..12dcf55 100644
+--- a/usr/src/lib/libkmf/plugins/kmf_openssl/common/openssl_spi.c
++++ b/usr/src/lib/libkmf/plugins/kmf_openssl/common/openssl_spi.c
+@@ -7,6 +7,9 @@
+  * Copyright (c) 2012, OmniTI Computer Consulting, Inc. All rights reserved.
+  */
+ /*
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
++ */
++/*
+  * Written by Dr Stephen N Henson (shenson@bigfoot.com) for the OpenSSL
+  * project 2000.
+  */
+@@ -1802,8 +1805,10 @@ OpenSSL_SignData(KMF_HANDLE_T handle, KMF_KEY_HANDLE *key,
+ 		int len;
+ 		if (AlgId == KMF_ALGID_MD5WithRSA)
+ 			md = EVP_md5();
++#ifndef OPENSSL_NO_MD2
+ 		else if (AlgId == KMF_ALGID_MD2WithRSA)
+ 			md = EVP_md2();
++#endif
+ 		else if (AlgId == KMF_ALGID_SHA1WithRSA)
+ 			md = EVP_sha1();
+ 		else if (AlgId == KMF_ALGID_SHA256WithRSA)
+diff --git a/usr/src/cmd/ssh/libssh/common/engine.c b/usr/src/cmd/ssh/libssh/common/engine.c
+index 0541c65..08a92ad 100644
+--- a/usr/src/cmd/ssh/libssh/common/engine.c
++++ b/usr/src/cmd/ssh/libssh/common/engine.c
+@@ -21,6 +21,7 @@
+ /*
+  * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+  */
+ 
+ #include "includes.h"
+@@ -30,6 +31,12 @@
+ #define	PKCS11_ENGINE	"pkcs11"
+ 
+ /*
++ * Define ENGINE_load_pk11 as a weak symbol so we can link against
++ * versions of openssl that don't have pkcs11 support enabled.
++ */
++extern void ENGINE_load_pk11(void) __attribute__((weak));
++
++/*
+  * Loads the PKCS#11 engine if the UseOpenSSLEngine is set to yes which is the
+  * default value.
+  */
+@@ -42,7 +49,13 @@ pkcs11_engine_load(int use_engine)
+ 	if (use_engine == 0)
+ 		return (NULL);
+ 
++	if (ENGINE_load_pk11 == NULL) {
++		error("openssl compiled without %s support", PKCS11_ENGINE);
++		return (NULL);
++	}
++
+ 	ENGINE_load_pk11();
++
+ 	/* get structural reference */
+ 	if ((e = ENGINE_by_id(PKCS11_ENGINE)) == NULL) {
+ 		error("%s engine does not exist", PKCS11_ENGINE);

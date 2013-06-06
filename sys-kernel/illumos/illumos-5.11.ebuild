@@ -36,17 +36,16 @@ EGIT_COMMIT="aad02571bc59671aa3103bb070ae365f531b0b62"
 src_prepare()
 {
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/binutils-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ENABLE_PKCS11_ENGINE.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/flex-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/gethostbyname2.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/kmf_openssl_no_md2.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libiconv-shim.patch" || die
@@ -68,11 +67,6 @@ src_configure()
  		-e "s:^export ON_CLOSED_BINS=\".*\"\$:export ON_CLOSED_BINS=\"${WORKDIR}/closed\":g" \
 		-e "s:^# \(export ENABLE_SMB_PRINTING='#'\):\1:g" \
  		usr/src/tools/env/illumos.sh > illumos.sh || die
-
-	# FIXME: Our version of openssl does not support this yet
-	echo "" >> illumos.sh
-	echo "# Disable pkcs11 engine support" >> illumos.sh
-	echo "export ENABLE_PKCS11_ENGINE='#'" >> illumos.sh
 
 	if ! use multilib ; then
 		elog "Disabling 64bit build (add multilib to USE to enable)"
