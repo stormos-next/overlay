@@ -18,7 +18,7 @@ RDEPEND="nls? ( virtual/libintl )
 	pcre? ( >=dev-libs/libpcre-7.8-r1 )
 	virtual/libiconv"
 DEPEND="${RDEPEND}
-	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
+	nls? ( virtual/gettext )"
 
 src_configure() {
 	local myconf
