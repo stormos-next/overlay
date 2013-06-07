@@ -48,6 +48,7 @@ SYMBOL_VERSION STORMOS_0.1 {
 	crc32_combine64 ;
 	adler32_combine64 ;
 	gzoffset64 ;
+	inflateReset2 ;
 } SUNW_1.2;
 $endif
 
