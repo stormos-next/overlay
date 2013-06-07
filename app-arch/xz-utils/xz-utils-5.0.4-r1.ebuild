@@ -27,7 +27,7 @@ HOMEPAGE="http://tukaani.org/xz/"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="nls static-libs +threads"
+IUSE="nls static-libs +threads kernel_SunOS"
 
 RDEPEND="!<app-arch/lzma-4.63
 	!app-arch/lzma-utils
@@ -48,7 +48,8 @@ src_configure() {
 	econf \
 		$(use_enable nls) \
 		$(use_enable threads) \
-		$(use_enable static-libs static)
+		$(use_enable static-libs static) \
+		$(use kernel_SunOS && echo gl_cv_cc_visibility=no)
 }
 
 src_install() {
