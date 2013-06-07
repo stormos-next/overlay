@@ -4,6 +4,8 @@
 
 EAPI=4
 
+inherit eutils
+
 DESCRIPTION="Internationalization Tool Collection"
 HOMEPAGE="http://edge.launchpad.net/intltool/"
 SRC_URI="http://edge.launchpad.net/intltool/trunk/${PV}/+download/${P}.tar.gz"
@@ -16,6 +18,10 @@ IUSE=""
 DEPEND=">=dev-lang/perl-5.8.1
 	dev-perl/XML-Parser"
 RDEPEND="${DEPEND}
-	sys-devel/gettext"
+	|| ( sys-devel/gettext sys-kernel/illumos )"
 
 DOCS=( AUTHORS ChangeLog NEWS README TODO doc/I18N-HOWTO )
+
+src_prepare() {
+	epatch "${FILESDIR}"/no-force-gnu-gettext.patch
+}
