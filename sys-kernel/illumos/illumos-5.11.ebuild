@@ -38,6 +38,7 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/binutils-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
