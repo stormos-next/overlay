@@ -22,7 +22,7 @@ inherit toolchain
 DESCRIPTION="The GNU Compiler Collection"
 
 LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.2+"
-KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-solaris"
+KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -42,8 +42,6 @@ src_unpack() {
 	sed -i 's/use_fixproto=yes/:/' gcc/config.gcc #PR33200
 
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env.patch
-
-	[[ ${CHOST} == *-solaris2.1* ]] && epatch "${FILESDIR}"/4.5.4/gcc-4.5.4-gmon-hack.patch
 }
 
 pkg_setup() {

@@ -23,12 +23,12 @@ inherit toolchain
 DESCRIPTION="The GNU Compiler Collection"
 
 LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.3+"
-KEYWORDS="~alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh ~sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="~alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh ~sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-solaris"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
 	elibc_glibc? ( >=sys-libs/glibc-2.8 )
-	>=${CATEGORY}/binutils-2.18"
+	|| ( >=${CATEGORY}/binutils-2.18 >=sys-kernel/illumos-5.11 )"
 
 if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
@@ -46,6 +46,8 @@ src_unpack() {
 	use vanilla && return 0
 
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env.patch
+
+	[[ ${CHOST} == *-solaris2.1* ]] && epatch "${FILESDIR}"/4.6.3/gcc-4.6.3-gmon-hack.patch
 }
 
 pkg_setup() {
