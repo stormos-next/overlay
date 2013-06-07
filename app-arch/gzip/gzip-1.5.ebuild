@@ -17,7 +17,7 @@ IUSE="nls pic static"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
-	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
+	nls? ( virtual/gettext )"
 
 src_unpack() {
 	unpacker
