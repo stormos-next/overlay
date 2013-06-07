@@ -144,6 +144,7 @@ src_prepare() {
 			|| die "epatch failed"
 		cd "${S}" || die "Failed to cd to ${S}"
 	fi
+	epatch "${FILESDIR}"/apache-2.4.4-libtool-fix.patch
 	apache-2_src_prepare
 	sed -i -e 's/! test -f/test -f/' "${GENTOO_PATCHDIR}"/init/apache2.initd || die "Failed to fix init script"
 }
