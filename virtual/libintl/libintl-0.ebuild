@@ -13,4 +13,4 @@ DEPEND=""
 
 # - Don't put elibc_glibc? ( sys-libs/glibc ) to avoid circular deps between
 # that and gcc. And don't force uClibc to dep on this.
-RDEPEND="!elibc_glibc? ( !elibc_uclibc? ( sys-devel/gettext ) )"
+RDEPEND="!elibc_glibc? ( !elibc_uclibc? ( || ( sys-devel/gettext sys-kernel/illumos ) ) )"
