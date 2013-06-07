@@ -18,7 +18,7 @@ IUSE="nls ruby"
 DEPEND="
 	sys-devel/flex
 	sys-devel/bison
-	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )
+	nls? ( virtual/gettext )
 "
 RDEPEND="nls? ( virtual/libintl )"
 
