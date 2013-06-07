@@ -6,15 +6,15 @@ EAPI="5"
 GCONF_DEBUG="no"
 GNOME2_LA_PUNT="yes"
 
-inherit eutils gnome2
+inherit eutils gnome2 autotools
 
 DESCRIPTION="D-Bus accessibility specifications and registration daemon"
 HOMEPAGE="http://live.gnome.org/Accessibility"
 
 LICENSE="LGPL-2+"
 SLOT="2"
-KEYWORDS="~alpha amd64 arm ~hppa ~ia64 ~mips ppc ppc64 ~sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux"
-IUSE="+introspection"
+KEYWORDS="~alpha amd64 arm ~hppa ~ia64 ~mips ppc ppc64 ~sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~x86-solaris"
+IUSE="+introspection userland_SunOS"
 
 RDEPEND=">=dev-libs/glib-2.28:2
 	>=sys-apps/dbus-1
@@ -30,6 +30,9 @@ DEPEND="${RDEPEND}
 "
 
 src_prepare() {
+	# autoreconf on solaris to remove intltool dependency on gnu gettext
+	use userland_SunOS && eautoreconf
+
 	# xevie is deprecated/broken since xorg-1.6/1.7
 	G2CONF="${G2CONF}
 		--disable-xevie
