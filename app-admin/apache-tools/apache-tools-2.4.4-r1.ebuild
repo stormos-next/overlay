@@ -25,6 +25,10 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}/httpd-${PV}"
 
+src_prepare() {
+	epatch "${FILESDIR}"/apache-tools-libtool-fix.patch || die
+}
+
 src_configure() {
 	local myconf=""
 
