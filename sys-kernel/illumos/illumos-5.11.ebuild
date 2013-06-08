@@ -40,6 +40,7 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/binutils-path.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/drop-python-modules.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die

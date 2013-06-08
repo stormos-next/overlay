@@ -1,0 +1,4209 @@
+From b3e108e99c9856edbd765aa157d2ba590d818872 Mon Sep 17 00:00:00 2001
+From: Bayard Bell <bayard.bell@nexenta.com>
+Date: Mon, 3 Jun 2013 11:52:28 +0100
+Subject: [PATCH] Kill dead python libraries and commands
+
+---
+ usr/src/Makefile.lint                           |    1 -
+ usr/src/cmd/Makefile                            |    4 +-
+ usr/src/lib/Makefile                            |   10 +-
+ usr/src/lib/pylibbe/Makefile                    |   56 --
+ usr/src/lib/pylibbe/Makefile.com                |   62 --
+ usr/src/lib/pylibbe/amd64/Makefile              |   29 -
+ usr/src/lib/pylibbe/common/libbe_py.c           | 1095 -----------------------
+ usr/src/lib/pylibbe/common/mapfile-vers         |   46 -
+ usr/src/lib/pylibbe/i386/Makefile               |   28 -
+ usr/src/lib/pylibbe/sparc/Makefile              |   28 -
+ usr/src/lib/pylibbe/sparcv9/Makefile            |   29 -
+ usr/src/lib/pysolaris/Makefile                  |   54 --
+ usr/src/lib/pysolaris/Makefile.com              |   61 --
+ usr/src/lib/pysolaris/common/__init__.py        |   27 -
+ usr/src/lib/pysolaris/common/mapfile-vers       |   46 -
+ usr/src/lib/pysolaris/common/misc.c             |  140 ---
+ usr/src/lib/pysolaris/i386/Makefile             |   27 -
+ usr/src/lib/pysolaris/sparc/Makefile            |   27 -
+ usr/src/lib/pyzfs/Makefile                      |   54 --
+ usr/src/lib/pyzfs/Makefile.com                  |   66 --
+ usr/src/lib/pyzfs/common/__init__.py            |   27 -
+ usr/src/lib/pyzfs/common/allow.py               |  396 --------
+ usr/src/lib/pyzfs/common/dataset.py             |  234 -----
+ usr/src/lib/pyzfs/common/groupspace.py          |   28 -
+ usr/src/lib/pyzfs/common/holds.py               |   75 --
+ usr/src/lib/pyzfs/common/ioctl.c                |  543 -----------
+ usr/src/lib/pyzfs/common/mapfile-vers           |   46 -
+ usr/src/lib/pyzfs/common/table.py               |   70 --
+ usr/src/lib/pyzfs/common/unallow.py             |   27 -
+ usr/src/lib/pyzfs/common/userspace.py           |  246 -----
+ usr/src/lib/pyzfs/common/util.py                |  141 ---
+ usr/src/lib/pyzfs/i386/Makefile                 |   27 -
+ usr/src/lib/pyzfs/sparc/Makefile                |   27 -
+ usr/src/pkg/manifests/install-beadm.mf          |    8 +-
+ usr/src/pkg/manifests/system-file-system-zfs.mf |   25 -
+ usr/src/pkg/manifests/system-library.mf         |    6 -
+ 36 files changed, 3 insertions(+), 3813 deletions(-)
+ delete mode 100644 usr/src/lib/pylibbe/Makefile
+ delete mode 100644 usr/src/lib/pylibbe/Makefile.com
+ delete mode 100644 usr/src/lib/pylibbe/amd64/Makefile
+ delete mode 100644 usr/src/lib/pylibbe/common/libbe_py.c
+ delete mode 100644 usr/src/lib/pylibbe/common/mapfile-vers
+ delete mode 100644 usr/src/lib/pylibbe/i386/Makefile
+ delete mode 100644 usr/src/lib/pylibbe/sparc/Makefile
+ delete mode 100644 usr/src/lib/pylibbe/sparcv9/Makefile
+ delete mode 100644 usr/src/lib/pysolaris/Makefile
+ delete mode 100644 usr/src/lib/pysolaris/Makefile.com
+ delete mode 100644 usr/src/lib/pysolaris/common/__init__.py
+ delete mode 100644 usr/src/lib/pysolaris/common/mapfile-vers
+ delete mode 100644 usr/src/lib/pysolaris/common/misc.c
+ delete mode 100644 usr/src/lib/pysolaris/i386/Makefile
+ delete mode 100644 usr/src/lib/pysolaris/sparc/Makefile
+ delete mode 100644 usr/src/lib/pyzfs/Makefile
+ delete mode 100644 usr/src/lib/pyzfs/Makefile.com
+ delete mode 100644 usr/src/lib/pyzfs/common/__init__.py
+ delete mode 100644 usr/src/lib/pyzfs/common/allow.py
+ delete mode 100644 usr/src/lib/pyzfs/common/dataset.py
+ delete mode 100644 usr/src/lib/pyzfs/common/groupspace.py
+ delete mode 100644 usr/src/lib/pyzfs/common/holds.py
+ delete mode 100644 usr/src/lib/pyzfs/common/ioctl.c
+ delete mode 100644 usr/src/lib/pyzfs/common/mapfile-vers
+ delete mode 100644 usr/src/lib/pyzfs/common/table.py
+ delete mode 100644 usr/src/lib/pyzfs/common/unallow.py
+ delete mode 100644 usr/src/lib/pyzfs/common/userspace.py
+ delete mode 100644 usr/src/lib/pyzfs/common/util.py
+ delete mode 100644 usr/src/lib/pyzfs/i386/Makefile
+ delete mode 100644 usr/src/lib/pyzfs/sparc/Makefile
+
+diff --git a/usr/src/Makefile.lint b/usr/src/Makefile.lint
+index 6c8b973..d42cf6e 100644
+--- a/usr/src/Makefile.lint
++++ b/usr/src/Makefile.lint
+@@ -338,7 +338,6 @@ COMMON_SUBDIRS = \
+ 	lib/abi \
+ 	lib/auditd_plugins \
+ 	lib/libbe \
+-	lib/pylibbe \
+ 	lib/brand/sn1 \
+ 	lib/brand/solaris10 \
+ 	lib/crypt_modules \
+diff --git a/usr/src/cmd/Makefile b/usr/src/cmd/Makefile
+index 5c05a08..8d4add5 100644
+--- a/usr/src/cmd/Makefile
++++ b/usr/src/cmd/Makefile
+@@ -20,7 +20,7 @@
+ #
+ 
+ # Copyright (c) 1989, 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright 2010 Nexenta Systems, Inc.  All rights reserved.
++# Copyright 2013 Nexenta Systems, Inc.  All rights reserved.
+ # Copyright 2011 Joyent, Inc.  All rights reserved.
+ # Copyright (c) 2012 by Delphix. All rights reserved.
+ # Copyright (c) 2013 DEY Storage Systems, Inc. All rights reserved.
+@@ -329,7 +329,6 @@ COMMON_SUBDIRS=		\
+ 	pwck		\
+ 	pwconv		\
+ 	pwd		\
+-	pyzfs		\
+ 	raidctl		\
+ 	ramdiskadm	\
+ 	rcap		\
+@@ -668,7 +667,6 @@ MSGSUBDIRS=		\
+ 	ptools		\
+ 	pwconv		\
+ 	pwd		\
+-	pyzfs		\
+ 	raidctl		\
+ 	ramdiskadm	\
+ 	rcap		\
+diff --git a/usr/src/lib/Makefile b/usr/src/lib/Makefile
+index bae90c4..9b28b79 100644
+--- a/usr/src/lib/Makefile
++++ b/usr/src/lib/Makefile
+@@ -19,7 +19,7 @@
+ # CDDL HEADER END
+ #
+ 
+-# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
++# Copyright 2013 Nexenta Systems, Inc.  All rights reserved.
+ # Copyright (c) 1989, 2010, Oracle and/or its affiliates. All rights reserved.
+ # Copyright (c) 2012 by Delphix. All rights reserved.
+ # Copyright (c) 2012, Joyent, Inc. All rights reserved.
+@@ -240,10 +240,7 @@ SUBDIRS += \
+ 	libzfs_core	\
+ 	libzfs		\
+ 	libbe		\
+-	pylibbe		\
+ 	libzfs_jni	\
+-	pyzfs		\
+-	pysolaris	\
+ 	libmapid	\
+ 	brand		\
+ 	policykit	\
+@@ -366,8 +363,6 @@ MSGSUBDIRS=		\
+ 	madv		\
+ 	mpss		\
+ 	pam_modules	\
+-	pyzfs		\
+-	pysolaris	\
+ 	rpcsec_gss	\
+ 	libreparse
+ MSGSUBDIRS += \
+@@ -669,9 +664,6 @@ sun_fc:		libdevinfo libsysevent libnvpair
+ libsun_ima:	libdevinfo libsysevent libnsl
+ sun_sas:	libdevinfo libsysevent libnvpair libkstat libdevid
+ libgrubmgmt:	libdevinfo libzfs libfstyp
+-pylibbe: 	libbe libzfs
+-pyzfs:		libnvpair libzfs
+-pysolaris:	libsec libidmap
+ libreparse:	libnvpair
+ libhotplug:	libnvpair
+ cfgadm_plugins:	libhotplug
+diff --git a/usr/src/lib/pylibbe/Makefile b/usr/src/lib/pylibbe/Makefile
+deleted file mode 100644
+index ee2a576..0000000
+--- a/usr/src/lib/pylibbe/Makefile
++++ /dev/null
+@@ -1,56 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright 2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+-#
+-
+-include	../Makefile.lib
+-
+-SUBDIRS=	$(MACH)
+-$(BUILD64)SUBDIRS += $(MACH64)
+-XGETTEXT=	$(GNUXGETTEXT)
+-XGETFLAGS=	$(GNUXGETFLAGS)
+-
+-all :=		TARGET= all
+-install :=	TARGET= install
+-clean :=	TARGET= clean
+-clobber :=	TARGET= clobber
+-lint :=		TARGET= lint
+-
+-MSGFILES =	`$(FIND) . -name '*.py' -o -name '*.c'`
+-POFILE =	libbe_py.po
+-
+-.KEEP_STATE:
+-
+-all install clean clobber lint: $(SUBDIRS)
+-
+-$(POFILE):	pofile_MSGFILES
+-
+-_msg: $(MSGDOMAINPOFILE)
+-
+-$(SUBDIRS): FRC
+-	@cd $@; pwd; $(MAKE) $(TARGET)
+-
+-FRC:
+-
+-include ../../Makefile.msg.targ
+diff --git a/usr/src/lib/pylibbe/Makefile.com b/usr/src/lib/pylibbe/Makefile.com
+deleted file mode 100644
+index aa26dec..0000000
+--- a/usr/src/lib/pylibbe/Makefile.com
++++ /dev/null
+@@ -1,62 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright 2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+-#
+-
+-LIBRARY =	libbe_py.a
+-VERS =
+-OBJECTS =	libbe_py.o
+-
+-include ../../Makefile.lib
+-
+-PYTHON = 	$(PYTHON_26)
+-LIBLINKS = 
+-SRCDIR =	../common
+-ROOTLIBDIR=	$(ROOT)/usr/lib/python2.6/vendor-packages
+-ROOTLIBDIR64=	$(ROOT)/usr/lib/python2.6/vendor-packages/64
+-PYOBJS=		$(PYSRCS:%.py=$(SRCDIR)/%.pyc)
+-PYFILES=	$(PYSRCS) $(PYSRCS:%.py=%.pyc)
+-ROOTPYBEFILES=  $(PYFILES:%=$(ROOTLIBDIR)/%)
+-
+-C99MODE=        $(C99_ENABLE)
+-
+-LIBS =		$(DYNLIB)
+-LDLIBS +=	-lbe -lnvpair -lc
+-CFLAGS +=	$(CCVERBOSE)
+-CPPFLAGS +=	-I/usr/include/python2.6 -D_FILE_OFFSET_BITS=64 -I../../libbe/common
+-
+-.KEEP_STATE:
+-
+-all install := LDLIBS += -lpython2.6
+-
+-all: $(PYOBJS) $(LIBS)
+-
+-install: all $(ROOTPYBEFILES)
+-
+-$(ROOTLIBDIR)/%: %
+-	$(INS.pyfile)
+-
+-lint: lintcheck
+-
+-include ../../Makefile.targ
+diff --git a/usr/src/lib/pylibbe/amd64/Makefile b/usr/src/lib/pylibbe/amd64/Makefile
+deleted file mode 100644
+index 32e9e54..0000000
+--- a/usr/src/lib/pylibbe/amd64/Makefile
++++ /dev/null
+@@ -1,29 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright 2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+-#
+-
+-include ../Makefile.com
+-include ../../Makefile.lib.64
+-
+-install: all $(ROOTLIBS64)
+diff --git a/usr/src/lib/pylibbe/common/libbe_py.c b/usr/src/lib/pylibbe/common/libbe_py.c
+deleted file mode 100644
+index f07f32b..0000000
+--- a/usr/src/lib/pylibbe/common/libbe_py.c
++++ /dev/null
+@@ -1,1095 +0,0 @@
+-/*
+- * CDDL HEADER START
+- *
+- * The contents of this file are subject to the terms of the
+- * Common Development and Distribution License (the "License").
+- * You may not use this file except in compliance with the License.
+- *
+- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+- * or http://www.opensolaris.org/os/licensing.
+- * See the License for the specific language governing permissions
+- * and limitations under the License.
+- *
+- * When distributing Covered Code, include this CDDL HEADER in each
+- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+- * If applicable, add the following below this CDDL HEADER, with the
+- * fields enclosed by brackets "[]" replaced with your own identifying
+- * information: Portions Copyright [yyyy] [name of copyright owner]
+- *
+- * CDDL HEADER END
+- */
+-
+-/*
+- * Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
+- * Copyright 2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+- */
+-
+-#include <Python.h>
+-#include <sys/varargs.h>
+-#include <stdio.h>
+-#include <libnvpair.h>
+-
+-#include <libbe.h>
+-#include <libbe_priv.h>
+-
+-enum {
+-	BE_PY_SUCCESS = 0,
+-	BE_PY_ERR_APPEND = 6000,
+-	BE_PY_ERR_DICT,
+-	BE_PY_ERR_LIST,
+-	BE_PY_ERR_NVLIST,
+-	BE_PY_ERR_PARSETUPLE,
+-	BE_PY_ERR_PRINT_ERR,
+-	BE_PY_ERR_VAR_CONV,
+-} bePyErr;
+-
+-/*
+- * public libbe functions
+- */
+-
+-PyObject *beCreateSnapshot(PyObject *, PyObject *);
+-PyObject *beCopy(PyObject *, PyObject *);
+-PyObject *beList(PyObject *, PyObject *);
+-PyObject *beActivate(PyObject *, PyObject *);
+-PyObject *beDestroy(PyObject *, PyObject *);
+-PyObject *beDestroySnapshot(PyObject *, PyObject *);
+-PyObject *beRename(PyObject *, PyObject *);
+-PyObject *beMount(PyObject *, PyObject *);
+-PyObject *beUnmount(PyObject *, PyObject *);
+-PyObject *bePrintErrors(PyObject *, PyObject *);
+-PyObject *beGetErrDesc(PyObject *, PyObject *);
+-char *beMapLibbePyErrorToString(int);
+-void initlibbe_py();
+-
+-static boolean_t convertBEInfoToDictionary(be_node_list_t *be,
+-    PyObject **listDict);
+-static boolean_t convertDatasetInfoToDictionary(be_dataset_list_t *ds,
+-    PyObject **listDict);
+-static boolean_t convertSnapshotInfoToDictionary(be_snapshot_list_t *ss,
+-    PyObject **listDict);
+-static boolean_t convertPyArgsToNvlist(nvlist_t **nvList, int numArgs, ...);
+-
+-
+-/* ~~~~~~~~~~~~~~~ */
+-/* Public Funtions */
+-/* ~~~~~~~~~~~~~~~ */
+-
+-/*
+- * Function:    beCreateSnapshot
+- * Description: Convert Python args to nvlist pairs and
+- *              call libbe:be_create_snapshot to create a
+- *              snapshot of all the datasets within a BE
+- * Parameters:
+- *   args -          pointer to a python object containing:
+- *        beName -   The name of the BE to create a snapshot of
+- *        snapName - The name of the snapshot to create (optional)
+- *
+- *        The following public attribute values. defined by libbe.h,
+- *        are used by this function:
+- *
+- * Returns a pointer to a python object and an optional snapshot name:
+- *      0, [snapName] - Success
+- *      1, [snapName] - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beCreateSnapshot(PyObject *self, PyObject *args)
+-{
+-	char	*beName = NULL;
+-	char	*snapName = NULL;
+-	int	ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-	PyObject	*retVals = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "z|z", &beName, &snapName)) {
+-		return (Py_BuildValue("[is]", BE_PY_ERR_PARSETUPLE, NULL));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 4,
+-	    BE_ATTR_ORIG_BE_NAME, beName,
+-	    BE_ATTR_SNAP_NAME, snapName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("[is]", BE_PY_ERR_NVLIST, NULL));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if ((ret = be_create_snapshot(beAttrs)) != 0) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("[is]", ret, NULL));
+-	}
+-	if (snapName == NULL) {
+-		if (nvlist_lookup_pairs(beAttrs, NV_FLAG_NOENTOK,
+-		    BE_ATTR_SNAP_NAME, DATA_TYPE_STRING, &snapName,
+-		    NULL) != 0) {
+-			nvlist_free(beAttrs);
+-			return (Py_BuildValue("[is]",
+-			    BE_PY_ERR_NVLIST, NULL));
+-		}
+-		retVals = Py_BuildValue("[is]", ret, snapName);
+-		nvlist_free(beAttrs);
+-		return (retVals);
+-	}
+-	nvlist_free(beAttrs);
+-
+-	return (Py_BuildValue("[is]", ret, NULL));
+-}
+-
+-/*
+- * Function:    beCopy
+- * Description: Convert Python args to nvlist pairs and call libbe:be_copy
+- *              to create a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     trgtBeName - The name of the BE to create
+- *     srcBeName - The name of the BE used to create trgtBeName (optional)
+- *     rpool - The pool to create the new BE in (optional)
+- *     srcSnapName - The snapshot name (optional)
+- *     beNameProperties - The properties to use when creating
+- *                        the BE (optional)
+- *
+- * Returns a pointer to a python object. That Python object will consist of
+- * the return code and optional attributes, trgtBeName and snapshotName
+- *      BE_SUCCESS, [trgtBeName], [trgtSnapName] - Success
+- *      1, [trgtBeName], [trgtSnapName] - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beCopy(PyObject *self, PyObject *args)
+-{
+-	char	*trgtBeName = NULL;
+-	char	*srcBeName = NULL;
+-	char	*srcSnapName = NULL;
+-	char	*trgtSnapName = NULL;
+-	char	*rpool = NULL;
+-	char	*beDescription = NULL;
+-	Py_ssize_t	pos = 0;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-	nvlist_t	*beProps = NULL;
+-	PyObject	*beNameProperties = NULL;
+-	PyObject	*pkey = NULL;
+-	PyObject	*pvalue = NULL;
+-	PyObject	*retVals = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "|zzzzOz", &trgtBeName, &srcBeName,
+-	    &srcSnapName, &rpool, &beNameProperties, &beDescription)) {
+-		return (Py_BuildValue("[iss]", BE_PY_ERR_PARSETUPLE,
+-		    NULL, NULL));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 10,
+-	    BE_ATTR_NEW_BE_NAME, trgtBeName,
+-	    BE_ATTR_ORIG_BE_NAME, srcBeName,
+-	    BE_ATTR_SNAP_NAME, srcSnapName,
+-	    BE_ATTR_NEW_BE_POOL, rpool,
+-	    BE_ATTR_NEW_BE_DESC, beDescription)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("[iss]", BE_PY_ERR_NVLIST, NULL, NULL));
+-	}
+-
+-	if (beNameProperties != NULL) {
+-		if (nvlist_alloc(&beProps, NV_UNIQUE_NAME, 0) != 0) {
+-			(void) printf("nvlist_alloc failed.\n");
+-			nvlist_free(beAttrs);
+-			return (Py_BuildValue("[iss]", BE_PY_ERR_NVLIST,
+-			    NULL, NULL));
+-		}
+-		while (PyDict_Next(beNameProperties, &pos, &pkey, &pvalue)) {
+-			if (!convertPyArgsToNvlist(&beProps, 2,
+-			    PyString_AsString(pkey),
+-			    PyString_AsString(pvalue))) {
+-				nvlist_free(beProps);
+-				nvlist_free(beAttrs);
+-				return (Py_BuildValue("[iss]", BE_PY_ERR_NVLIST,
+-				    NULL, NULL));
+-			}
+-		}
+-	}
+-
+-	if (beProps != NULL && beAttrs != NULL &&
+-	    nvlist_add_nvlist(beAttrs, BE_ATTR_ZFS_PROPERTIES,
+-	    beProps) != 0) {
+-		nvlist_free(beProps);
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("[iss]", BE_PY_ERR_NVLIST,
+-		    NULL, NULL));
+-	}
+-
+-	if (beProps != NULL) nvlist_free(beProps);
+-
+-	if (trgtBeName == NULL) {
+-		/*
+-		 * Caller wants to get back the BE_ATTR_NEW_BE_NAME and
+-		 * BE_ATTR_SNAP_NAME
+-		 */
+-		if ((ret = be_copy(beAttrs)) != BE_SUCCESS) {
+-			nvlist_free(beAttrs);
+-			return (Py_BuildValue("[iss]", ret, NULL, NULL));
+-		}
+-
+-		/*
+-		 * When no trgtBeName is passed to be_copy, be_copy
+-		 * returns an auto generated beName and snapshot name.
+-		 */
+-		if (nvlist_lookup_string(beAttrs, BE_ATTR_NEW_BE_NAME,
+-		    &trgtBeName) != 0) {
+-			nvlist_free(beAttrs);
+-			return (Py_BuildValue("[iss]", BE_PY_ERR_NVLIST,
+-			    NULL, NULL));
+-		}
+-		if (nvlist_lookup_string(beAttrs, BE_ATTR_SNAP_NAME,
+-		    &trgtSnapName) != 0) {
+-			nvlist_free(beAttrs);
+-			return (Py_BuildValue("[iss]", BE_PY_ERR_NVLIST,
+-			    NULL, NULL));
+-		}
+-
+-		retVals = Py_BuildValue("[iss]", BE_PY_SUCCESS,
+-		    trgtBeName, trgtSnapName);
+-		nvlist_free(beAttrs);
+-		return (retVals);
+-
+-	} else {
+-		ret = be_copy(beAttrs);
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("[iss]", ret, NULL, NULL));
+-	}
+-}
+-
+-/*
+- * Function:    beList
+- * Description: Convert Python args to nvlist pairs and call libbe:be_list
+- *              to gather information about Boot Environments
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the BE to list (optional)
+- *
+- * Returns a pointer to a python object. That Python object will consist of
+- * the return code and a list of Dicts or NULL.
+- *      BE_PY_SUCCESS, listOfDicts - Success
+- *      bePyErr or be_errno_t, NULL - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beList(PyObject *self, PyObject *args)
+-{
+-	char	*beName = NULL;
+-	int	ret = BE_PY_SUCCESS;
+-	be_node_list_t *list = NULL;
+-	be_node_list_t *be = NULL;
+-	PyObject *dict = NULL;
+-	PyObject *listOfDicts = NULL;
+-
+-	if ((listOfDicts = PyList_New(0)) == NULL) {
+-		ret = BE_PY_ERR_DICT;
+-		listOfDicts = Py_None;
+-		goto done;
+-	}
+-
+-	if (!PyArg_ParseTuple(args, "|z", &beName)) {
+-		ret = BE_PY_ERR_PARSETUPLE;
+-		goto done;
+-	}
+-
+-	if ((ret = be_list(beName, &list)) != BE_SUCCESS) {
+-		goto done;
+-	}
+-
+-	for (be = list; be != NULL; be = be->be_next_node) {
+-		be_dataset_list_t *ds = be->be_node_datasets;
+-		be_snapshot_list_t *ss = be->be_node_snapshots;
+-
+-		if ((dict = PyDict_New()) == NULL) {
+-			ret = BE_PY_ERR_DICT;
+-			goto done;
+-		}
+-
+-		if (!convertBEInfoToDictionary(be, &dict)) {
+-			/* LINTED */
+-			Py_DECREF(dict);
+-			ret = BE_PY_ERR_VAR_CONV;
+-			goto done;
+-		}
+-
+-		if (PyList_Append(listOfDicts, dict) != 0) {
+-			/* LINTED */
+-			Py_DECREF(dict);
+-			ret = BE_PY_ERR_APPEND;
+-			goto done;
+-		}
+-
+-		/* LINTED */
+-		Py_DECREF(dict);
+-
+-		while (ds != NULL) {
+-			if ((dict = PyDict_New()) == NULL) {
+-				ret = BE_PY_ERR_DICT;
+-				goto done;
+-			}
+-
+-			if (!convertDatasetInfoToDictionary(ds, &dict)) {
+-				/* LINTED */
+-				Py_DECREF(dict);
+-				ret = BE_PY_ERR_VAR_CONV;
+-				goto done;
+-			}
+-
+-			if (PyList_Append(listOfDicts, dict) != 0) {
+-				/* LINTED */
+-				Py_DECREF(dict);
+-				ret = BE_PY_ERR_APPEND;
+-				goto done;
+-			}
+-
+-			ds = ds->be_next_dataset;
+-
+-			/* LINTED */
+-			Py_DECREF(dict);
+-		}
+-
+-
+-		while (ss != NULL) {
+-			if ((dict = PyDict_New()) == NULL) {
+-				/* LINTED */
+-				Py_DECREF(dict);
+-				ret = BE_PY_ERR_DICT;
+-				goto done;
+-			}
+-
+-			if (!convertSnapshotInfoToDictionary(ss, &dict)) {
+-				/* LINTED */
+-				Py_DECREF(dict);
+-				ret = BE_PY_ERR_VAR_CONV;
+-				goto done;
+-			}
+-
+-			if (PyList_Append(listOfDicts, dict) != 0) {
+-				/* LINTED */
+-				Py_DECREF(dict);
+-				ret = BE_PY_ERR_APPEND;
+-				goto done;
+-			}
+-
+-			ss = ss->be_next_snapshot;
+-
+-			/* LINTED */
+-			Py_DECREF(dict);
+-		}
+-	}
+-
+-done:
+-	if (list != NULL)
+-		be_free_list(list);
+-	return (Py_BuildValue("[iO]", ret, listOfDicts));
+-}
+-
+-/*
+- * Function:    beActivate
+- * Description: Convert Python args to nvlist pairs and call libbe:be_activate
+- *              to activate a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the BE to activate
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beActivate(PyObject *self, PyObject *args)
+-{
+-	char		*beName = NULL;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "z", &beName)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 2, BE_ATTR_ORIG_BE_NAME, beName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_activate(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    beDestroy
+- * Description: Convert Python args to nvlist pairs and call libbe:be_destroy
+- *              to destroy a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the BE to destroy
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beDestroy(PyObject *self, PyObject *args)
+-{
+-	char		*beName = NULL;
+-	int		destroy_snaps = 0;
+-	int		force_unmount = 0;
+-	int		destroy_flags = 0;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "z|ii", &beName, &destroy_snaps,
+-	    &force_unmount)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (destroy_snaps == 1)
+-		destroy_flags |= BE_DESTROY_FLAG_SNAPSHOTS;
+-
+-	if (force_unmount == 1)
+-		destroy_flags |= BE_DESTROY_FLAG_FORCE_UNMOUNT;
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 2, BE_ATTR_ORIG_BE_NAME, beName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (nvlist_add_uint16(beAttrs, BE_ATTR_DESTROY_FLAGS, destroy_flags)
+-	    != 0) {
+-		(void) printf("nvlist_add_uint16 failed for "
+-		    "BE_ATTR_DESTROY_FLAGS (%d).\n", destroy_flags);
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_destroy(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    beDestroySnapshot
+- * Description: Convert Python args to nvlist pairs and call libbe:be_destroy
+- *              to destroy a snapshot of a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the BE to destroy
+- *     snapName - The name of the snapshot to destroy
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beDestroySnapshot(PyObject *self, PyObject *args)
+-{
+-	char		*beName = NULL;
+-	char		*snapName = NULL;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "zz", &beName, &snapName)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 4,
+-	    BE_ATTR_ORIG_BE_NAME, beName,
+-	    BE_ATTR_SNAP_NAME, snapName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_destroy_snapshot(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    beRename
+- * Description: Convert Python args to nvlist pairs and call libbe:be_rename
+- *              to rename a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     oldBeName - The name of the old Boot Environment
+- *     newBeName - The name of the new Boot Environment
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beRename(PyObject *self, PyObject *args)
+-{
+-	char		*oldBeName = NULL;
+-	char		*newBeName = NULL;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "zz", &oldBeName, &newBeName)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 4,
+-	    BE_ATTR_ORIG_BE_NAME, oldBeName,
+-	    BE_ATTR_NEW_BE_NAME, newBeName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_rename(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    beMount
+- * Description: Convert Python args to nvlist pairs and call libbe:be_mount
+- *              to mount a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the Boot Environment to mount
+- *     mountpoint - The path of the mountpoint to mount the
+- *                  Boot Environment on (optional)
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beMount(PyObject *self, PyObject *args)
+-{
+-	char		*beName = NULL;
+-	char		*mountpoint = NULL;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "zz", &beName, &mountpoint)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 4,
+-	    BE_ATTR_ORIG_BE_NAME, beName,
+-	    BE_ATTR_MOUNTPOINT, mountpoint)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_mount(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    beUnmount
+- * Description: Convert Python args to nvlist pairs and call libbe:be_unmount
+- *              to unmount a Boot Environment
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the Boot Environment to unmount
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beUnmount(PyObject *self, PyObject *args)
+-{
+-	char 		*beName = NULL;
+-	int		force_unmount = 0;
+-	int		unmount_flags = 0;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "z|i", &beName, &force_unmount)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (force_unmount == 1)
+-		unmount_flags |= BE_UNMOUNT_FLAG_FORCE;
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 2,
+-	    BE_ATTR_ORIG_BE_NAME, beName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (nvlist_add_uint16(beAttrs, BE_ATTR_UNMOUNT_FLAGS, unmount_flags)
+-	    != 0) {
+-		(void) printf("nvlist_add_uint16 failed for "
+-		    "BE_ATTR_UNMOUNT_FLAGS (%d).\n", unmount_flags);
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_unmount(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    beRollback
+- * Description: Convert Python args to nvlist pairs and call libbe:be_rollback
+- *              to rollback a Boot Environment to a previously taken
+- *               snapshot.
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     beName - The name of the Boot Environment to unmount
+- *
+- * Returns a pointer to a python object:
+- *      BE_SUCCESS - Success
+- *      bePyErr or be_errno_t - Failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beRollback(PyObject *self, PyObject *args)
+-{
+-	char		*beName = NULL;
+-	char		*snapName = NULL;
+-	int		ret = BE_PY_SUCCESS;
+-	nvlist_t	*beAttrs = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "zz", &beName, &snapName)) {
+-		return (Py_BuildValue("i", BE_PY_ERR_PARSETUPLE));
+-	}
+-
+-	if (!convertPyArgsToNvlist(&beAttrs, 4,
+-	    BE_ATTR_ORIG_BE_NAME, beName,
+-	    BE_ATTR_SNAP_NAME, snapName)) {
+-		nvlist_free(beAttrs);
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	if (beAttrs == NULL) {
+-		return (Py_BuildValue("i", BE_PY_ERR_NVLIST));
+-	}
+-
+-	ret = be_rollback(beAttrs);
+-	nvlist_free(beAttrs);
+-	return (Py_BuildValue("i", ret));
+-}
+-
+-/*
+- * Function:    bePrintErrors
+- * Description: Convert Python args to boolean and call libbe_print_errors to
+- *			turn on/off error output for the library.
+- * Parameter:
+- *   args -     pointer to a python object containing:
+- *		print_errors - Boolean that turns library error
+- *			       printing on or off.
+- * Parameters:
+- *   args -     pointer to a python object containing:
+- *     0 - do not print errors - Python boolean "False"
+- *     1 - print errors - Python boolean "True"
+- *
+- * Returns 1 on missing or invalid argument, 0 otherwise
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-bePrintErrors(PyObject *self, PyObject *args)
+-{
+-	int		print_errors;
+-
+-	if (!PyArg_ParseTuple(args, "i", &print_errors) ||
+-	    (print_errors != 1 && print_errors != 0))
+-		return (Py_BuildValue("i", BE_PY_ERR_PRINT_ERR));
+-	libbe_print_errors(print_errors == 1);
+-	return (Py_BuildValue("i", BE_PY_SUCCESS));
+-}
+-
+-/*
+- * Function:    beGetErrDesc
+- * Description: Convert Python args to an int and call be_err_to_str to
+- *			map an error code to an error string.
+- * Parameter:
+- *   args -     pointer to a python object containing:
+- *		errCode - value to map to an error string.
+- *
+- * Returns: error string or NULL
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beGetErrDesc(PyObject *self, PyObject *args)
+-{
+-	int	errCode = 0;
+-	char	*beErrStr = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "i", &errCode)) {
+-		return (Py_BuildValue("s", NULL));
+-	}
+-
+-	/*
+-	 * First check libbe_py errors. If NULL is returned check error codes
+-	 * in libbe.
+-	 */
+-
+-	if ((beErrStr = beMapLibbePyErrorToString(errCode)) == NULL) {
+-		beErrStr = be_err_to_str(errCode);
+-	}
+-
+-	return (Py_BuildValue("s", beErrStr));
+-}
+-
+-/*
+- * Function:    beVerifyBEName
+- * Description: Call be_valid_be_name() to verify the BE name.
+- * Parameter:
+- *   args -     pointer to a python object containing:
+- *		string - value to map to a string.
+- *
+- * Returns:  0 for success or 1 for failure
+- * Scope:
+- *      Public
+- */
+-/* ARGSUSED */
+-PyObject *
+-beVerifyBEName(PyObject *self, PyObject *args)
+-{
+-	char	*string = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "s", &string)) {
+-		return (Py_BuildValue("i", 1));
+-	}
+-
+-	if (be_valid_be_name(string)) {
+-		return (Py_BuildValue("i", 0));
+-	} else {
+-		return (Py_BuildValue("i", 1));
+-	}
+-}
+-
+-/* ~~~~~~~~~~~~~~~~~ */
+-/* Private Functions */
+-/* ~~~~~~~~~~~~~~~~~ */
+-
+-static boolean_t
+-convertBEInfoToDictionary(be_node_list_t *be, PyObject **listDict)
+-{
+-	if (be->be_node_name != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_ORIG_BE_NAME,
+-		    PyString_FromString(be->be_node_name)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (be->be_rpool != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_ORIG_BE_POOL,
+-		    PyString_FromString(be->be_rpool)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (be->be_mntpt != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_MOUNTPOINT,
+-		    PyString_FromString(be->be_mntpt)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (PyDict_SetItemString(*listDict, BE_ATTR_MOUNTED,
+-	    (be->be_mounted ? Py_True : Py_False)) != 0) {
+-		return (B_FALSE);
+-	}
+-
+-	if (PyDict_SetItemString(*listDict, BE_ATTR_ACTIVE,
+-	    (be->be_active ? Py_True : Py_False)) != 0) {
+-		return (B_FALSE);
+-	}
+-
+-	if (PyDict_SetItemString(*listDict, BE_ATTR_ACTIVE_ON_BOOT,
+-	    (be->be_active_on_boot ? Py_True : Py_False)) != 0) {
+-		return (B_FALSE);
+-	}
+-
+-	if (be->be_space_used != 0) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_SPACE,
+-		    PyLong_FromUnsignedLongLong(be->be_space_used)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (be->be_root_ds != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_ROOT_DS,
+-		    PyString_FromString(be->be_root_ds)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (be->be_node_creation != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_DATE,
+-		    PyLong_FromLong(be->be_node_creation)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (be->be_policy_type != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_POLICY,
+-		    PyString_FromString(be->be_policy_type)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (be->be_uuid_str != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_UUID_STR,
+-		    PyString_FromString(be->be_uuid_str)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	return (B_TRUE);
+-}
+-
+-static boolean_t
+-convertDatasetInfoToDictionary(be_dataset_list_t *ds, PyObject **listDict)
+-{
+-	if (ds->be_dataset_name != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_DATASET,
+-		    PyString_FromString(ds->be_dataset_name)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (PyDict_SetItemString(*listDict, BE_ATTR_STATUS,
+-	    (ds->be_ds_mounted ? Py_True : Py_False)) != 0) {
+-			return (B_FALSE);
+-	}
+-
+-	if (ds->be_ds_mntpt != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_MOUNTPOINT,
+-		    PyString_FromString(ds->be_ds_mntpt)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (PyDict_SetItemString(*listDict, BE_ATTR_MOUNTED,
+-	    (ds->be_ds_mounted ? Py_True : Py_False)) != 0) {
+-		return (B_FALSE);
+-	}
+-
+-	if (ds->be_ds_space_used != 0) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_SPACE,
+-		    PyLong_FromUnsignedLongLong(ds->be_ds_space_used))
+-		    != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (ds->be_dataset_name != 0) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_DATASET,
+-		    PyString_FromString(ds->be_dataset_name)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (ds->be_ds_plcy_type != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_POLICY,
+-		    PyString_FromString(ds->be_ds_plcy_type)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (ds->be_ds_creation != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_DATE,
+-		    PyLong_FromLong(ds->be_ds_creation)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	return (B_TRUE);
+-}
+-
+-static boolean_t
+-convertSnapshotInfoToDictionary(be_snapshot_list_t *ss, PyObject **listDict)
+-{
+-	if (ss->be_snapshot_name != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_SNAP_NAME,
+-		    PyString_FromString(ss->be_snapshot_name)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (ss->be_snapshot_creation != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_DATE,
+-		    PyLong_FromLong(ss->be_snapshot_creation)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (ss->be_snapshot_type != NULL) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_POLICY,
+-		    PyString_FromString(ss->be_snapshot_type)) != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	if (ss->be_snapshot_space_used != 0) {
+-		if (PyDict_SetItemString(*listDict, BE_ATTR_SPACE,
+-		    PyLong_FromUnsignedLongLong(ss->be_snapshot_space_used))
+-		    != 0) {
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	return (B_TRUE);
+-}
+-
+-/*
+- * Convert string arguments to nvlist attributes
+- */
+-
+-static boolean_t
+-convertPyArgsToNvlist(nvlist_t **nvList, int numArgs, ...)
+-{
+-	char *pt, *pt2;
+-	va_list ap;
+-	int i;
+-
+-	if (*nvList == NULL) {
+-		if (nvlist_alloc(nvList, NV_UNIQUE_NAME, 0) != 0) {
+-			(void) printf("nvlist_alloc failed.\n");
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	va_start(ap, numArgs);
+-
+-	for (i = 0; i < numArgs; i += 2) {
+-		if ((pt = va_arg(ap, char *)) == NULL ||
+-		    (pt2 = va_arg(ap, char *)) == NULL) {
+-			continue;
+-		}
+-		if (nvlist_add_string(*nvList, pt, pt2) != 0) {
+-			(void) printf("nvlist_add_string failed for %s (%s).\n",
+-			    pt, pt2);
+-			nvlist_free(*nvList);
+-			return (B_FALSE);
+-		}
+-	}
+-
+-	va_end(ap);
+-
+-	return (B_TRUE);
+-}
+-
+-/*
+- * Function:    beMapLibbePyErrorToString
+- * Description: Convert Python args to an int and map an error code to an
+- *			error string.
+- * Parameter:
+- *		errCode - value to map to an error string.
+- *
+- * Returns error string or NULL
+- * Scope:
+- *      Public
+- */
+-
+-char *
+-beMapLibbePyErrorToString(int errCode)
+-{
+-	switch (errCode) {
+-	case BE_PY_ERR_APPEND:
+-		return ("Unable to append a dictionary to a list "
+-		    "of dictinaries.");
+-	case BE_PY_ERR_DICT:
+-		return ("Creation of a Python dictionary failed.");
+-	case BE_PY_ERR_LIST:
+-		return ("beList() failed.");
+-	case BE_PY_ERR_NVLIST:
+-		return ("An nvlist operation failed.");
+-	case BE_PY_ERR_PARSETUPLE:
+-		return ("PyArg_ParseTuple() failed to convert variable to C.");
+-	case BE_PY_ERR_PRINT_ERR:
+-		return ("bePrintErrors() failed.");
+-	case BE_PY_ERR_VAR_CONV:
+-		return ("Unable to add variables to a Python dictionary.");
+-	default:
+-		return (NULL);
+-	}
+-}
+-
+-/* Private python initialization structure */
+-
+-static struct PyMethodDef libbeMethods[] = {
+-	{"beCopy", (PyCFunction)beCopy, METH_VARARGS, "Create/Copy a BE."},
+-	{"beCreateSnapshot", (PyCFunction)beCreateSnapshot, METH_VARARGS,
+-	    "Create a snapshot."},
+-	{"beDestroy", (PyCFunction)beDestroy, METH_VARARGS, "Destroy a BE."},
+-	{"beDestroySnapshot", (PyCFunction)beDestroySnapshot, METH_VARARGS,
+-	    "Destroy a snapshot."},
+-	{"beMount", (PyCFunction)beMount, METH_VARARGS, "Mount a BE."},
+-	{"beUnmount", (PyCFunction)beUnmount, METH_VARARGS, "Unmount a BE."},
+-	{"beList", (PyCFunction)beList, METH_VARARGS, "List BE info."},
+-	{"beRename", (PyCFunction)beRename, METH_VARARGS, "Rename a BE."},
+-	{"beActivate", (PyCFunction)beActivate, METH_VARARGS, "Activate a BE."},
+-	{"beRollback", (PyCFunction)beRollback, METH_VARARGS, "Rollback a BE."},
+-	{"bePrintErrors", (PyCFunction)bePrintErrors, METH_VARARGS,
+-	    "Enable/disable error printing."},
+-	{"beGetErrDesc", (PyCFunction)beGetErrDesc, METH_VARARGS,
+-	    "Map Error codes to strings."},
+-	{"beVerifyBEName", (PyCFunction)beVerifyBEName, METH_VARARGS,
+-	    "Verify BE name."},
+-	{NULL, NULL, 0, NULL}
+-};
+-
+-void
+-initlibbe_py()
+-{
+-	/* PyMODINIT_FUNC; */
+-	(void) Py_InitModule("libbe_py", libbeMethods);
+-}
+diff --git a/usr/src/lib/pylibbe/common/mapfile-vers b/usr/src/lib/pylibbe/common/mapfile-vers
+deleted file mode 100644
+index 73f2bce..0000000
+--- a/usr/src/lib/pylibbe/common/mapfile-vers
++++ /dev/null
+@@ -1,46 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-#
+-# MAPFILE HEADER START
+-#
+-# WARNING:  STOP NOW.  DO NOT MODIFY THIS FILE.
+-# Object versioning must comply with the rules detailed in
+-#
+-#	usr/src/lib/README.mapfiles
+-#
+-# You should not be making modifications here until you've read the most current
+-# copy of that file. If you need help, contact a gatekeeper for guidance.
+-#
+-# MAPFILE HEADER END
+-#
+-
+-$mapfile_version 2
+-
+-SYMBOL_VERSION SUNWprivate {
+-    global:
+-	initlibbe_py;
+-    local:
+-	*;
+-};
+diff --git a/usr/src/lib/pylibbe/i386/Makefile b/usr/src/lib/pylibbe/i386/Makefile
+deleted file mode 100644
+index 5a771c0..0000000
+--- a/usr/src/lib/pylibbe/i386/Makefile
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-include ../Makefile.com
+-
+-install: all $(ROOTLIBS)
+diff --git a/usr/src/lib/pylibbe/sparc/Makefile b/usr/src/lib/pylibbe/sparc/Makefile
+deleted file mode 100644
+index 5a771c0..0000000
+--- a/usr/src/lib/pylibbe/sparc/Makefile
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-include ../Makefile.com
+-
+-install: all $(ROOTLIBS)
+diff --git a/usr/src/lib/pylibbe/sparcv9/Makefile b/usr/src/lib/pylibbe/sparcv9/Makefile
+deleted file mode 100644
+index 32e9e54..0000000
+--- a/usr/src/lib/pylibbe/sparcv9/Makefile
++++ /dev/null
+@@ -1,29 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright 2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+-#
+-
+-include ../Makefile.com
+-include ../../Makefile.lib.64
+-
+-install: all $(ROOTLIBS64)
+diff --git a/usr/src/lib/pysolaris/Makefile b/usr/src/lib/pysolaris/Makefile
+deleted file mode 100644
+index f0c1832..0000000
+--- a/usr/src/lib/pysolaris/Makefile
++++ /dev/null
+@@ -1,54 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
+-#
+-
+-include	../Makefile.lib
+-
+-SUBDIRS=	$(MACH)
+-XGETTEXT=	$(GNUXGETTEXT)
+-XGETFLAGS=	$(GNUXGETFLAGS)
+-
+-all :=		TARGET= all
+-install :=	TARGET= install
+-clean :=	TARGET= clean
+-clobber :=	TARGET= clobber
+-lint :=		TARGET= lint
+-
+-MSGFILES =	`$(FIND) . -name '*.py' -o -name '*.c'`
+-POFILE =	pysolaris.po
+-
+-.KEEP_STATE:
+-
+-all install clean clobber lint: $(SUBDIRS)
+-
+-$(POFILE):	pofile_MSGFILES
+-
+-_msg: $(MSGDOMAINPOFILE)
+-
+-$(SUBDIRS): FRC
+-	@cd $@; pwd; $(MAKE) $(TARGET)
+-
+-FRC:
+-
+-include ../../Makefile.msg.targ
+diff --git a/usr/src/lib/pysolaris/Makefile.com b/usr/src/lib/pysolaris/Makefile.com
+deleted file mode 100644
+index a274927..0000000
+--- a/usr/src/lib/pysolaris/Makefile.com
++++ /dev/null
+@@ -1,61 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-LIBRARY =	misc.a
+-VERS =
+-OBJECTS =	misc.o
+-
+-PYSRCS=		__init__.py
+-
+-include ../../Makefile.lib
+-
+-LIBLINKS = 
+-SRCDIR =	../common
+-ROOTLIBDIR=	$(ROOT)/usr/lib/python2.6/vendor-packages/solaris
+-PYOBJS=		$(PYSRCS:%.py=$(SRCDIR)/%.pyc)
+-PYFILES=	$(PYSRCS) $(PYSRCS:%.py=%.pyc)
+-ROOTPYSOLFILES= $(PYFILES:%=$(ROOTLIBDIR)/%)
+-PYTHON=		$(PYTHON_26)
+-
+-C99MODE=        -xc99=%all
+-C99LMODE=       -Xc99=%all
+-
+-LIBS =		$(DYNLIB)
+-LDLIBS +=	-lc -lsec -lidmap -lpython2.6
+-CFLAGS +=	$(CCVERBOSE)
+-CERRWARN +=	-_gcc=-Wno-unused-variable
+-CPPFLAGS +=	-I/usr/include/python2.6
+-
+-.KEEP_STATE:
+-
+-all: $(PYOBJS) $(LIBS)
+-
+-install: all $(ROOTPYSOLFILES)
+-
+-$(ROOTLIBDIR)/%: %
+-	$(INS.pyfile)
+-
+-lint: lintcheck
+-
+-include ../../Makefile.targ
+diff --git a/usr/src/lib/pysolaris/common/__init__.py b/usr/src/lib/pysolaris/common/__init__.py
+deleted file mode 100644
+index 1119f06..0000000
+--- a/usr/src/lib/pysolaris/common/__init__.py
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""
+-package which provides access to Solaris-specific functionality
+-"""
+diff --git a/usr/src/lib/pysolaris/common/mapfile-vers b/usr/src/lib/pysolaris/common/mapfile-vers
+deleted file mode 100644
+index 814abe6..0000000
+--- a/usr/src/lib/pysolaris/common/mapfile-vers
++++ /dev/null
+@@ -1,46 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-#
+-# MAPFILE HEADER START
+-#
+-# WARNING:  STOP NOW.  DO NOT MODIFY THIS FILE.
+-# Object versioning must comply with the rules detailed in
+-#
+-#	usr/src/lib/README.mapfiles
+-#
+-# You should not be making modifications here until you've read the most current
+-# copy of that file. If you need help, contact a gatekeeper for guidance.
+-#
+-# MAPFILE HEADER END
+-#
+-
+-$mapfile_version 2
+-
+-SYMBOL_VERSION SUNWprivate {
+-    global:
+-	initmisc;
+-    local:
+-	*;
+-};
+diff --git a/usr/src/lib/pysolaris/common/misc.c b/usr/src/lib/pysolaris/common/misc.c
+deleted file mode 100644
+index 923cab4..0000000
+--- a/usr/src/lib/pysolaris/common/misc.c
++++ /dev/null
+@@ -1,140 +0,0 @@
+-/*
+- * CDDL HEADER START
+- *
+- * The contents of this file are subject to the terms of the
+- * Common Development and Distribution License (the "License").
+- * You may not use this file except in compliance with the License.
+- *
+- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+- * or http://www.opensolaris.org/os/licensing.
+- * See the License for the specific language governing permissions
+- * and limitations under the License.
+- *
+- * When distributing Covered Code, include this CDDL HEADER in each
+- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+- * If applicable, add the following below this CDDL HEADER, with the
+- * fields enclosed by brackets "[]" replaced with your own identifying
+- * information: Portions Copyright [yyyy] [name of copyright owner]
+- *
+- * CDDL HEADER END
+- */
+-/*
+- * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+- * Use is subject to license terms.
+- */
+-
+-#include <Python.h>
+-#include <zone.h>
+-#include <libintl.h>
+-#include <directory.h>
+-
+-#ifdef __lint
+-#define	dgettext(x, y) y
+-#endif
+-
+-#define	_(s) dgettext(TEXT_DOMAIN, s)
+-
+-extern int sid_to_id(char *sid, boolean_t user, uid_t *id);
+-
+-static PyObject *
+-py_sid_to_id(PyObject *self, PyObject *args)
+-{
+-	char *sid;
+-	int err, isuser;
+-	uid_t id;
+-
+-	if (!PyArg_ParseTuple(args, "si", &sid, &isuser))
+-		return (NULL);
+-
+-	err = sid_to_id(sid, isuser, &id);
+-	if (err) {
+-		PyErr_SetString(PyExc_KeyError, sid);
+-		return (NULL);
+-	}
+-
+-	return (Py_BuildValue("I", id));
+-}
+-
+-/*
+- * Translate the sid string ("S-1-...") to the user@domain name, if
+- * possible.
+- */
+-static PyObject *
+-py_sid_to_name(PyObject *self, PyObject *args)
+-{
+-	int isuser;
+-	char *name, *sid;
+-	directory_error_t e;
+-	uint64_t classes;
+-	PyObject *ret;
+-
+-	if (!PyArg_ParseTuple(args, "si", &sid, &isuser))
+-		return (NULL);
+-	e = directory_name_from_sid(NULL, sid, &name, &classes);
+-	if (e != NULL) {
+-		directory_error_free(e);
+-		PyErr_SetString(PyExc_KeyError, sid);
+-		return (NULL);
+-	}
+-	if (name == NULL) {
+-		PyErr_SetString(PyExc_KeyError, sid);
+-		return (NULL);
+-	}
+-	if (isuser) {
+-		if (!(classes & DIRECTORY_CLASS_USER)) {
+-			free(name);
+-			PyErr_SetString(PyExc_KeyError, sid);
+-			return (NULL);
+-		}
+-	} else {
+-		if (!(classes & DIRECTORY_CLASS_GROUP)) {
+-			free(name);
+-			PyErr_SetString(PyExc_KeyError, sid);
+-			return (NULL);
+-		}
+-	}
+-
+-	ret = PyString_FromString(name);
+-	free(name);
+-	return (ret);
+-}
+-
+-static PyObject *
+-py_isglobalzone(PyObject *self, PyObject *args)
+-{
+-	return (Py_BuildValue("i", getzoneid() == GLOBAL_ZONEID));
+-}
+-
+-static PyObject *
+-py_gettext(PyObject *self, PyObject *args)
+-{
+-	char *message, *result;
+-	PyObject *ret = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "s", &message))
+-		return (NULL);
+-
+-	result = dgettext(TEXT_DOMAIN, message);
+-
+-	ret = Py_BuildValue("s", result);
+-	return (ret);
+-}
+-
+-static PyMethodDef solarismethods[] = {
+-	{"sid_to_id", py_sid_to_id, METH_VARARGS, "Map SID to UID/GID."},
+-	{"sid_to_name", py_sid_to_name, METH_VARARGS,
+-	    "Map SID to name@domain."},
+-	{"isglobalzone", py_isglobalzone, METH_NOARGS,
+-	    "Determine if this is the global zone."},
+-	{"gettext", py_gettext, METH_VARARGS, "Native call to gettext(3C)"},
+-	{NULL, NULL, 0, NULL}
+-};
+-
+-void
+-initmisc(void)
+-{
+-	char *noop;
+-
+-	noop = _("noop");
+-	PyObject *solaris_misc = Py_InitModule("solaris.misc", solarismethods);
+-}
+diff --git a/usr/src/lib/pysolaris/i386/Makefile b/usr/src/lib/pysolaris/i386/Makefile
+deleted file mode 100644
+index cf68e8e..0000000
+--- a/usr/src/lib/pysolaris/i386/Makefile
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
+-#
+-
+-include ../Makefile.com
+-
+-install: all $(ROOTLIBS)
+diff --git a/usr/src/lib/pysolaris/sparc/Makefile b/usr/src/lib/pysolaris/sparc/Makefile
+deleted file mode 100644
+index cf68e8e..0000000
+--- a/usr/src/lib/pysolaris/sparc/Makefile
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
+-#
+-
+-include ../Makefile.com
+-
+-install: all $(ROOTLIBS)
+diff --git a/usr/src/lib/pyzfs/Makefile b/usr/src/lib/pyzfs/Makefile
+deleted file mode 100644
+index c39ef5b..0000000
+--- a/usr/src/lib/pyzfs/Makefile
++++ /dev/null
+@@ -1,54 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
+-#
+-
+-include	../Makefile.lib
+-
+-SUBDIRS=	$(MACH)
+-XGETTEXT=	$(GNUXGETTEXT)
+-XGETFLAGS=	$(GNUXGETFLAGS)
+-
+-all :=		TARGET= all
+-install :=	TARGET= install
+-clean :=	TARGET= clean
+-clobber :=	TARGET= clobber
+-lint :=		TARGET= lint
+-
+-MSGFILES =	`$(FIND) . -name '*.py' -o -name '*.c'`
+-POFILE =	pyzfs.po
+-
+-.KEEP_STATE:
+-
+-all install clean clobber lint: $(SUBDIRS)
+-
+-$(POFILE):	pofile_MSGFILES
+-
+-_msg: $(MSGDOMAINPOFILE)
+-
+-$(SUBDIRS): FRC
+-	@cd $@; pwd; $(MAKE) $(TARGET)
+-
+-FRC:
+-
+-include ../../Makefile.msg.targ
+diff --git a/usr/src/lib/pyzfs/Makefile.com b/usr/src/lib/pyzfs/Makefile.com
+deleted file mode 100644
+index 29d0407..0000000
+--- a/usr/src/lib/pyzfs/Makefile.com
++++ /dev/null
+@@ -1,66 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-LIBRARY =	ioctl.a
+-VERS =
+-OBJECTS =	ioctl.o
+-
+-PYSRCS=		__init__.py util.py dataset.py \
+-	allow.py unallow.py \
+-	userspace.py groupspace.py holds.py table.py
+-
+-
+-include ../../Makefile.lib
+-
+-LIBLINKS = 
+-SRCDIR =	../common
+-ROOTLIBDIR=	$(ROOT)/usr/lib/python2.6/vendor-packages/zfs
+-PYTHON=		$(PYTHON_26)
+-PYOBJS=		$(PYSRCS:%.py=$(SRCDIR)/%.pyc)
+-PYFILES=	$(PYSRCS) $(PYSRCS:%.py=%.pyc)
+-ROOTPYZFSFILES= $(PYFILES:%=$(ROOTLIBDIR)/%)
+-
+-C99MODE=        -xc99=%all
+-C99LMODE=       -Xc99=%all
+-
+-LIBS =		$(DYNLIB)
+-LDLIBS +=	-lc -lnvpair -lpython2.6 -lzfs
+-CFLAGS +=	$(CCVERBOSE)
+-CERRWARN +=	-_gcc=-Wno-unused-variable
+-CPPFLAGS +=	-I/usr/include/python2.6
+-CPPFLAGS +=	-I../../../uts/common/fs/zfs
+-CPPFLAGS +=	-I../../../common/zfs
+-
+-.KEEP_STATE:
+-
+-all: $(PYOBJS) $(LIBS)
+-
+-install: all $(ROOTPYZFSFILES)
+-
+-$(ROOTLIBDIR)/%: %
+-	$(INS.pyfile)
+-
+-lint: lintcheck
+-
+-include ../../Makefile.targ
+diff --git a/usr/src/lib/pyzfs/common/__init__.py b/usr/src/lib/pyzfs/common/__init__.py
+deleted file mode 100644
+index 76b0998..0000000
+--- a/usr/src/lib/pyzfs/common/__init__.py
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""
+-package which provides an administrative interface to ZFS
+-"""
+diff --git a/usr/src/lib/pyzfs/common/allow.py b/usr/src/lib/pyzfs/common/allow.py
+deleted file mode 100644
+index fa8209f..0000000
+--- a/usr/src/lib/pyzfs/common/allow.py
++++ /dev/null
+@@ -1,396 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""This module implements the "zfs allow" and "zfs unallow" subcommands.
+-The only public interface is the zfs.allow.do_allow() function."""
+-
+-import zfs.util
+-import zfs.dataset
+-import optparse
+-import sys
+-import pwd
+-import grp
+-import errno
+-
+-_ = zfs.util._
+-
+-class FSPerms(object):
+-	"""This class represents all the permissions that are set on a
+-	particular filesystem (not including those inherited)."""
+-
+-	__slots__ = "create", "sets", "local", "descend", "ld"
+-	__repr__ = zfs.util.default_repr
+-
+-	def __init__(self, raw):
+-		"""Create a FSPerms based on the dict of raw permissions
+-		from zfs.ioctl.get_fsacl()."""
+-		# set of perms
+-		self.create = set()
+-
+-		# below are { "Ntype name": set(perms) }
+-		# where N is a number that we just use for sorting,
+-		# type is "user", "group", "everyone", or "" (for sets)
+-		# name is a user, group, or set name, or "" (for everyone)
+-		self.sets = dict()
+-		self.local = dict()
+-		self.descend = dict()
+-		self.ld = dict()
+-
+-		# see the comment in dsl_deleg.c for the definition of whokey
+-		for whokey in raw.keys():
+-			perms = raw[whokey].keys()
+-			whotypechr = whokey[0].lower()
+-			ws = whokey[3:]
+-			if whotypechr == "c":
+-				self.create.update(perms)
+-			elif whotypechr == "s":
+-				nwho = "1" + ws
+-				self.sets.setdefault(nwho, set()).update(perms)
+-			else:
+-				if whotypechr == "u":
+-					try:
+-						name = pwd.getpwuid(int(ws)).pw_name
+-					except KeyError:
+-						name = ws
+-					nwho = "1user " + name
+-				elif whotypechr == "g":
+-					try:
+-						name = grp.getgrgid(int(ws)).gr_name
+-					except KeyError:
+-						name = ws
+-					nwho = "2group " + name
+-				elif whotypechr == "e":
+-					nwho = "3everyone"
+-				else:
+-					raise ValueError(whotypechr)
+-
+-				if whokey[1] == "l":
+-					d = self.local
+-				elif whokey[1] == "d":
+-					d = self.descend
+-				else:
+-					raise ValueError(whokey[1])
+-
+-				d.setdefault(nwho, set()).update(perms)
+-
+-		# Find perms that are in both local and descend, and
+-		# move them to ld.
+-		for nwho in self.local:
+-			if nwho not in self.descend:
+-				continue
+-			# note: these are set operations
+-			self.ld[nwho] = self.local[nwho] & self.descend[nwho]
+-			self.local[nwho] -= self.ld[nwho]
+-			self.descend[nwho] -= self.ld[nwho]
+-
+-	@staticmethod
+-	def __ldstr(d, header):
+-		s = ""
+-		for (nwho, perms) in sorted(d.items()):
+-			# local and descend may have entries where perms
+-			# is an empty set, due to consolidating all
+-			# permissions into ld
+-			if perms:
+-				s += "\t%s %s\n" % \
+-				    (nwho[1:], ",".join(sorted(perms)))
+-		if s:
+-			s = header + s
+-		return s
+-
+-	def __str__(self):
+-		s = self.__ldstr(self.sets, _("Permission sets:\n"))
+-
+-		if self.create:
+-			s += _("Create time permissions:\n")
+-			s += "\t%s\n" % ",".join(sorted(self.create))
+-
+-		s += self.__ldstr(self.local, _("Local permissions:\n"))
+-		s += self.__ldstr(self.descend, _("Descendent permissions:\n"))
+-		s += self.__ldstr(self.ld, _("Local+Descendent permissions:\n"))
+-		return s.rstrip()
+-
+-def args_to_perms(parser, options, who, perms):
+-	"""Return a dict of raw perms {"whostr" -> {"perm" -> None}}
+-	based on the command-line input."""
+-
+-	# perms is not set if we are doing a "zfs unallow <who> <fs>" to
+-	# remove all of someone's permissions
+-	if perms:
+-		setperms = dict(((p, None) for p in perms if p[0] == "@"))
+-		baseperms = dict(((canonicalized_perm(p), None)
+-		    for p in perms if p[0] != "@"))
+-	else:
+-		setperms = None
+-		baseperms = None
+-
+-	d = dict()
+-	
+-	def storeperm(typechr, inheritchr, arg):
+-		assert typechr in "ugecs"
+-		assert inheritchr in "ld-"
+-
+-		def mkwhokey(t):
+-			return "%c%c$%s" % (t, inheritchr, arg)
+-
+-		if baseperms or not perms:
+-			d[mkwhokey(typechr)] = baseperms
+-		if setperms or not perms:
+-			d[mkwhokey(typechr.upper())] = setperms
+-
+-	def decodeid(w, toidfunc, fmt):
+-		try:
+-			return int(w)
+-		except ValueError:
+-			try:
+-				return toidfunc(w)[2]
+-			except KeyError:
+-				parser.error(fmt % w)
+-
+-	if options.set:
+-		storeperm("s", "-", who)
+-	elif options.create:
+-		storeperm("c", "-", "")
+-	else:
+-		for w in who:
+-			if options.user:
+-				id = decodeid(w, pwd.getpwnam,
+-				    _("invalid user %s"))
+-				typechr = "u"
+-			elif options.group:
+-				id = decodeid(w, grp.getgrnam,
+-				    _("invalid group %s"))
+-				typechr = "g"
+-			elif w == "everyone":
+-				id = ""
+-				typechr = "e"
+-			else:
+-				try:
+-					id = pwd.getpwnam(w)[2]
+-					typechr = "u"
+-				except KeyError:
+-					try:
+-						id = grp.getgrnam(w)[2]
+-						typechr = "g"
+-					except KeyError:
+-						parser.error(_("invalid user/group %s") % w)
+-			if options.local:
+-				storeperm(typechr, "l", id)
+-			if options.descend:
+-				storeperm(typechr, "d", id)
+-	return d
+-
+-perms_subcmd = dict(
+-    create=_("Must also have the 'mount' ability"),
+-    destroy=_("Must also have the 'mount' ability"),
+-    snapshot="",
+-    rollback="",
+-    clone=_("""Must also have the 'create' ability and 'mount'
+-\t\t\t\tability in the origin file system"""),
+-    promote=_("""Must also have the 'mount'
+-\t\t\t\tand 'promote' ability in the origin file system"""),
+-    rename=_("""Must also have the 'mount' and 'create'
+-\t\t\t\tability in the new parent"""),
+-    receive=_("Must also have the 'mount' and 'create' ability"),
+-    allow=_("Must also have the permission that is being\n\t\t\t\tallowed"),
+-    mount=_("Allows mount/umount of ZFS datasets"),
+-    share=_("Allows sharing file systems over NFS or SMB\n\t\t\t\tprotocols"),
+-    send="",
+-    hold=_("Allows adding a user hold to a snapshot"),
+-    release=_("Allows releasing a user hold which\n\t\t\t\tmight destroy the snapshot"),
+-    diff=_("Allows lookup of paths within a dataset,\n\t\t\t\tgiven an object number. Ordinary users need this\n\t\t\t\tin order to use zfs diff"),
+-)
+-
+-perms_other = dict(
+-    userprop=_("Allows changing any user property"),
+-    userquota=_("Allows accessing any userquota@... property"),
+-    groupquota=_("Allows accessing any groupquota@... property"),
+-    userused=_("Allows reading any userused@... property"),
+-    groupused=_("Allows reading any groupused@... property"),
+-)
+-
+-def hasset(ds, setname):
+-	"""Return True if the given setname (string) is defined for this
+-	ds (Dataset)."""
+-	# It would be nice to cache the result of get_fsacl().
+-	for raw in ds.get_fsacl().values():
+-		for whokey in raw.keys():
+-			if whokey[0].lower() == "s" and whokey[3:] == setname:
+-				return True
+-	return False
+-
+-def canonicalized_perm(permname):
+-	"""Return the canonical name (string) for this permission (string).
+-	Raises ZFSError if it is not a valid permission."""
+-	if permname in perms_subcmd.keys() or permname in perms_other.keys():
+-		return permname
+-	try:
+-		return zfs.dataset.getpropobj(permname).name
+-	except KeyError:
+-		raise zfs.util.ZFSError(errno.EINVAL, permname,
+-		    _("invalid permission"))
+-		
+-def print_perms():
+-	"""Print the set of supported permissions."""
+-	print(_("\nThe following permissions are supported:\n"))
+-	fmt = "%-16s %-14s\t%s"
+-	print(fmt % (_("NAME"), _("TYPE"), _("NOTES")))
+-
+-	for (name, note) in sorted(perms_subcmd.iteritems()):
+-		print(fmt % (name, _("subcommand"), note))
+-
+-	for (name, note) in sorted(perms_other.iteritems()):
+-		print(fmt % (name, _("other"), note))
+-
+-	for (name, prop) in sorted(zfs.dataset.proptable.iteritems()):
+-		if prop.visible and prop.delegatable():
+-			print(fmt % (name, _("property"), ""))
+-
+-def do_allow():
+-	"""Implements the "zfs allow" and "zfs unallow" subcommands."""
+-	un = (sys.argv[1] == "unallow")
+-
+-	def usage(msg=None):
+-		parser.print_help()
+-		print_perms()
+-		if msg:
+-			print
+-			parser.exit("zfs: error: " + msg)
+-		else:
+-			parser.exit()
+-
+-	if un:
+-		u = _("""unallow [-rldug] <"everyone"|user|group>[,...]
+-	    [<perm|@setname>[,...]] <filesystem|volume>
+-	unallow [-rld] -e [<perm|@setname>[,...]] <filesystem|volume>
+-	unallow [-r] -c [<perm|@setname>[,...]] <filesystem|volume>
+-	unallow [-r] -s @setname [<perm|@setname>[,...]] <filesystem|volume>""")
+-		verb = _("remove")
+-		sstr = _("undefine permission set")
+-	else:
+-		u = _("""allow <filesystem|volume>
+-	allow [-ldug] <"everyone"|user|group>[,...] <perm|@setname>[,...]
+-	    <filesystem|volume>
+-	allow [-ld] -e <perm|@setname>[,...] <filesystem|volume>
+-	allow -c <perm|@setname>[,...] <filesystem|volume>
+-	allow -s @setname <perm|@setname>[,...] <filesystem|volume>""")
+-		verb = _("set")
+-		sstr = _("define permission set")
+-
+-	parser = optparse.OptionParser(usage=u, prog="zfs")
+-
+-	parser.add_option("-l", action="store_true", dest="local",
+-	    help=_("%s permission locally") % verb)
+-	parser.add_option("-d", action="store_true", dest="descend",
+-	    help=_("%s permission for descendents") % verb)
+-	parser.add_option("-u", action="store_true", dest="user",
+-	    help=_("%s permission for user") % verb)
+-	parser.add_option("-g", action="store_true", dest="group",
+-	    help=_("%s permission for group") % verb)
+-	parser.add_option("-e", action="store_true", dest="everyone",
+-	    help=_("%s permission for everyone") % verb)
+-	parser.add_option("-c", action="store_true", dest="create",
+-	    help=_("%s create time permissions") % verb)
+-	parser.add_option("-s", action="store_true", dest="set", help=sstr)
+-	if un:
+-		parser.add_option("-r", action="store_true", dest="recursive",
+-		    help=_("remove permissions recursively"))
+-
+-	if len(sys.argv) == 3 and not un:
+-		# just print the permissions on this fs
+-
+-		if sys.argv[2] == "-h":
+-			# hack to make "zfs allow -h" work
+-			usage()
+-		ds = zfs.dataset.Dataset(sys.argv[2], snaps=False)
+-
+-		p = dict()
+-		for (fs, raw) in ds.get_fsacl().items():
+-			p[fs] = FSPerms(raw)
+-
+-		for fs in sorted(p.keys(), reverse=True):
+-			s = _("---- Permissions on %s ") % fs
+-			print(s + "-" * (70-len(s)))
+-			print(p[fs])
+-		return
+-	
+-
+-	(options, args) = parser.parse_args(sys.argv[2:])
+-
+-	if sum((bool(options.everyone), bool(options.user),
+-	    bool(options.group))) > 1:
+-		parser.error(_("-u, -g, and -e are mutually exclusive"))
+-
+-	def mungeargs(expected_len):
+-		if un and len(args) == expected_len-1:
+-			return (None, args[expected_len-2])
+-		elif len(args) == expected_len:
+-			return (args[expected_len-2].split(","),
+-			    args[expected_len-1])
+-		else:
+-			usage(_("wrong number of parameters"))
+-
+-	if options.set:
+-		if options.local or options.descend or options.user or \
+-		    options.group or options.everyone or options.create:
+-			parser.error(_("invalid option combined with -s"))
+-		if args[0][0] != "@":
+-			parser.error(_("invalid set name: missing '@' prefix"))
+-
+-		(perms, fsname) = mungeargs(3)
+-		who = args[0]
+-	elif options.create:
+-		if options.local or options.descend or options.user or \
+-		    options.group or options.everyone or options.set:
+-			parser.error(_("invalid option combined with -c"))
+-
+-		(perms, fsname) = mungeargs(2)
+-		who = None
+-	elif options.everyone:
+-		if options.user or options.group or \
+-		    options.create or options.set:
+-			parser.error(_("invalid option combined with -e"))
+-
+-		(perms, fsname) = mungeargs(2)
+-		who = ["everyone"]
+-	else:
+-		(perms, fsname) = mungeargs(3)
+-		who = args[0].split(",")
+-
+-	if not options.local and not options.descend:
+-		options.local = True
+-		options.descend = True
+-
+-	d = args_to_perms(parser, options, who, perms)
+-
+-	ds = zfs.dataset.Dataset(fsname, snaps=False)
+-
+-	if not un and perms:
+-		for p in perms:
+-			if p[0] == "@" and not hasset(ds, p):
+-				parser.error(_("set %s is not defined") % p)
+-
+-	ds.set_fsacl(un, d)
+-	if un and options.recursive:
+-		for child in ds.descendents():
+-			child.set_fsacl(un, d)
+diff --git a/usr/src/lib/pyzfs/common/dataset.py b/usr/src/lib/pyzfs/common/dataset.py
+deleted file mode 100644
+index 26192e4..0000000
+--- a/usr/src/lib/pyzfs/common/dataset.py
++++ /dev/null
+@@ -1,234 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""Implements the Dataset class, providing methods for manipulating ZFS
+-datasets.  Also implements the Property class, which describes ZFS
+-properties."""
+-
+-import zfs.ioctl
+-import zfs.util
+-import errno
+-
+-_ = zfs.util._
+-
+-class Property(object):
+-	"""This class represents a ZFS property.  It contains
+-	information about the property -- if it's readonly, a number vs
+-	string vs index, etc.  Only native properties are represented by
+-	this class -- not user properties (eg "user:prop") or userspace
+-	properties (eg "userquota@joe")."""
+-
+-	__slots__ = "name", "number", "type", "default", "attr", "validtypes", \
+-	    "values", "colname", "rightalign", "visible", "indextable"
+-	__repr__ = zfs.util.default_repr
+-
+-	def __init__(self, t):
+-		"""t is the tuple of information about this property
+-		from zfs.ioctl.get_proptable, which should match the
+-		members of zprop_desc_t (see zfs_prop.h)."""
+-
+-		self.name = t[0]
+-		self.number = t[1]
+-		self.type = t[2]
+-		if self.type == "string":
+-			self.default = t[3]
+-		else:
+-			self.default = t[4]
+-		self.attr = t[5]
+-		self.validtypes = t[6]
+-		self.values = t[7]
+-		self.colname = t[8]
+-		self.rightalign = t[9]
+-		self.visible = t[10]
+-		self.indextable = t[11]
+-
+-	def delegatable(self):
+-		"""Return True if this property can be delegated with
+-		"zfs allow"."""
+-		return self.attr != "readonly"
+-
+-proptable = dict()
+-for name, t in zfs.ioctl.get_proptable().iteritems():
+-	proptable[name] = Property(t)
+-del name, t
+-
+-def getpropobj(name):
+-	"""Return the Property object that is identified by the given
+-	name string.  It can be the full name, or the column name."""
+-	try:
+-		return proptable[name]
+-	except KeyError:
+-		for p in proptable.itervalues():
+-			if p.colname and p.colname.lower() == name:
+-				return p
+-		raise
+-
+-class Dataset(object):
+-	"""Represents a ZFS dataset (filesystem, snapshot, zvol, clone, etc).
+-
+-	Generally, this class provides interfaces to the C functions in
+-	zfs.ioctl which actually interface with the kernel to manipulate
+-	datasets.
+-	
+-	Unless otherwise noted, any method can raise a ZFSError to
+-	indicate failure."""
+-
+-	__slots__ = "name", "__props"
+-	__repr__ = zfs.util.default_repr
+-
+-	def __init__(self, name, props=None,
+-	    types=("filesystem", "volume"), snaps=True):
+-		"""Open the named dataset, checking that it exists and
+-		is of the specified type.
+-		
+-		name is the string name of this dataset.
+-
+-		props is the property settings dict from zfs.ioctl.next_dataset.
+-
+-		types is an iterable of strings specifying which types
+-		of datasets are permitted.  Accepted strings are
+-		"filesystem" and "volume".  Defaults to accepting all
+-		types.
+-
+-		snaps is a boolean specifying if snapshots are acceptable.
+-
+-		Raises a ZFSError if the dataset can't be accessed (eg
+-		doesn't exist) or is not of the specified type.
+-		"""
+-
+-		self.name = name
+-
+-		e = zfs.util.ZFSError(errno.EINVAL,
+-		    _("cannot open %s") % name,
+-		    _("operation not applicable to datasets of this type"))
+-		if "@" in name and not snaps:
+-			raise e
+-		if not props:
+-			props = zfs.ioctl.dataset_props(name)
+-		self.__props = props
+-		if "volume" not in types and self.getprop("type") == 3:
+-			raise e
+-		if "filesystem" not in types and self.getprop("type") == 2:
+-			raise e
+-
+-	def getprop(self, propname):
+-		"""Return the value of the given property for this dataset.
+-
+-		Currently only works for native properties (those with a
+-		Property object.)
+-		
+-		Raises KeyError if propname does not specify a native property.
+-		Does not raise ZFSError.
+-		"""
+-
+-		p = getpropobj(propname)
+-		try:
+-			return self.__props[p.name]["value"]
+-		except KeyError:
+-			return p.default
+-
+-	def parent(self):
+-		"""Return a Dataset representing the parent of this one."""
+-		return Dataset(self.name[:self.name.rindex("/")])
+-
+-	def descendents(self):
+-		"""A generator function which iterates over all
+-		descendent Datasets (not including snapshots."""
+-
+-		cookie = 0
+-		while True:
+-			# next_dataset raises StopIteration when done
+-			(name, cookie, props) = \
+-			    zfs.ioctl.next_dataset(self.name, False, cookie)
+-			ds = Dataset(name, props)
+-			yield ds
+-			for child in ds.descendents():
+-				yield child
+-	
+-	def userspace(self, prop):
+-		"""A generator function which iterates over a
+-		userspace-type property.
+-
+-		prop specifies which property ("userused@",
+-		"userquota@", "groupused@", or "groupquota@").
+-
+-		returns 3-tuple of domain (string), rid (int), and space (int).
+-		"""
+-
+-		d = zfs.ioctl.userspace_many(self.name, prop)
+-		for ((domain, rid), space) in d.iteritems():
+-			yield (domain, rid, space)
+-
+-	def userspace_upgrade(self):
+-		"""Initialize the accounting information for
+-		userused@... and groupused@... properties."""
+-		return zfs.ioctl.userspace_upgrade(self.name)
+-	
+-	def set_fsacl(self, un, d):
+-		"""Add to the "zfs allow"-ed permissions on this Dataset.
+-
+-		un is True if the specified permissions should be removed.
+-
+-		d is a dict specifying which permissions to add/remove:
+-		{ "whostr" -> None # remove all perms for this entity
+-		  "whostr" -> { "perm" -> None} # add/remove these perms
+-		} """
+-		return zfs.ioctl.set_fsacl(self.name, un, d)
+-
+-	def get_fsacl(self):
+-		"""Get the "zfs allow"-ed permissions on the Dataset.
+-
+-		Return a dict("whostr": { "perm" -> None })."""
+-
+-		return zfs.ioctl.get_fsacl(self.name)
+-
+-	def get_holds(self):
+-		"""Get the user holds on this Dataset.
+-
+-		Return a dict("tag": timestamp)."""
+-
+-		return zfs.ioctl.get_holds(self.name)
+-
+-def snapshots_fromcmdline(dsnames, recursive):
+-	for dsname in dsnames:
+-		if not "@" in dsname:
+-			raise zfs.util.ZFSError(errno.EINVAL,
+-			    _("cannot open %s") % dsname,
+-			    _("operation only applies to snapshots"))
+-		try:
+-			ds = Dataset(dsname)
+-			yield ds
+-		except zfs.util.ZFSError, e:
+-			if not recursive or e.errno != errno.ENOENT:
+-				raise
+-		if recursive:
+-			(base, snapname) = dsname.split('@')
+-			parent = Dataset(base)
+-			for child in parent.descendents():
+-				try:
+-					yield Dataset(child.name + "@" +
+-					    snapname)
+-				except zfs.util.ZFSError, e:
+-					if e.errno != errno.ENOENT:
+-						raise
+diff --git a/usr/src/lib/pyzfs/common/groupspace.py b/usr/src/lib/pyzfs/common/groupspace.py
+deleted file mode 100644
+index 9f380fd..0000000
+--- a/usr/src/lib/pyzfs/common/groupspace.py
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-import zfs.userspace
+-
+-do_groupspace = zfs.userspace.do_userspace
+-
+diff --git a/usr/src/lib/pyzfs/common/holds.py b/usr/src/lib/pyzfs/common/holds.py
+deleted file mode 100644
+index 800e28f..0000000
+--- a/usr/src/lib/pyzfs/common/holds.py
++++ /dev/null
+@@ -1,75 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""This module implements the "zfs holds" subcommand.
+-The only public interface is the zfs.holds.do_holds() function."""
+-
+-import optparse
+-import sys
+-import errno
+-import time
+-import zfs.util
+-import zfs.dataset
+-import zfs.table
+-
+-_ = zfs.util._
+-
+-def do_holds():
+-	"""Implements the "zfs holds" subcommand."""
+-	def usage(msg=None):
+-		parser.print_help()
+-		if msg:
+-			print
+-			parser.exit("zfs: error: " + msg)
+-		else:
+-			parser.exit()
+-
+-	u = _("""holds [-r] <snapshot> ...""")
+-
+-	parser = optparse.OptionParser(usage=u, prog="zfs")
+-
+-	parser.add_option("-r", action="store_true", dest="recursive",
+-	    help=_("list holds recursively"))
+-
+-	(options, args) = parser.parse_args(sys.argv[2:])
+-
+-	if len(args) < 1:
+-		usage(_("missing snapshot argument"))
+-
+-	fields = ("name", "tag", "timestamp")
+-	rjustfields = ()
+-	printing = False 
+-	gotone = False
+-	t = zfs.table.Table(fields, rjustfields) 
+-	for ds in zfs.dataset.snapshots_fromcmdline(args, options.recursive):
+-		gotone = True
+-		for tag, tm in ds.get_holds().iteritems():
+-			val = {"name": ds.name, "tag": tag,
+-			    "timestamp": time.ctime(tm)}
+-			t.addline(ds.name, val)
+-			printing = True
+-	if printing:
+-		t.printme()
+-	elif not gotone:
+-		raise zfs.util.ZFSError(errno.ENOENT, _("no matching datasets"))
+diff --git a/usr/src/lib/pyzfs/common/ioctl.c b/usr/src/lib/pyzfs/common/ioctl.c
+deleted file mode 100644
+index d8c0d18..0000000
+--- a/usr/src/lib/pyzfs/common/ioctl.c
++++ /dev/null
+@@ -1,543 +0,0 @@
+-/*
+- * CDDL HEADER START
+- *
+- * The contents of this file are subject to the terms of the
+- * Common Development and Distribution License (the "License").
+- * You may not use this file except in compliance with the License.
+- *
+- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+- * or http://www.opensolaris.org/os/licensing.
+- * See the License for the specific language governing permissions
+- * and limitations under the License.
+- *
+- * When distributing Covered Code, include this CDDL HEADER in each
+- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+- * If applicable, add the following below this CDDL HEADER, with the
+- * fields enclosed by brackets "[]" replaced with your own identifying
+- * information: Portions Copyright [yyyy] [name of copyright owner]
+- *
+- * CDDL HEADER END
+- */
+-/*
+- * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+- * Use is subject to license terms.
+- */
+-
+-#include <Python.h>
+-#include <sys/zfs_ioctl.h>
+-#include <sys/fs/zfs.h>
+-#include <strings.h>
+-#include <unistd.h>
+-#include <libnvpair.h>
+-#include <libintl.h>
+-#include <libzfs.h>
+-#include "zfs_prop.h"
+-
+-static PyObject *ZFSError;
+-static int zfsdevfd;
+-
+-#ifdef __lint
+-#define	dgettext(x, y) y
+-#endif
+-
+-#define	_(s) dgettext(TEXT_DOMAIN, s)
+-
+-/*PRINTFLIKE1*/
+-static void
+-seterr(char *fmt, ...)
+-{
+-	char errstr[1024];
+-	va_list v;
+-
+-	va_start(v, fmt);
+-	(void) vsnprintf(errstr, sizeof (errstr), fmt, v);
+-	va_end(v);
+-
+-	PyErr_SetObject(ZFSError, Py_BuildValue("is", errno, errstr));
+-}
+-
+-static char cmdstr[HIS_MAX_RECORD_LEN];
+-
+-static int
+-ioctl_with_cmdstr(int ioc, zfs_cmd_t *zc)
+-{
+-	int err;
+-
+-	if (cmdstr[0])
+-		zc->zc_history = (uint64_t)(uintptr_t)cmdstr;
+-	err = ioctl(zfsdevfd, ioc, zc);
+-	cmdstr[0] = '\0';
+-	return (err);
+-}
+-
+-static PyObject *
+-nvl2py(nvlist_t *nvl)
+-{
+-	PyObject *pyo;
+-	nvpair_t *nvp;
+-
+-	pyo = PyDict_New();
+-
+-	for (nvp = nvlist_next_nvpair(nvl, NULL); nvp;
+-	    nvp = nvlist_next_nvpair(nvl, nvp)) {
+-		PyObject *pyval;
+-		char *sval;
+-		uint64_t ival;
+-		boolean_t bval;
+-		nvlist_t *nval;
+-
+-		switch (nvpair_type(nvp)) {
+-		case DATA_TYPE_STRING:
+-			(void) nvpair_value_string(nvp, &sval);
+-			pyval = Py_BuildValue("s", sval);
+-			break;
+-
+-		case DATA_TYPE_UINT64:
+-			(void) nvpair_value_uint64(nvp, &ival);
+-			pyval = Py_BuildValue("K", ival);
+-			break;
+-
+-		case DATA_TYPE_NVLIST:
+-			(void) nvpair_value_nvlist(nvp, &nval);
+-			pyval = nvl2py(nval);
+-			break;
+-
+-		case DATA_TYPE_BOOLEAN:
+-			Py_INCREF(Py_None);
+-			pyval = Py_None;
+-			break;
+-
+-		case DATA_TYPE_BOOLEAN_VALUE:
+-			(void) nvpair_value_boolean_value(nvp, &bval);
+-			pyval = Py_BuildValue("i", bval);
+-			break;
+-
+-		default:
+-			PyErr_SetNone(PyExc_ValueError);
+-			Py_DECREF(pyo);
+-			return (NULL);
+-		}
+-
+-		PyDict_SetItemString(pyo, nvpair_name(nvp), pyval);
+-		Py_DECREF(pyval);
+-	}
+-
+-	return (pyo);
+-}
+-
+-static nvlist_t *
+-dict2nvl(PyObject *d)
+-{
+-	nvlist_t *nvl;
+-	int err;
+-	PyObject *key, *value;
+-	int pos = 0;
+-
+-	if (!PyDict_Check(d)) {
+-		PyErr_SetObject(PyExc_ValueError, d);
+-		return (NULL);
+-	}
+-
+-	err = nvlist_alloc(&nvl, NV_UNIQUE_NAME, 0);
+-	assert(err == 0);
+-
+-	while (PyDict_Next(d, &pos, &key, &value)) {
+-		char *keystr = PyString_AsString(key);
+-		if (keystr == NULL) {
+-			PyErr_SetObject(PyExc_KeyError, key);
+-			nvlist_free(nvl);
+-			return (NULL);
+-		}
+-
+-		if (PyDict_Check(value)) {
+-			nvlist_t *valnvl = dict2nvl(value);
+-			err = nvlist_add_nvlist(nvl, keystr, valnvl);
+-			nvlist_free(valnvl);
+-		} else if (value == Py_None) {
+-			err = nvlist_add_boolean(nvl, keystr);
+-		} else if (PyString_Check(value)) {
+-			char *valstr = PyString_AsString(value);
+-			err = nvlist_add_string(nvl, keystr, valstr);
+-		} else if (PyInt_Check(value)) {
+-			uint64_t valint = PyInt_AsUnsignedLongLongMask(value);
+-			err = nvlist_add_uint64(nvl, keystr, valint);
+-		} else if (PyBool_Check(value)) {
+-			boolean_t valbool = value == Py_True ? B_TRUE : B_FALSE;
+-			err = nvlist_add_boolean_value(nvl, keystr, valbool);
+-		} else {
+-			PyErr_SetObject(PyExc_ValueError, value);
+-			nvlist_free(nvl);
+-			return (NULL);
+-		}
+-		assert(err == 0);
+-	}
+-
+-	return (nvl);
+-}
+-
+-static PyObject *
+-fakepropval(uint64_t value)
+-{
+-	PyObject *d = PyDict_New();
+-	PyDict_SetItemString(d, "value", Py_BuildValue("K", value));
+-	return (d);
+-}
+-
+-static void
+-add_ds_props(zfs_cmd_t *zc, PyObject *nvl)
+-{
+-	dmu_objset_stats_t *s = &zc->zc_objset_stats;
+-	PyDict_SetItemString(nvl, "numclones",
+-	    fakepropval(s->dds_num_clones));
+-	PyDict_SetItemString(nvl, "issnap",
+-	    fakepropval(s->dds_is_snapshot));
+-	PyDict_SetItemString(nvl, "inconsistent",
+-	    fakepropval(s->dds_inconsistent));
+-}
+-
+-/* On error, returns NULL but does not set python exception. */
+-static PyObject *
+-ioctl_with_dstnv(int ioc, zfs_cmd_t *zc)
+-{
+-	int nvsz = 2048;
+-	void *nvbuf;
+-	PyObject *pynv = NULL;
+-
+-again:
+-	nvbuf = malloc(nvsz);
+-	zc->zc_nvlist_dst_size = nvsz;
+-	zc->zc_nvlist_dst = (uintptr_t)nvbuf;
+-
+-	if (ioctl(zfsdevfd, ioc, zc) == 0) {
+-		nvlist_t *nvl;
+-
+-		errno = nvlist_unpack(nvbuf, zc->zc_nvlist_dst_size, &nvl, 0);
+-		if (errno == 0) {
+-			pynv = nvl2py(nvl);
+-			nvlist_free(nvl);
+-		}
+-	} else if (errno == ENOMEM) {
+-		free(nvbuf);
+-		nvsz = zc->zc_nvlist_dst_size;
+-		goto again;
+-	}
+-	free(nvbuf);
+-	return (pynv);
+-}
+-
+-static PyObject *
+-py_next_dataset(PyObject *self, PyObject *args)
+-{
+-	int ioc;
+-	uint64_t cookie;
+-	zfs_cmd_t zc = { 0 };
+-	int snaps;
+-	char *name;
+-	PyObject *nvl;
+-	PyObject *ret = NULL;
+-
+-	if (!PyArg_ParseTuple(args, "siK", &name, &snaps, &cookie))
+-		return (NULL);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-	zc.zc_cookie = cookie;
+-
+-	if (snaps)
+-		ioc = ZFS_IOC_SNAPSHOT_LIST_NEXT;
+-	else
+-		ioc = ZFS_IOC_DATASET_LIST_NEXT;
+-
+-	nvl = ioctl_with_dstnv(ioc, &zc);
+-	if (nvl) {
+-		add_ds_props(&zc, nvl);
+-		ret = Py_BuildValue("sKO", zc.zc_name, zc.zc_cookie, nvl);
+-		Py_DECREF(nvl);
+-	} else if (errno == ESRCH) {
+-		PyErr_SetNone(PyExc_StopIteration);
+-	} else {
+-		if (snaps)
+-			seterr(_("cannot get snapshots of %s"), name);
+-		else
+-			seterr(_("cannot get child datasets of %s"), name);
+-	}
+-	return (ret);
+-}
+-
+-static PyObject *
+-py_dataset_props(PyObject *self, PyObject *args)
+-{
+-	zfs_cmd_t zc = { 0 };
+-	int snaps;
+-	char *name;
+-	PyObject *nvl;
+-
+-	if (!PyArg_ParseTuple(args, "s", &name))
+-		return (NULL);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-
+-	nvl = ioctl_with_dstnv(ZFS_IOC_OBJSET_STATS, &zc);
+-	if (nvl) {
+-		add_ds_props(&zc, nvl);
+-	} else {
+-		seterr(_("cannot access dataset %s"), name);
+-	}
+-	return (nvl);
+-}
+-
+-static PyObject *
+-py_get_fsacl(PyObject *self, PyObject *args)
+-{
+-	zfs_cmd_t zc = { 0 };
+-	char *name;
+-	PyObject *nvl;
+-
+-	if (!PyArg_ParseTuple(args, "s", &name))
+-		return (NULL);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-
+-	nvl = ioctl_with_dstnv(ZFS_IOC_GET_FSACL, &zc);
+-	if (nvl == NULL)
+-		seterr(_("cannot get permissions on %s"), name);
+-
+-	return (nvl);
+-}
+-
+-static PyObject *
+-py_set_fsacl(PyObject *self, PyObject *args)
+-{
+-	int un;
+-	size_t nvsz;
+-	zfs_cmd_t zc = { 0 };
+-	char *name, *nvbuf;
+-	PyObject *dict, *file;
+-	nvlist_t *nvl;
+-	int err;
+-
+-	if (!PyArg_ParseTuple(args, "siO!", &name, &un,
+-	    &PyDict_Type, &dict))
+-		return (NULL);
+-
+-	nvl = dict2nvl(dict);
+-	if (nvl == NULL)
+-		return (NULL);
+-
+-	err = nvlist_size(nvl, &nvsz, NV_ENCODE_NATIVE);
+-	assert(err == 0);
+-	nvbuf = malloc(nvsz);
+-	err = nvlist_pack(nvl, &nvbuf, &nvsz, NV_ENCODE_NATIVE, 0);
+-	assert(err == 0);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-	zc.zc_nvlist_src_size = nvsz;
+-	zc.zc_nvlist_src = (uintptr_t)nvbuf;
+-	zc.zc_perm_action = un;
+-
+-	err = ioctl_with_cmdstr(ZFS_IOC_SET_FSACL, &zc);
+-	free(nvbuf);
+-	if (err) {
+-		seterr(_("cannot set permissions on %s"), name);
+-		return (NULL);
+-	}
+-
+-	Py_RETURN_NONE;
+-}
+-
+-static PyObject *
+-py_get_holds(PyObject *self, PyObject *args)
+-{
+-	zfs_cmd_t zc = { 0 };
+-	char *name;
+-	PyObject *nvl;
+-
+-	if (!PyArg_ParseTuple(args, "s", &name))
+-		return (NULL);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-
+-	nvl = ioctl_with_dstnv(ZFS_IOC_GET_HOLDS, &zc);
+-	if (nvl == NULL)
+-		seterr(_("cannot get holds for %s"), name);
+-
+-	return (nvl);
+-}
+-
+-static PyObject *
+-py_userspace_many(PyObject *self, PyObject *args)
+-{
+-	zfs_cmd_t zc = { 0 };
+-	zfs_userquota_prop_t type;
+-	char *name, *propname;
+-	int bufsz = 1<<20;
+-	void *buf;
+-	PyObject *dict, *file;
+-	int error;
+-
+-	if (!PyArg_ParseTuple(args, "ss", &name, &propname))
+-		return (NULL);
+-
+-	for (type = 0; type < ZFS_NUM_USERQUOTA_PROPS; type++)
+-		if (strcmp(propname, zfs_userquota_prop_prefixes[type]) == 0)
+-			break;
+-	if (type == ZFS_NUM_USERQUOTA_PROPS) {
+-		PyErr_SetString(PyExc_KeyError, propname);
+-		return (NULL);
+-	}
+-
+-	dict = PyDict_New();
+-	buf = malloc(bufsz);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-	zc.zc_objset_type = type;
+-	zc.zc_cookie = 0;
+-
+-	while (1) {
+-		zfs_useracct_t *zua = buf;
+-
+-		zc.zc_nvlist_dst = (uintptr_t)buf;
+-		zc.zc_nvlist_dst_size = bufsz;
+-
+-		error = ioctl(zfsdevfd, ZFS_IOC_USERSPACE_MANY, &zc);
+-		if (error || zc.zc_nvlist_dst_size == 0)
+-			break;
+-
+-		while (zc.zc_nvlist_dst_size > 0) {
+-			PyObject *pykey, *pyval;
+-
+-			pykey = Py_BuildValue("sI",
+-			    zua->zu_domain, zua->zu_rid);
+-			pyval = Py_BuildValue("K", zua->zu_space);
+-			PyDict_SetItem(dict, pykey, pyval);
+-			Py_DECREF(pykey);
+-			Py_DECREF(pyval);
+-
+-			zua++;
+-			zc.zc_nvlist_dst_size -= sizeof (zfs_useracct_t);
+-		}
+-	}
+-
+-	free(buf);
+-
+-	if (error != 0) {
+-		Py_DECREF(dict);
+-		seterr(_("cannot get %s property on %s"), propname, name);
+-		return (NULL);
+-	}
+-
+-	return (dict);
+-}
+-
+-static PyObject *
+-py_userspace_upgrade(PyObject *self, PyObject *args)
+-{
+-	zfs_cmd_t zc = { 0 };
+-	char *name;
+-	int error;
+-
+-	if (!PyArg_ParseTuple(args, "s", &name))
+-		return (NULL);
+-
+-	(void) strlcpy(zc.zc_name, name, sizeof (zc.zc_name));
+-	error = ioctl(zfsdevfd, ZFS_IOC_USERSPACE_UPGRADE, &zc);
+-
+-	if (error != 0) {
+-		seterr(_("cannot initialize user accounting information on %s"),
+-		    name);
+-		return (NULL);
+-	}
+-
+-	Py_RETURN_NONE;
+-}
+-
+-static PyObject *
+-py_set_cmdstr(PyObject *self, PyObject *args)
+-{
+-	char *str;
+-
+-	if (!PyArg_ParseTuple(args, "s", &str))
+-		return (NULL);
+-
+-	(void) strlcpy(cmdstr, str, sizeof (cmdstr));
+-
+-	Py_RETURN_NONE;
+-}
+-
+-static PyObject *
+-py_get_proptable(PyObject *self, PyObject *args)
+-{
+-	zprop_desc_t *t = zfs_prop_get_table();
+-	PyObject *d = PyDict_New();
+-	zfs_prop_t i;
+-
+-	for (i = 0; i < ZFS_NUM_PROPS; i++) {
+-		zprop_desc_t *p = &t[i];
+-		PyObject *tuple;
+-		static const char *typetable[] =
+-		    {"number", "string", "index"};
+-		static const char *attrtable[] =
+-		    {"default", "readonly", "inherit", "onetime"};
+-		PyObject *indextable;
+-
+-		if (p->pd_proptype == PROP_TYPE_INDEX) {
+-			const zprop_index_t *it = p->pd_table;
+-			indextable = PyDict_New();
+-			int j;
+-			for (j = 0; it[j].pi_name; j++) {
+-				PyDict_SetItemString(indextable,
+-				    it[j].pi_name,
+-				    Py_BuildValue("K", it[j].pi_value));
+-			}
+-		} else {
+-			Py_INCREF(Py_None);
+-			indextable = Py_None;
+-		}
+-
+-		tuple = Py_BuildValue("sissKsissiiO",
+-		    p->pd_name, p->pd_propnum, typetable[p->pd_proptype],
+-		    p->pd_strdefault, p->pd_numdefault,
+-		    attrtable[p->pd_attr], p->pd_types,
+-		    p->pd_values, p->pd_colname,
+-		    p->pd_rightalign, p->pd_visible, indextable);
+-		PyDict_SetItemString(d, p->pd_name, tuple);
+-		Py_DECREF(tuple);
+-	}
+-
+-	return (d);
+-}
+-
+-static PyMethodDef zfsmethods[] = {
+-	{"next_dataset", py_next_dataset, METH_VARARGS,
+-	    "Get next child dataset or snapshot."},
+-	{"get_fsacl", py_get_fsacl, METH_VARARGS, "Get allowed permissions."},
+-	{"set_fsacl", py_set_fsacl, METH_VARARGS, "Set allowed permissions."},
+-	{"userspace_many", py_userspace_many, METH_VARARGS,
+-	    "Get user space accounting."},
+-	{"userspace_upgrade", py_userspace_upgrade, METH_VARARGS,
+-	    "Upgrade fs to enable user space accounting."},
+-	{"set_cmdstr", py_set_cmdstr, METH_VARARGS,
+-	    "Set command string for history logging."},
+-	{"dataset_props", py_dataset_props, METH_VARARGS,
+-	    "Get dataset properties."},
+-	{"get_proptable", py_get_proptable, METH_NOARGS,
+-	    "Get property table."},
+-	{"get_holds", py_get_holds, METH_VARARGS, "Get user holds."},
+-	{NULL, NULL, 0, NULL}
+-};
+-
+-void
+-initioctl(void)
+-{
+-	PyObject *zfs_ioctl = Py_InitModule("zfs.ioctl", zfsmethods);
+-	PyObject *zfs_util = PyImport_ImportModule("zfs.util");
+-	PyObject *devfile;
+-
+-	if (zfs_util == NULL)
+-		return;
+-
+-	ZFSError = PyObject_GetAttrString(zfs_util, "ZFSError");
+-	devfile = PyObject_GetAttrString(zfs_util, "dev");
+-	zfsdevfd = PyObject_AsFileDescriptor(devfile);
+-
+-	zfs_prop_init();
+-}
+diff --git a/usr/src/lib/pyzfs/common/mapfile-vers b/usr/src/lib/pyzfs/common/mapfile-vers
+deleted file mode 100644
+index d16918c..0000000
+--- a/usr/src/lib/pyzfs/common/mapfile-vers
++++ /dev/null
+@@ -1,46 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-#
+-# MAPFILE HEADER START
+-#
+-# WARNING:  STOP NOW.  DO NOT MODIFY THIS FILE.
+-# Object versioning must comply with the rules detailed in
+-#
+-#	usr/src/lib/README.mapfiles
+-#
+-# You should not be making modifications here until you've read the most current
+-# copy of that file. If you need help, contact a gatekeeper for guidance.
+-#
+-# MAPFILE HEADER END
+-#
+-
+-$mapfile_version 2
+-
+-SYMBOL_VERSION SUNWprivate {
+-    global:
+-	initioctl;
+-    local:
+-	*;
+-};
+diff --git a/usr/src/lib/pyzfs/common/table.py b/usr/src/lib/pyzfs/common/table.py
+deleted file mode 100644
+index d2a45a1..0000000
+--- a/usr/src/lib/pyzfs/common/table.py
++++ /dev/null
+@@ -1,70 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-import zfs.util
+-
+-class Table:
+-	__slots__ = "fields", "rjustfields", "maxfieldlen", "lines"
+-	__repr__ = zfs.util.default_repr
+-
+-	def __init__(self, fields, rjustfields=()):
+-		# XXX maybe have a defaults, too?
+-		self.fields = fields
+-		self.rjustfields = rjustfields
+-		self.maxfieldlen = dict.fromkeys(fields, 0)
+-		self.lines = list()
+-	
+-	def __updatemax(self, k, v):
+-		self.maxfieldlen[k] = max(self.maxfieldlen.get(k, None), v)
+-
+-	def addline(self, sortkey, values):
+-		"""values is a dict from field name to value"""
+-
+-		va = list()
+-		for f in self.fields:
+-			v = str(values[f])
+-			va.append(v)
+-			self.__updatemax(f, len(v))
+-		self.lines.append((sortkey, va))
+-
+-	def printme(self, headers=True):
+-		if headers:
+-			d = dict([(f, f.upper()) for f in self.fields])
+-			self.addline(None, d)
+-
+-		self.lines.sort()
+-		for (k, va) in self.lines:
+-			line = str()
+-			for i in range(len(self.fields)):
+-				if not headers:
+-					line += va[i]
+-					line += "\t"
+-				else:
+-					if self.fields[i] in self.rjustfields:
+-						fmt = "%*s  "
+-					else:
+-						fmt = "%-*s  "
+-					mfl = self.maxfieldlen[self.fields[i]]
+-					line += fmt % (mfl, va[i])
+-			print(line)
+diff --git a/usr/src/lib/pyzfs/common/unallow.py b/usr/src/lib/pyzfs/common/unallow.py
+deleted file mode 100644
+index cbdd4dd..0000000
+--- a/usr/src/lib/pyzfs/common/unallow.py
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-import zfs.allow
+-
+-do_unallow = zfs.allow.do_allow
+diff --git a/usr/src/lib/pyzfs/common/userspace.py b/usr/src/lib/pyzfs/common/userspace.py
+deleted file mode 100644
+index 8464f54..0000000
+--- a/usr/src/lib/pyzfs/common/userspace.py
++++ /dev/null
+@@ -1,246 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""This module implements the "zfs userspace" and "zfs groupspace" subcommands.
+-The only public interface is the zfs.userspace.do_userspace() function."""
+-
+-import optparse
+-import sys
+-import pwd
+-import grp
+-import errno
+-import solaris.misc
+-import zfs.util
+-import zfs.ioctl
+-import zfs.dataset
+-import zfs.table
+-
+-_ = zfs.util._
+-
+-# map from property name prefix -> (field name, isgroup)
+-props = {
+-    "userused@": ("used", False),
+-    "userquota@": ("quota", False),
+-    "groupused@": ("used", True),
+-    "groupquota@": ("quota", True),
+-}
+-
+-def skiptype(options, prop):
+-	"""Return True if this property (eg "userquota@") should be skipped."""
+-	(field, isgroup) = props[prop]
+-	if field not in options.fields:
+-		return True
+-	if isgroup and "posixgroup" not in options.types and \
+-	    "smbgroup" not in options.types:
+-		return True
+-	if not isgroup and "posixuser" not in options.types and \
+-	    "smbuser" not in options.types:
+-		return True
+-	return False
+-
+-def new_entry(options, isgroup, domain, rid):
+-	"""Return a dict("field": value) for this domain (string) + rid (int)"""
+-
+-	if domain:
+-		idstr = "%s-%u" % (domain, rid)
+-	else:
+-		idstr = "%u" % rid
+-
+-	(typename, mapfunc) = {
+-	    (1, 1): ("SMB Group",   lambda id: solaris.misc.sid_to_name(id, 0)),
+-	    (1, 0): ("POSIX Group", lambda id: grp.getgrgid(int(id)).gr_name),
+-	    (0, 1): ("SMB User",    lambda id: solaris.misc.sid_to_name(id, 1)),
+-	    (0, 0): ("POSIX User",  lambda id: pwd.getpwuid(int(id)).pw_name)
+-	}[isgroup, bool(domain)]
+-
+-	if typename.lower().replace(" ", "") not in options.types:
+-		return None
+-
+-	v = dict()
+-	v["type"] = typename
+-
+-	# python's getpwuid/getgrgid is confused by ephemeral uids
+-	if not options.noname and rid < 1<<31:
+-		try:
+-			v["name"] = mapfunc(idstr)
+-		except KeyError:
+-			pass
+-
+-	if "name" not in v:
+-		v["name"] = idstr
+-		if not domain:
+-			# it's just a number, so pad it with spaces so
+-			# that it will sort numerically
+-			v["name.sort"] = "%20d" % rid
+-	# fill in default values
+-	v["used"] = "0"
+-	v["used.sort"] = 0
+-	v["quota"] = "none"
+-	v["quota.sort"] = 0
+-	return v
+-
+-def process_one_raw(acct, options, prop, elem):
+-	"""Update the acct dict to incorporate the
+-	information from this elem from Dataset.userspace(prop)."""
+-
+-	(domain, rid, value) = elem
+-	(field, isgroup) = props[prop]
+-
+-	if options.translate and domain:
+-		try:
+-			rid = solaris.misc.sid_to_id("%s-%u" % (domain, rid),
+-			    not isgroup)
+-			domain = None
+-		except KeyError:
+-			pass;
+-	key = (isgroup, domain, rid)
+-		
+-	try:
+-		v = acct[key]
+-	except KeyError:
+-		v = new_entry(options, isgroup, domain, rid)
+-		if not v:
+-			return
+-		acct[key] = v
+-
+-	# Add our value to an existing value, which may be present if
+-	# options.translate is set.
+-	value = v[field + ".sort"] = value + v[field + ".sort"]
+-
+-	if options.parsable:
+-		v[field] = str(value)
+-	else:
+-		v[field] = zfs.util.nicenum(value)
+-
+-def do_userspace():
+-	"""Implements the "zfs userspace" and "zfs groupspace" subcommands."""
+-
+-	def usage(msg=None):
+-		parser.print_help()
+-		if msg:
+-			print
+-			parser.exit("zfs: error: " + msg)
+-		else:
+-			parser.exit()
+-
+-	if sys.argv[1] == "userspace":
+-		defaulttypes = "posixuser,smbuser"
+-	else:
+-		defaulttypes = "posixgroup,smbgroup"
+-
+-	fields = ("type", "name", "used", "quota")
+-	rjustfields = ("used", "quota")
+-	types = ("all", "posixuser", "smbuser", "posixgroup", "smbgroup")
+-
+-	u = _("%s [-niHp] [-o field[,...]] [-sS field] ... \n") % sys.argv[1]
+-	u += _("    [-t type[,...]] <filesystem|snapshot>")
+-	parser = optparse.OptionParser(usage=u, prog="zfs")
+-
+-	parser.add_option("-n", action="store_true", dest="noname",
+-	    help=_("Print numeric ID instead of user/group name"))
+-	parser.add_option("-i", action="store_true", dest="translate",
+-	    help=_("translate SID to posix (possibly ephemeral) ID"))
+-	parser.add_option("-H", action="store_true", dest="noheaders",
+-	    help=_("no headers, tab delimited output"))
+-	parser.add_option("-p", action="store_true", dest="parsable",
+-	    help=_("exact (parsable) numeric output"))
+-	parser.add_option("-o", dest="fields", metavar="field[,...]",
+-	    default="type,name,used,quota",
+-	    help=_("print only these fields (eg type,name,used,quota)"))
+-	parser.add_option("-s", dest="sortfields", metavar="field",
+-	    type="choice", choices=fields, default=list(),
+-	    action="callback", callback=zfs.util.append_with_opt,
+-	    help=_("sort field"))
+-	parser.add_option("-S", dest="sortfields", metavar="field",
+-	    type="choice", choices=fields, #-s sets the default
+-	    action="callback", callback=zfs.util.append_with_opt,
+-	    help=_("reverse sort field"))
+-	parser.add_option("-t", dest="types", metavar="type[,...]",
+-	    default=defaulttypes,
+-	    help=_("print only these types (eg posixuser,smbuser,posixgroup,smbgroup,all)"))
+-
+-	(options, args) = parser.parse_args(sys.argv[2:])
+-	if len(args) != 1:
+-		usage(_("wrong number of arguments"))
+-	dsname = args[0]
+-
+-	options.fields = options.fields.split(",")
+-	for f in options.fields:
+-		if f not in fields:
+-			usage(_("invalid field %s") % f)
+-
+-	options.types = options.types.split(",")
+-	for t in options.types:
+-		if t not in types:
+-			usage(_("invalid type %s") % t)
+-
+-	if not options.sortfields:
+-		options.sortfields = [("-s", "type"), ("-s", "name")]
+-
+-	if "all" in options.types:
+-		options.types = types[1:]
+-
+-	ds = zfs.dataset.Dataset(dsname, types=("filesystem"))
+-
+-	if ds.getprop("zoned") and solaris.misc.isglobalzone():
+-		options.noname = True
+-
+-	if not ds.getprop("useraccounting"):
+-		print(_("Initializing accounting information on old filesystem, please wait..."))
+-		ds.userspace_upgrade()
+-
+-	# gather and process accounting information
+-	# Due to -i, we need to keep a dict, so we can potentially add
+-	# together the posix ID and SID's usage.  Grr.
+-	acct = dict()
+-	for prop in props.keys():
+-		if skiptype(options, prop):
+-			continue;
+-		for elem in ds.userspace(prop):
+-			process_one_raw(acct, options, prop, elem)
+-
+-	def cmpkey(val):
+-		l = list()
+-		for (opt, field) in options.sortfields:
+-			try:
+-				n = val[field + ".sort"]
+-			except KeyError:
+-				n = val[field]
+-			if opt == "-S":
+-				# reverse sorting
+-				try:
+-					n = -n
+-				except TypeError:
+-					# it's a string; decompose it
+-					# into an array of integers,
+-					# each one the negative of that
+-					# character
+-					n = [-ord(c) for c in n]
+-			l.append(n)
+-		return l
+-
+-	t = zfs.table.Table(options.fields, rjustfields)
+-	for val in acct.itervalues():
+-		t.addline(cmpkey(val), val)
+-	t.printme(not options.noheaders)
+diff --git a/usr/src/lib/pyzfs/common/util.py b/usr/src/lib/pyzfs/common/util.py
+deleted file mode 100644
+index a33c669..0000000
+--- a/usr/src/lib/pyzfs/common/util.py
++++ /dev/null
+@@ -1,141 +0,0 @@
+-#! /usr/bin/python2.6
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-"""This module provides utility functions for ZFS.
+-zfs.util.dev -- a file object of /dev/zfs """
+-
+-import gettext
+-import errno
+-import os
+-import solaris.misc
+-# Note: this module (zfs.util) should not import zfs.ioctl, because that
+-# would introduce a circular dependency
+-
+-errno.ECANCELED = 47
+-errno.ENOTSUP = 48
+-
+-dev = open("/dev/zfs", "w")
+-
+-try:
+-	_ = gettext.translation("SUNW_OST_OSLIB", "/usr/lib/locale",
+-	    fallback=True).gettext
+-except:
+-	_ = solaris.misc.gettext
+-
+-def default_repr(self):
+-	"""A simple __repr__ function."""
+-	if self.__slots__:
+-		str = "<" + self.__class__.__name__
+-		for v in self.__slots__:
+-			str += " %s: %r" % (v, getattr(self, v))
+-		return str + ">"
+-	else:
+-		return "<%s %s>" % \
+-		    (self.__class__.__name__, repr(self.__dict__))
+-
+-class ZFSError(StandardError):
+-	"""This exception class represents a potentially user-visible
+-	ZFS error.  If uncaught, it will be printed and the process will
+-	exit with exit code 1.
+-	
+-	errno -- the error number (eg, from ioctl(2))."""
+-
+-	__slots__ = "why", "task", "errno"
+-	__repr__ = default_repr
+-
+-	def __init__(self, eno, task=None, why=None):
+-		"""Create a ZFS exception.
+-		eno -- the error number (errno)
+-		task -- a string describing the task that failed
+-		why -- a string describing why it failed (defaults to
+-		    strerror(eno))"""
+-
+-		self.errno = eno
+-		self.task = task
+-		self.why = why
+-
+-	def __str__(self):
+-		s = ""
+-		if self.task:
+-			s += self.task + ": "
+-		if self.why:
+-			s += self.why
+-		else:
+-			s += self.strerror
+-		return s
+-
+-	__strs = {
+-		errno.EPERM: _("permission denied"),
+-		errno.ECANCELED:
+-		    _("delegated administration is disabled on pool"),
+-		errno.EINTR: _("signal received"),
+-		errno.EIO: _("I/O error"),
+-		errno.ENOENT: _("dataset does not exist"),
+-		errno.ENOSPC: _("out of space"),
+-		errno.EEXIST: _("dataset already exists"),
+-		errno.EBUSY: _("dataset is busy"),
+-		errno.EROFS:
+-		    _("snapshot permissions cannot be modified"),
+-		errno.ENAMETOOLONG: _("dataset name is too long"),
+-		errno.ENOTSUP: _("unsupported version"),
+-		errno.EAGAIN: _("pool I/O is currently suspended"),
+-	}
+-
+-	__strs[errno.EACCES] = __strs[errno.EPERM]
+-	__strs[errno.ENXIO] = __strs[errno.EIO]
+-	__strs[errno.ENODEV] = __strs[errno.EIO]
+-	__strs[errno.EDQUOT] = __strs[errno.ENOSPC]
+-
+-	@property
+-	def strerror(self):
+-		return ZFSError.__strs.get(self.errno, os.strerror(self.errno))
+-
+-def nicenum(num):
+-	"""Return a nice string (eg "1.23M") for this integer."""
+-	index = 0;
+-	n = num;
+-
+-	while n >= 1024:
+-		n /= 1024
+-		index += 1
+-
+-	u = " KMGTPE"[index]
+-	if index == 0:
+-		return "%u" % n;
+-	elif n >= 100 or num & ((1024*index)-1) == 0:
+-		# it's an exact multiple of its index, or it wouldn't
+-		# fit as floating point, so print as an integer
+-		return "%u%c" % (n, u)
+-	else:
+-		# due to rounding, it's tricky to tell what precision to
+-		# use; try each precision and see which one fits
+-		for i in (2, 1, 0):
+-			s = "%.*f%c" % (i, float(num) / (1<<(10*index)), u)
+-			if len(s) <= 5:
+-				return s
+-
+-def append_with_opt(option, opt, value, parser):
+-	"""A function for OptionParser which appends a tuple (opt, value)."""
+-	getattr(parser.values, option.dest).append((opt, value))
+-
+diff --git a/usr/src/lib/pyzfs/i386/Makefile b/usr/src/lib/pyzfs/i386/Makefile
+deleted file mode 100644
+index 4ce880c..0000000
+--- a/usr/src/lib/pyzfs/i386/Makefile
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
+-#
+-
+-include ../Makefile.com
+-
+-install: all $(ROOTLIBS)
+diff --git a/usr/src/lib/pyzfs/sparc/Makefile b/usr/src/lib/pyzfs/sparc/Makefile
+deleted file mode 100644
+index 4ce880c..0000000
+--- a/usr/src/lib/pyzfs/sparc/Makefile
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-# Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
+-#
+-
+-include ../Makefile.com
+-
+-install: all $(ROOTLIBS)
+diff --git a/usr/src/pkg/manifests/install-beadm.mf b/usr/src/pkg/manifests/install-beadm.mf
+index 2a94f50..9305a96 100644
+--- a/usr/src/pkg/manifests/install-beadm.mf
++++ b/usr/src/pkg/manifests/install-beadm.mf
+@@ -20,7 +20,7 @@
+ #
+ #
+ # Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+-# Copyright 2010 Nexenta Systems, Inc. All rights reserved.
++# Copyright 2013 Nexenta Systems, Inc. All rights reserved.
+ # Copyright 2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+ #
+ 
+@@ -34,10 +34,6 @@ dir path=usr group=sys
+ dir path=usr/include
+ dir path=usr/lib
+ dir path=usr/lib/$(ARCH64)
+-dir path=usr/lib/python2.6
+-dir path=usr/lib/python2.6/vendor-packages
+-dir path=usr/lib/python2.6/vendor-packages/64
+-dir path=usr/lib/python2.6/vendor-packages/beadm
+ dir path=usr/sbin
+ dir path=usr/share
+ dir path=usr/share/man
+@@ -49,8 +45,6 @@ file path=usr/lib/$(ARCH64)/llib-lbe.ln
+ file path=usr/lib/libbe.so.1
+ file path=usr/lib/llib-lbe
+ file path=usr/lib/llib-lbe.ln
+-file path=usr/lib/python2.6/vendor-packages/64/libbe_py.so
+-file path=usr/lib/python2.6/vendor-packages/libbe_py.so
+ file path=usr/share/man/man1m/beadm.1m
+ license cr_Sun license=cr_Sun
+ license lic_CDDL license=lic_CDDL
+diff --git a/usr/src/pkg/manifests/system-file-system-zfs.mf b/usr/src/pkg/manifests/system-file-system-zfs.mf
+index 2b63229..6508e14 100644
+--- a/usr/src/pkg/manifests/system-file-system-zfs.mf
++++ b/usr/src/pkg/manifests/system-file-system-zfs.mf
+@@ -66,9 +66,6 @@ dir path=usr/lib/mdb/kvm/$(ARCH64) group=sys
+ dir path=usr/lib/mdb/proc group=sys
+ $(sparc_ONLY)dir path=usr/lib/mdb/proc/$(ARCH64) group=sys
+ $(i386_ONLY)dir path=usr/lib/mdb/proc/$(ARCH64)
+-dir path=usr/lib/python2.6
+-dir path=usr/lib/python2.6/vendor-packages
+-dir path=usr/lib/python2.6/vendor-packages/zfs
+ dir path=usr/lib/sysevent
+ dir path=usr/lib/sysevent/modules
+ dir path=usr/lib/zfs
+@@ -108,29 +105,8 @@ file path=usr/lib/mdb/kvm/$(ARCH64)/zfs.so group=sys mode=0555
+ $(i386_ONLY)file path=usr/lib/mdb/kvm/zfs.so group=sys mode=0555
+ file path=usr/lib/mdb/proc/$(ARCH64)/libzpool.so group=sys mode=0555
+ file path=usr/lib/mdb/proc/libzpool.so group=sys mode=0555
+-file path=usr/lib/python2.6/vendor-packages/zfs/__init__.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/__init__.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/allow.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/allow.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/dataset.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/dataset.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/groupspace.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/groupspace.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/holds.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/holds.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/ioctl.so
+-file path=usr/lib/python2.6/vendor-packages/zfs/table.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/table.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/unallow.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/unallow.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/userspace.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/userspace.pyc
+-file path=usr/lib/python2.6/vendor-packages/zfs/util.py
+-file path=usr/lib/python2.6/vendor-packages/zfs/util.pyc
+ file path=usr/lib/sysevent/modules/zfs_mod.so group=sys
+ file path=usr/lib/zfs/availdevs mode=0555
+-file path=usr/lib/zfs/pyzfs.py mode=0555
+-file path=usr/lib/zfs/pyzfs.pyc mode=0555
+ $(i386_ONLY)file path=usr/sbin/$(ARCH32)/zdb mode=0555
+ file path=usr/sbin/$(ARCH64)/zdb mode=0555
+ file path=usr/sbin/zstreamdump mode=0555
+@@ -185,4 +161,3 @@ link path=usr/lib/llib-lzfs_core target=../../lib/llib-lzfs_core
+ link path=usr/lib/llib-lzfs_core.ln target=../../lib/llib-lzfs_core.ln
+ link path=usr/sbin/zfs target=../../sbin/zfs
+ link path=usr/sbin/zpool target=../../sbin/zpool
+-depend fmri=runtime/python-26 type=require
+diff --git a/usr/src/pkg/manifests/system-library.mf b/usr/src/pkg/manifests/system-library.mf
+index 9ec73f8..22ffcec 100644
+--- a/usr/src/pkg/manifests/system-library.mf
++++ b/usr/src/pkg/manifests/system-library.mf
+@@ -96,9 +96,6 @@ dir path=usr/lib/iconv/$(ARCH64)
+ $(i386_ONLY)dir path=usr/lib/libc
+ dir path=usr/lib/lwp
+ dir path=usr/lib/lwp/$(ARCH64)
+-dir path=usr/lib/python2.6
+-dir path=usr/lib/python2.6/vendor-packages
+-dir path=usr/lib/python2.6/vendor-packages/solaris
+ dir path=usr/lib/raidcfg
+ dir path=usr/lib/raidcfg/$(ARCH64)
+ dir path=usr/lib/scsi
+@@ -442,9 +439,6 @@ file path=usr/lib/libzoneinfo.so.1
+ file path=usr/lib/nss_ad.so.1
+ file path=usr/lib/nss_ldap.so.1
+ file path=usr/lib/passwdutil.so.1
+-file path=usr/lib/python2.6/vendor-packages/solaris/__init__.py
+-file path=usr/lib/python2.6/vendor-packages/solaris/__init__.pyc
+-file path=usr/lib/python2.6/vendor-packages/solaris/misc.so
+ file path=usr/lib/raidcfg/$(ARCH64)/mpt.so.1
+ file path=usr/lib/raidcfg/mpt.so.1
+ file path=usr/lib/scsi/$(ARCH64)/libscsi.so.1
+-- 
+1.8.1.6
+
