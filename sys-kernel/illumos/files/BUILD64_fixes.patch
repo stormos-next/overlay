@@ -329,3 +329,54 @@ index 48aa4d1..6ff5941 100644
  
  all	:=	TARGET = all
  install	:=	TARGET = install
+diff --git a/usr/src/uts/i86pc/Makefile.i86pc.shared b/usr/src/uts/i86pc/Makefile.i86pc.shared
+index 408a2a8..058e93a 100644
+--- a/usr/src/uts/i86pc/Makefile.i86pc.shared
++++ b/usr/src/uts/i86pc/Makefile.i86pc.shared
+@@ -102,8 +102,10 @@ include $(UTSBASE)/Makefile.uts
+ #
+ #	Define supported builds
+ #
+-DEF_BUILDS		= $(DEF_BUILDS64) $(DEF_BUILDS32)
+-ALL_BUILDS		= $(ALL_BUILDS64) $(ALL_BUILDS32)
++DEF_BUILDS		= $(DEF_BUILDS32)
++$(BUILD64)DEF_BUILDS += $(DEF_BUILDS64)
++ALL_BUILDS		= $(ALL_BUILDS32)
++$(BUILD64)ALL_BUILDS += $(ALL_BUILDS64)
+ 
+ #
+ #	x86 or amd64 inline templates
+diff --git a/usr/src/uts/i86xpv/Makefile.i86xpv.shared b/usr/src/uts/i86xpv/Makefile.i86xpv.shared
+index 83d3991..069187c 100644
+--- a/usr/src/uts/i86xpv/Makefile.i86xpv.shared
++++ b/usr/src/uts/i86xpv/Makefile.i86xpv.shared
+@@ -93,8 +93,10 @@ include $(UTSBASE)/Makefile.uts
+ #
+ #	Define supported builds
+ #
+-DEF_BUILDS		= $(DEF_BUILDS64) $(DEF_BUILDS32)
+-ALL_BUILDS		= $(ALL_BUILDS64) $(ALL_BUILDS32)
++DEF_BUILDS		= $(DEF_BUILDS32)
++$(BUILD64)DEF_BUILDS += $(DEF_BUILDS64)
++ALL_BUILDS		= $(ALL_BUILDS32)
++$(BUILD64)ALL_BUILDS += $(ALL_BUILDS64)
+ 
+ #
+ #	x86 or amd64 inline templates
+diff --git a/usr/src/uts/intel/Makefile.intel.shared b/usr/src/uts/intel/Makefile.intel.shared
+index 428c132..2fb6f02 100644
+--- a/usr/src/uts/intel/Makefile.intel.shared
++++ b/usr/src/uts/intel/Makefile.intel.shared
+@@ -98,8 +98,10 @@ MODSTUBS		= $(UTSBASE)/intel/ia32/ml/modstubs.s
+ #
+ #	Define supported builds
+ #
+-DEF_BUILDS		= $(DEF_BUILDS64) $(DEF_BUILDS32)
+-ALL_BUILDS		= $(ALL_BUILDS64) $(ALL_BUILDS32)
++DEF_BUILDS		= $(DEF_BUILDS32)
++$(BUILD64)DEF_BUILDS += $(DEF_BUILDS64)
++ALL_BUILDS		= $(ALL_BUILDS32)
++$(BUILD64)ALL_BUILDS += $(ALL_BUILDS64)
+ 
+ #
+ #	x86 or amd64 inline templates
