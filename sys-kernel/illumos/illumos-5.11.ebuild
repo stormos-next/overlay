@@ -41,7 +41,6 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/binutils-path.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/drop-python-modules.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die
@@ -119,6 +118,9 @@ src_install()
 	for dir in kernel platform ; do
 		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
 	done
+
+	# Unmount libc so that it can be replaced.
+	umount /lib/libc.so.1 2>/dev/null
 
 	# Install everything else except for /dev /devices /proc - those belong
 	# to the host system so clobbering them would not be a good idea.
