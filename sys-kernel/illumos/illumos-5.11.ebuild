@@ -27,11 +27,12 @@ DEPEND="${RDEPEND}
 HOMEPAGE="http://illumos.org"
 DESCRIPTION="illumos kernel with StormOS patchset"
 
-EGIT_REPO_URI="git://github.com/illumos/illumos-gate.git"
+EGIT_REPO_URI="git://github.com/stormos-next/illumos-stormos.git"
 SRC_URI="http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins.i386.tar.bz2
 	http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins-nd.i386.tar.bz2"
 
-EGIT_COMMIT="aad02571bc59671aa3103bb070ae365f531b0b62"
+# We have yet to formally define illumos-stormos releases
+#EGIT_COMMIT="aad02571bc59671aa3103bb070ae365f531b0b62"
 
 src_prepare()
 {
@@ -50,9 +51,6 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libiconv-shim.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-build-pkg-shite.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-echo-043.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-gnu-gettext.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
@@ -118,7 +116,7 @@ src_install()
 {
 	# Install the kernel bits.  We can do this because we're not running on
 	# a live system yet.  TODO: Check that is is actually true.
-	for dir in kernel platform system ; do
+	for dir in kernel platform ; do
 		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
 	done
 
@@ -141,7 +139,4 @@ src_install()
 	rm -f "${D}/usr/bin/file" "${D}/etc/magic" || die
 	rm -f "${D}/usr/share/man/man1/file.1" || die
 	rm -f "${D}/usr/share/man/man4/magic.4" || die
-
-	# Remove /var/run since that also belongs to the host system.
-	rm -rf "${D}/var/run" || die
 }
