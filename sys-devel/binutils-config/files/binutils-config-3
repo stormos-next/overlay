@@ -139,6 +139,9 @@ switch_profile() {
 
 	setup_env || return 1
 
+	#
+	# Generate bin symlinks
+	#
 	cd "${ROOT}/${BINPATH}" || exit 1
 	mkdir -p "${ROOT}/${BINPATH_LINKS}" "${ROOT}/usr/bin"
 	for x in * ; do
@@ -149,7 +152,10 @@ switch_profile() {
 			atomic_ln "${BINPATH_LINKS}/${x}" "${ROOT}/usr/bin" "${fake}-${x}"
 		done
 		if [[ ${TARGET} == ${HOST} ]] ; then
-			atomic_ln "${TARGET}-${x}" "${ROOT}/usr/bin" "${x}"
+			case "${HOST}" in
+			*-gentoo-solaris*) atomic_ln "${TARGET}-${x}" "${ROOT}/usr/bin" "g${x}" ;;
+			*) atomic_ln "${TARGET}-${x}" "${ROOT}/usr/bin" "${x}" ;;
+			esac
 		fi
 	done
 
@@ -373,7 +379,10 @@ switch_linker() {
 
 	# switch it up
 	ebegin "Setting default linker to ${ld} for ${PROFILE}"
-	atomic_ln ${ld} "${bpath}" ld
+	case ${HOST} in
+	*-gentoo-solaris*) atomic_ln ${ld} "${bpath}" gld ;;
+	*) atomic_ln ${ld} "${bpath}" ld ;;
+	esac
 	eend $?
 }
 
