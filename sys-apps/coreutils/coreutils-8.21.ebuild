@@ -149,8 +149,8 @@ src_install() {
 			dosym /bin/${x} /usr/bin/${x} || die
 		done
 	elif [[ ${USERLAND} == "SunOS" ]] ; then
-		# solaris does not provide readlink, stat or whoami
-		for x in readlink stat whoami ; do
+		# solaris does not provide readlink, stat, whoami or install
+		for x in readlink stat whoami install; do
 			dosym /usr/bin/g${x} /usr/bin/${x} || die
 		done
 	else
