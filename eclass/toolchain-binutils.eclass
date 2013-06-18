@@ -289,7 +289,7 @@ toolchain-binutils_src_compile() {
 		${EXTRA_ECONF}
 	)
 	echo ./configure "${myconf[@]}"
-	"${S}"/configure "${myconf[@]}" || die
+	CONFIG_SHELL=bash "${S}"/configure "${myconf[@]}" || die
 
 	emake all || die "emake failed"
 
