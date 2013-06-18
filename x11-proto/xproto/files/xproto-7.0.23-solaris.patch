@@ -1,0 +1,11 @@
+--- xproto-7.0.23/Xfuncproto.h.in.bak	2013-06-17 23:31:01.825239914 -0700
++++ xproto-7.0.23/Xfuncproto.h.in	2013-06-17 23:31:26.083744648 -0700
+@@ -83,7 +83,7 @@
+ #endif /* GNUC >= 4 */
+ 
+ /* Added in X11R6.9, so available in any version of modular xproto */
+-#if defined(__GNUC__) && (__GNUC__ >= 4) && !defined(__CYGWIN__)
++#if defined(__GNUC__) && (__GNUC__ >= 4) && !defined(__CYGWIN__) && !defined(__sun)
+ # define _X_EXPORT      __attribute__((visibility("default")))
+ # define _X_HIDDEN      __attribute__((visibility("hidden")))
+ # define _X_INTERNAL    __attribute__((visibility("internal")))

@@ -17,6 +17,7 @@ DEPEND="${RDEPEND}"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-7.0.23-Xmd_h_x32.patch
+	"${FILESDIR}"/${PN}-7.0.23-solaris.patch
 )
 
 pkg_setup() {
