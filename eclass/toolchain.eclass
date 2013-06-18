@@ -1082,7 +1082,7 @@ gcc_do_configure() {
 				--without-gnu-ld \
 				--with-ld=/usr/bin/ld \
 				--with-gnu-as \
-				--with-as=/usr/gnu/bin/as"
+				--with-as=/usr/bin/gas"
 		;;
 	esac
 
