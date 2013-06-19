@@ -1,0 +1,237 @@
+diff --git a/usr/src/cmd/sgs/libconv/common/demangle.c b/usr/src/cmd/sgs/libconv/common/demangle.c
+index 8b590d8..b0b7a8f 100644
+--- a/usr/src/cmd/sgs/libconv/common/demangle.c
++++ b/usr/src/cmd/sgs/libconv/common/demangle.c
+@@ -21,6 +21,7 @@
+ 
+ /*
+  * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+  */
+ 
+ #include	<stdio.h>
+@@ -33,40 +34,13 @@
+  *
+  * This routine acts as a generic routine for use by liblddbg (and hence tools
+  * like elfdump(1) and pvs(1)), ld(1) and ld.so.1(1).
+- *
+- * The C++ ABI-2 places no limits on symbol names, thus when demangling a name
+- * it's possible the buffer won't be big enough (DEMANGLE_ESPACE) so here we
+- * try to allocate bigger buffers.  However, we place a limit on this buffer
+- * size for fear of a C++ error sending us into an infinit loop.
+- *
+- * NOTE. we create and use a common buffer for use by cplus_demangle(), thus
+- * each call to this routine will override the contents of any existing call.
+- * Normally this is sufficient for typical error diagnostics referencing one
+- * symbol.  For those diagnostics using more than one symbol name, all but the
+- * last name must be copied to a temporary buffer (regardless of whether
+- * demangling occurred, as the process of attempting to demangle may damage the
+- * buffer).  One model is:
+- *
+- *	if ((_name1 = demangle(name1)) != name1) {
+- *		char *	__name1 = strdupa(_name1);
+- *		name1 = (const char *)__name1;
+- *	}
+- *	name2 = demangle(name2);
+- *	eprintf(format, name1, name2);
+  */
+-#define	SYM_MAX	1000
+ 
+ const char *
+ conv_demangle_name(const char *name)
+ {
+-	static char	_str[SYM_MAX], *str = _str;
+-	static size_t	size = SYM_MAX;
+-	static int	again = 1;
+-	static int	(*fptr)() = 0;
+-	int		error;
+-
+-	if (str == 0)
+-		return (name);
++	char		*str;
++	static char	*(*fptr)() = NULL;
+ 
+ 	/*
+ 	 * If we haven't located the demangler yet try now (we do this rather
+@@ -75,41 +49,17 @@ conv_demangle_name(const char *name)
+ 	 * callers until this operation is complete - under ld.so.1 we can get
+ 	 * into serious recursion without this.
+ 	 */
+-	if (fptr == 0) {
++	if (fptr == NULL) {
+ 		void	*hdl;
+ 
+-		str = 0;
+ 		if (!(hdl = dlopen(MSG_ORIG(MSG_DEM_LIB), RTLD_LAZY)) ||
+-		    !(fptr = (int (*)())dlsym(hdl, MSG_ORIG(MSG_DEM_SYM))))
+-			return (name);
+-		str = _str;
++		    !(fptr = (char *(*)())dlsym(hdl, MSG_ORIG(MSG_DEM_SYM))))
++			goto nodemangle;
+ 	}
+ 
+-	if ((error = (*fptr)(name, str, size)) == 0)
++	if ((str = fptr(name, 0)) != NULL)
+ 		return ((const char *)str);
+ 
+-	while ((error == DEMANGLE_ESPACE) && again) {
+-		char	*_str;
+-		size_t	_size = size;
+-
+-		/*
+-		 * If we haven't allocated our maximum try incrementing the
+-		 * present buffer size. Use malloc() rather than realloc() so
+-		 * that we at least have the old buffer on failure.
+-		 */
+-		if (((_size += SYM_MAX) > (SYM_MAX * 4)) ||
+-		    ((_str = malloc(_size)) == 0)) {
+-			again = 0;
+-			break;
+-		}
+-		if (size != SYM_MAX) {
+-			free(str);
+-		}
+-		str = _str;
+-		size = _size;
+-
+-		if ((error = (*fptr)(name, str, size)) == 0)
+-			return ((const char *)str);
+-	}
+-	return (name);
++nodemangle:
++	return (strdup(name));
+ }
+diff --git a/usr/src/cmd/mdb/common/mdb/mdb_demangle.c b/usr/src/cmd/mdb/common/mdb/mdb_demangle.c
+index 7ab7d19..03b05b2 100644
+--- a/usr/src/cmd/mdb/common/mdb/mdb_demangle.c
++++ b/usr/src/cmd/mdb/common/mdb/mdb_demangle.c
+@@ -22,10 +22,9 @@
+ /*
+  * Copyright 2001-2002 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+  */
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
+-
+ #include <mdb/mdb_modapi.h>
+ #include <mdb/mdb_demangle.h>
+ #include <mdb/mdb_err.h>
+@@ -33,6 +32,7 @@
+ 
+ #include <demangle.h>
+ #include <strings.h>
++#include <stdlib.h>
+ #include <unistd.h>
+ #include <dlfcn.h>
+ #include <link.h>
+@@ -67,7 +67,7 @@ mdb_dem_load(const char *path)
+ 	(void) strncpy(dmp->dm_pathname, path, MAXPATHLEN);
+ 	dmp->dm_pathname[MAXPATHLEN - 1] = '\0';
+ 	dmp->dm_handle = hdl;
+-	dmp->dm_convert = (int (*)())func;
++	dmp->dm_convert = (char *(*)())func;
+ 	dmp->dm_len = MDB_SYM_NAMLEN * 2;
+ 	dmp->dm_buf = mdb_alloc(dmp->dm_len, UM_SLEEP);
+ 	dmp->dm_flags = MDB_DM_SCOPE;
+@@ -202,8 +202,8 @@ mdb_dem_filter(mdb_demangler_t *dmp, const char *name)
+ static int
+ mdb_dem_process(mdb_demangler_t *dmp, const char *name)
+ {
+-	char *buf = dmp->dm_buf;
+-	size_t len = dmp->dm_len;
++	char *tmp, *buf;
++	size_t len;
+ 
+ 	char *prefix = strrchr(name, '`');
+ 	size_t prefixlen;
+@@ -212,25 +212,28 @@ mdb_dem_process(mdb_demangler_t *dmp, const char *name)
+ 		prefix++;		/* the ` is part of the prefix */
+ 		prefixlen = prefix - name;
+ 
+-		if (prefixlen >= len)
+-			return (DEMANGLE_ESPACE);
+-
+-		(void) strncpy(buf, name, prefixlen);
+-
+ 		/*
+ 		 * Fix up the arguments to dmp->dm_convert()
+ 		 */
+ 		name += prefixlen;
+-		buf += prefixlen;
+-		len -= prefixlen;
+ 	}
+ 
++	tmp = dmp->dm_convert(name + prefixlen, 0);
++	len = asprintf(&buf, "%s%s", prefix, tmp);
++	if (len == -1) {
++		free(tmp);
++		return (-1);
++	}
++	free(tmp);
++
+ 	/*
+ 	 * Save the position of the demangled string for mdb_dem_filter()
+ 	 */
+-	dmp->dm_dem = buf;
+-
+-	return (dmp->dm_convert(name, buf, len));
++	dmp->dm_buf = buf;
++	dmp->dm_dem = buf + prefixlen;
++	dmp->dm_len = len - prefixlen;
++	
++	return (0);
+ }
+ 
+ const char *
+@@ -238,21 +242,7 @@ mdb_dem_convert(mdb_demangler_t *dmp, const char *name)
+ {
+ 	int err;
+ 
+-	while ((err = mdb_dem_process(dmp, name)) == DEMANGLE_ESPACE) {
+-		size_t len = dmp->dm_len * 2;
+-		char *buf = mdb_alloc(len, UM_NOSLEEP);
+-
+-		if (buf == NULL) {
+-			mdb_warn("failed to allocate memory for demangling");
+-			return (name); /* just return original name */
+-		}
+-
+-		mdb_free(dmp->dm_buf, dmp->dm_len);
+-		dmp->dm_buf = buf;
+-		dmp->dm_len = len;
+-	}
+-
+-	if (err != 0 || strcmp(dmp->dm_buf, name) == 0)
++	if (mdb_dem_process(dmp, name) != 0 || strcmp(dmp->dm_buf, name) == 0)
+ 		return (name); /* return original name if not mangled */
+ 
+ 	return (mdb_dem_filter(dmp, name));
+diff --git a/usr/src/cmd/mdb/common/mdb/mdb_demangle.h b/usr/src/cmd/mdb/common/mdb/mdb_demangle.h
+index 7c9e99f..f4d911e 100644
+--- a/usr/src/cmd/mdb/common/mdb/mdb_demangle.h
++++ b/usr/src/cmd/mdb/common/mdb/mdb_demangle.h
+@@ -22,13 +22,12 @@
+ /*
+  * Copyright 2001-2002 Sun Microsystems, Inc.  All rights reserved.
+  * Use is subject to license terms.
++ * Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+  */
+ 
+ #ifndef	_MDB_DEMANGLE_H
+ #define	_MDB_DEMANGLE_H
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
+-
+ #ifdef	__cplusplus
+ extern "C" {
+ #endif
+@@ -42,7 +41,7 @@ extern "C" {
+ typedef struct mdb_demangler {
+ 	char dm_pathname[MAXPATHLEN];	/* pathname of demangling library */
+ 	void *dm_handle;		/* rtld handle to demangling library */
+-	int (*dm_convert)(const char *, char *, size_t);	/* demangler */
++	char *(*dm_convert)(const char *, int);	/* demangler */
+ 	char *dm_buf;			/* demangling buffer */
+ 	size_t dm_len;			/* size of dm_buf in bytes */
+ 	char *dm_dem;			/* start of demangled string (in buf) */
