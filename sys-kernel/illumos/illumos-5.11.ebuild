@@ -40,13 +40,11 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/drop-GNU_ROOT.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/flex-path.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/gethostbyname2.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
@@ -55,7 +53,6 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rm-v-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/sun-logo-is-missing.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/use-gnu-demangle.patch" || die
 }
 
