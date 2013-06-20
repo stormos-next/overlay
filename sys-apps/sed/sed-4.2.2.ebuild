@@ -16,7 +16,7 @@ IUSE="acl nls selinux static"
 RDEPEND="acl? ( virtual/acl )
 	nls? ( virtual/libintl )"
 DEPEND="${RDEPEND}
-	nls? ( sys-devel/gettext )"
+	nls? ( virtual/gettext )"
 
 src_bootstrap_sed() {
 	# make sure system-sed works #40786
