@@ -20,7 +20,7 @@ RDEPEND="!=app-text/tetex-2*
 	nls? ( virtual/libintl )"
 DEPEND="${RDEPEND}
 	app-arch/xz-utils
-	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
+	nls? ( virtual/gettext )"
 
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-xz.patch #269742
