@@ -17,7 +17,7 @@ IUSE="nls selinux static"
 RDEPEND="selinux? ( sys-libs/libselinux )
 	nls? ( virtual/libintl )"
 DEPEND="${RDEPEND}
-	nls? ( || ( sys-devel/gettext sys-kernel/illumos ) )"
+	nls? ( virtual/gettext )"
 
 src_unpack() {
 	unpack ${A}
