@@ -45,7 +45,8 @@ RDEPEND="|| ( app-editors/nano
 	app-misc/mc[edit]
 	dev-lisp/cmucl
 	mail-client/alpine[-onlyalpine]
-	sys-apps/ed )"
+	sys-apps/ed
+	sys-kernel/illumos )"
 
 # Packages outside app-editors providing an editor:
 #	app-misc/mc: mcedit (#62643)
