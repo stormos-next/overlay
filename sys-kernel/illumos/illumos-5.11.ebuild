@@ -76,6 +76,7 @@ src_configure()
 	# Support for building with studio is broken upstream
 	echo "" >> illumos.sh
 	echo "# Force GCC only build" >> illumos.sh
+	echo "export CW_NO_SHADOW=1" >> illumos.sh
 	echo "export __SUNC='#'" >> illumos.sh
 	echo "export __GNUC=''" >> illumos.sh
 }
