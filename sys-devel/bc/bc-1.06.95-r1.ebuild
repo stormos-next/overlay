@@ -34,6 +34,8 @@ src_configure() {
 	else
 		myconf="--without-readline --without-libedit"
 	fi
+	# avoid conflict with illumos provided bc/dc
+	use kernel_SunOS && myconf+=" --program-suffix=g"
 	use static && append-ldflags -static
 	econf ${myconf}
 }
