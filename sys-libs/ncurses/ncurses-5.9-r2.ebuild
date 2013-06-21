@@ -53,15 +53,7 @@ src_compile() {
 	fi
 
 	make_flags=""
-
-	# put ncurses in /usr/include/ncurses on solaris to avoid
-	# a conflict with its own included curses implementation
-	if use kernel_SunOS; then
-		do_compile narrowc --includedir=/usr/include/ncurses
-	else
-		do_compile narrowc
-	fi
-
+	do_compile narrowc
 	use unicode && do_compile widec --enable-widec --includedir=/usr/include/ncursesw
 }
 do_compile() {
@@ -70,10 +62,6 @@ do_compile() {
 	mkdir "${WORKDIR}"/$1
 	cd "${WORKDIR}"/$1
 	shift
-
-	# put ncurses in /usr/lib/ncurses on solaris to avoid
-	# a conflict with its own included curses implementation
-	use kernel_SunOS && export CONF_LIBDIR_OVERRIDE="lib/ncurses"
 
 	# ncurses is dumb and doesn't install .pc files unless pkg-config
 	# is also installed.  Force the tests to go our way.  Note that it
@@ -96,7 +84,6 @@ do_compile() {
 	# src_install() ...
 #		$(use_with berkdb hashed-db)
 	econf \
-		--libdir="/usr/$(get_libdir)" \
 		--with-terminfo-dirs="/etc/terminfo:/usr/share/terminfo" \
 		--with-shared \
 		--without-hashed-db \

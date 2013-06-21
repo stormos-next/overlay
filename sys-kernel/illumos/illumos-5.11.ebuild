@@ -50,6 +50,7 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-gnu-gettext.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rename-curses-sunw.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rm-v-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
@@ -140,4 +141,12 @@ src_install()
 	rm -f "${D}/usr/bin/file" "${D}/etc/magic" || die
 	rm -f "${D}/usr/share/man/man1/file.1" || die
 	rm -f "${D}/usr/share/man/man4/magic.4" || die
+
+	# Drop illumos curses headers.  We use ncurses headers instead
+	for hdr in curses eti form menu panel term termcap unctrl ; do
+		rm -f "${D}/usr/include/${hdr}.h" || die
+	done
+
+	# Drop lint libraries
+	find "${D}" -name "llib-l*" -delete
 }

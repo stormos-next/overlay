@@ -1,0 +1,1015 @@
+diff --git a/usr/src/Targetdirs b/usr/src/Targetdirs
+index 494231b..68970d7 100644
+--- a/usr/src/Targetdirs
++++ b/usr/src/Targetdirs
+@@ -718,23 +718,23 @@ $(DIRLINKS:%=$(ROOT)%):= \
+ # Special symlinks to populate usr/ccs/lib, whose objects
+ # have actually been moved to usr/lib
+ # Rather than adding another set of rules, we add usr/lib/lwp files here
+-$(ROOT)/usr/ccs/lib/libcurses.so:= 	REALPATH=../../../lib/libcurses.so.1
++$(ROOT)/usr/ccs/lib/libcurses.so:= 	REALPATH=../../../lib/libsunw_curses.so.1
+ $(ROOT)/usr/ccs/lib/llib-lcurses:= 	REALPATH=../../../lib/llib-lcurses
+ $(ROOT)/usr/ccs/lib/llib-lcurses.ln:= 	REALPATH=../../../lib/llib-lcurses.ln
+-$(ROOT)/usr/ccs/lib/libform.so:=	REALPATH=../../lib/libform.so.1
++$(ROOT)/usr/ccs/lib/libform.so:=	REALPATH=../../lib/libsunw_form.so.1
+ $(ROOT)/usr/ccs/lib/llib-lform:= 	REALPATH=../../lib/llib-lform
+ $(ROOT)/usr/ccs/lib/llib-lform.ln:= 	REALPATH=../../lib/llib-lform.ln
+ $(ROOT)/usr/ccs/lib/libgen.so:=		REALPATH=../../../lib/libgen.so.1
+ $(ROOT)/usr/ccs/lib/llib-lgen:= 	REALPATH=../../../lib/llib-lgen
+ $(ROOT)/usr/ccs/lib/llib-lgen.ln:= 	REALPATH=../../../lib/llib-lgen.ln
+ $(ROOT)/usr/ccs/lib/libmalloc.so:=	REALPATH=../../lib/libmalloc.so.1
+-$(ROOT)/usr/ccs/lib/libmenu.so:=	REALPATH=../../lib/libmenu.so.1
++$(ROOT)/usr/ccs/lib/libmenu.so:=	REALPATH=../../lib/libsunw_menu.so.1
+ $(ROOT)/usr/ccs/lib/llib-lmenu:= 	REALPATH=../../lib/llib-lmenu
+ $(ROOT)/usr/ccs/lib/llib-lmenu.ln:= 	REALPATH=../../lib/llib-lmenu.ln
+-$(ROOT)/usr/ccs/lib/libpanel.so:=	REALPATH=../../lib/libpanel.so.1
++$(ROOT)/usr/ccs/lib/libpanel.so:=	REALPATH=../../lib/libsunw_panel.so.1
+ $(ROOT)/usr/ccs/lib/llib-lpanel:= 	REALPATH=../../lib/llib-lpanel
+ $(ROOT)/usr/ccs/lib/llib-lpanel.ln:= 	REALPATH=../../lib/llib-lpanel.ln
+-$(ROOT)/usr/ccs/lib/libtermlib.so:=	REALPATH=../../../lib/libcurses.so.1
++$(ROOT)/usr/ccs/lib/libtermlib.so:=	REALPATH=../../../lib/libsunw_curses.so.1
+ $(ROOT)/usr/ccs/lib/llib-ltermlib:= 	REALPATH=../../../lib/llib-lcurses
+ $(ROOT)/usr/ccs/lib/llib-ltermlib.ln:= 	REALPATH=../../../lib/llib-lcurses.ln
+ $(ROOT)/usr/ccs/lib/libtermcap.so:=	REALPATH=../../../lib/libtermcap.so.1
+@@ -756,11 +756,11 @@ $(ROOT)/usr/lib/lwp/libthread_db.so.1:=	REALPATH=../libthread_db.so.1
+ 
+ # symlinks to populate usr/ccs/lib/$(MACH64)
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libcurses.so:= \
+-	REALPATH=../../../../lib/$(MACH64)/libcurses.so.1
++	REALPATH=../../../../lib/$(MACH64)/libsunw_curses.so.1
+ $(ROOT)/usr/ccs/lib/$(MACH64)/llib-lcurses.ln:= \
+ 	REALPATH=../../../../lib/$(MACH64)/llib-lcurses.ln
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libform.so:= \
+-	REALPATH=../../../lib/$(MACH64)/libform.so.1
++	REALPATH=../../../lib/$(MACH64)/libsunw_form.so.1
+ $(ROOT)/usr/ccs/lib/$(MACH64)/llib-lform.ln:= \
+ 	REALPATH=../../../lib/$(MACH64)/llib-lform.ln
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libgen.so:= \
+@@ -770,15 +770,15 @@ $(ROOT)/usr/ccs/lib/$(MACH64)/llib-lgen.ln:= \
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libmalloc.so:= \
+ 	REALPATH=../../../lib/$(MACH64)/libmalloc.so.1
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libmenu.so:= \
+-	REALPATH=../../../lib/$(MACH64)/libmenu.so.1
++	REALPATH=../../../lib/$(MACH64)/libsunw_menu.so.1
+ $(ROOT)/usr/ccs/lib/$(MACH64)/llib-lmenu.ln:= \
+ 	REALPATH=../../../lib/$(MACH64)/llib-lmenu.ln
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libpanel.so:= \
+-	REALPATH=../../../lib/$(MACH64)/libpanel.so.1
++	REALPATH=../../../lib/$(MACH64)/libsunw_panel.so.1
+ $(ROOT)/usr/ccs/lib/$(MACH64)/llib-lpanel.ln:= \
+ 	REALPATH=../../../lib/$(MACH64)/llib-lpanel.ln
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libtermlib.so:= \
+-	REALPATH=../../../../lib/$(MACH64)/libcurses.so.1
++	REALPATH=../../../../lib/$(MACH64)/libsunw_curses.so.1
+ $(ROOT)/usr/ccs/lib/$(MACH64)/llib-ltermlib.ln:= \
+ 	REALPATH=../../../../lib/$(MACH64)/llib-lcurses.ln
+ $(ROOT)/usr/ccs/lib/$(MACH64)/libtermcap.so:= \
+@@ -908,8 +908,8 @@ $(ROOT)/usr/lib/libcryptoutil.so.1:=	REALPATH=../../lib/libcryptoutil.so.1
+ $(ROOT)/usr/lib/libcryptoutil.so:=	REALPATH=../../lib/libcryptoutil.so.1
+ $(ROOT)/usr/lib/libctf.so.1:=		REALPATH=../../lib/libctf.so.1
+ $(ROOT)/usr/lib/libctf.so:=		REALPATH=../../lib/libctf.so.1
+-$(ROOT)/usr/lib/libcurses.so.1:=	REALPATH=../../lib/libcurses.so.1
+-$(ROOT)/usr/lib/libcurses.so:=		REALPATH=../../lib/libcurses.so.1
++$(ROOT)/usr/lib/libsunw_curses.so.1:=	REALPATH=../../lib/libsunw_curses.so.1
++$(ROOT)/usr/lib/libsunw_curses.so:=	REALPATH=../../lib/libsunw_curses.so.1
+ $(ROOT)/usr/lib/libdevice.so.1:=	REALPATH=../../lib/libdevice.so.1
+ $(ROOT)/usr/lib/libdevice.so:=		REALPATH=../../lib/libdevice.so.1
+ $(ROOT)/usr/lib/libdevid.so.1:=		REALPATH=../../lib/libdevid.so.1
+@@ -994,8 +994,8 @@ $(ROOT)/usr/lib/libsysevent.so.1:=	REALPATH=../../lib/libsysevent.so.1
+ $(ROOT)/usr/lib/libsysevent.so:=	REALPATH=../../lib/libsysevent.so.1
+ $(ROOT)/usr/lib/libtermcap.so.1:=	REALPATH=../../lib/libtermcap.so.1
+ $(ROOT)/usr/lib/libtermcap.so:=		REALPATH=../../lib/libtermcap.so.1
+-$(ROOT)/usr/lib/libtermlib.so.1:=	REALPATH=../../lib/libcurses.so.1
+-$(ROOT)/usr/lib/libtermlib.so:=		REALPATH=../../lib/libcurses.so.1
++$(ROOT)/usr/lib/libsunw_termlib.so.1:=	REALPATH=../../lib/libsunw_curses.so.1
++$(ROOT)/usr/lib/libsunw_termlib.so:=	REALPATH=../../lib/libsunw_curses.so.1
+ $(ROOT)/usr/lib/libthread.so.1:=	REALPATH=../../lib/libthread.so.1
+ $(ROOT)/usr/lib/libthread.so:=		REALPATH=../../lib/libthread.so.1
+ $(ROOT)/usr/lib/libthread_db.so.1:=	REALPATH=../../lib/libc_db.so.1
+@@ -1178,10 +1178,10 @@ $(ROOT)/usr/lib/$(MACH64)/libctf.so.1:= \
+ 	REALPATH=../../../lib/$(MACH64)/libctf.so.1
+ $(ROOT)/usr/lib/$(MACH64)/libctf.so:= \
+ 	REALPATH=../../../lib/$(MACH64)/libctf.so.1
+-$(ROOT)/usr/lib/$(MACH64)/libcurses.so.1:= \
+-	REALPATH=../../../lib/$(MACH64)/libcurses.so.1
+-$(ROOT)/usr/lib/$(MACH64)/libcurses.so:= \
+-	REALPATH=../../../lib/$(MACH64)/libcurses.so.1
++$(ROOT)/usr/lib/$(MACH64)/libsunw_curses.so.1:= \
++	REALPATH=../../../lib/$(MACH64)/libsunw_curses.so.1
++$(ROOT)/usr/lib/$(MACH64)/libsunw_curses.so:= \
++	REALPATH=../../../lib/$(MACH64)/libsunw_curses.so.1
+ $(ROOT)/usr/lib/$(MACH64)/libdevice.so.1:= \
+ 	REALPATH=../../../lib/$(MACH64)/libdevice.so.1
+ $(ROOT)/usr/lib/$(MACH64)/libdevice.so:= \
+@@ -1326,10 +1326,10 @@ $(ROOT)/usr/lib/$(MACH64)/libtermcap.so.1:= \
+ 	REALPATH=../../../lib/$(MACH64)/libtermcap.so.1
+ $(ROOT)/usr/lib/$(MACH64)/libtermcap.so:= \
+ 	REALPATH=../../../lib/$(MACH64)/libtermcap.so.1
+-$(ROOT)/usr/lib/$(MACH64)/libtermlib.so.1:= \
+-	REALPATH=../../../lib/$(MACH64)/libcurses.so.1
+-$(ROOT)/usr/lib/$(MACH64)/libtermlib.so:= \
+-	REALPATH=../../../lib/$(MACH64)/libcurses.so.1
++$(ROOT)/usr/lib/$(MACH64)/libsunw_termlib.so.1:= \
++	REALPATH=../../../lib/$(MACH64)/libsunw_curses.so.1
++$(ROOT)/usr/lib/$(MACH64)/libsunw_termlib.so:= \
++	REALPATH=../../../lib/$(MACH64)/libsunw_curses.so.1
+ $(ROOT)/usr/lib/$(MACH64)/libthread.so.1:= \
+ 	REALPATH=../../../lib/$(MACH64)/libthread.so.1
+ $(ROOT)/usr/lib/$(MACH64)/libthread.so:= \
+@@ -1526,8 +1526,8 @@ SYM.USRLIB= \
+ 	/usr/lib/libcontract.so.1 \
+ 	/usr/lib/libctf.so \
+ 	/usr/lib/libctf.so.1 \
+-	/usr/lib/libcurses.so \
+-	/usr/lib/libcurses.so.1 \
++	/usr/lib/libsunw_curses.so \
++	/usr/lib/libsunw_curses.so.1 \
+ 	/usr/lib/libdevice.so \
+ 	/usr/lib/libdevice.so.1 \
+ 	/usr/lib/libdevid.so \
+@@ -1606,8 +1606,8 @@ SYM.USRLIB= \
+ 	/usr/lib/libsysevent.so.1 \
+ 	/usr/lib/libtermcap.so \
+ 	/usr/lib/libtermcap.so.1 \
+-	/usr/lib/libtermlib.so \
+-	/usr/lib/libtermlib.so.1 \
++	/usr/lib/libsunw_termlib.so \
++	/usr/lib/libsunw_termlib.so.1 \
+ 	/usr/lib/libthread.so \
+ 	/usr/lib/libthread.so.1 \
+ 	/usr/lib/libthread_db.so \
+@@ -1774,8 +1774,8 @@ SYM.USRLIB64= \
+ 	/usr/lib/$(MACH64)/libcontract.so.1 \
+ 	/usr/lib/$(MACH64)/libctf.so \
+ 	/usr/lib/$(MACH64)/libctf.so.1 \
+-	/usr/lib/$(MACH64)/libcurses.so \
+-	/usr/lib/$(MACH64)/libcurses.so.1 \
++	/usr/lib/$(MACH64)/libsunw_curses.so \
++	/usr/lib/$(MACH64)/libsunw_curses.so.1 \
+ 	/usr/lib/$(MACH64)/libdevice.so \
+ 	/usr/lib/$(MACH64)/libdevice.so.1 \
+ 	/usr/lib/$(MACH64)/libdevid.so \
+@@ -1848,8 +1848,8 @@ SYM.USRLIB64= \
+ 	/usr/lib/$(MACH64)/libsysevent.so.1 \
+ 	/usr/lib/$(MACH64)/libtermcap.so \
+ 	/usr/lib/$(MACH64)/libtermcap.so.1 \
+-	/usr/lib/$(MACH64)/libtermlib.so \
+-	/usr/lib/$(MACH64)/libtermlib.so.1 \
++	/usr/lib/$(MACH64)/libsunw_termlib.so \
++	/usr/lib/$(MACH64)/libsunw_termlib.so.1 \
+ 	/usr/lib/$(MACH64)/libthread.so \
+ 	/usr/lib/$(MACH64)/libthread.so.1 \
+ 	/usr/lib/$(MACH64)/libthread_db.so \
+diff --git a/usr/src/cmd/avs/sdbc/Makefile b/usr/src/cmd/avs/sdbc/Makefile
+index 97cc48f..ae6bcb2 100644
+--- a/usr/src/cmd/avs/sdbc/Makefile
++++ b/usr/src/cmd/avs/sdbc/Makefile
+@@ -20,6 +20,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ #
+ 
+@@ -55,7 +56,7 @@ SRCS=	$(OBJS:%.o=%.c)
+ POFILE =	scmadm.po
+ 
+ scmadm		:= LDLIBS += -lnsctl -lunistat -ldscfg
+-sd_stats	:= LDLIBS += -lunistat -lcurses
++sd_stats	:= LDLIBS += -lunistat -lsunw_curses
+ sd_diag		:= LDLIBS += -lnsctl
+ sdbc_dynmem	:= LDLIBS += -lkstat
+ 
+diff --git a/usr/src/cmd/captoinfo/Makefile b/usr/src/cmd/captoinfo/Makefile
+index 45313d0..485fa69 100644
+--- a/usr/src/cmd/captoinfo/Makefile
++++ b/usr/src/cmd/captoinfo/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG= captoinfo
+@@ -32,7 +33,7 @@ SRCS= $(OBJS:%.o=%.c)
+ include ../Makefile.cmd
+ 
+ LDFLAGS +=	$(MAPFILE.INT:%=-M%)
+-LDLIBS +=	-lcurses
++LDLIBS +=	-lsunw_curses
+ CPPFLAGS +=	-I../../lib/libcurses/screen
+ CERRWARN +=	-_gcc=-Wno-parentheses
+ 
+diff --git a/usr/src/cmd/cmd-inet/usr.bin/Makefile b/usr/src/cmd/cmd-inet/usr.bin/Makefile
+index c9654f2..c974aa5 100644
+--- a/usr/src/cmd/cmd-inet/usr.bin/Makefile
++++ b/usr/src/cmd/cmd-inet/usr.bin/Makefile
+@@ -83,7 +83,7 @@ finger :=	CFLAGS += $(CCVERBOSE)
+ finger :=	CPPFLAGS += -D_FILE_OFFSET_BITS=64
+ 
+ dns-sd :=		LDLIBS += -lsocket -ldns_sd
+-finger :=		LDLIBS += -lnsl -lcurses -lsocket
++finger :=		LDLIBS += -lnsl -lsunw_curses -lsocket
+ rcp lint-rcp :=		LDLIBS += -lsocket -lsec -lsendfile
+ rdate lint-rdate:=	LDLIBS += -lsocket
+ rlogin lint-rlogin :=	LDLIBS += -lnsl -lsocket
+diff --git a/usr/src/cmd/cmd-inet/usr.bin/talk/Makefile b/usr/src/cmd/cmd-inet/usr.bin/talk/Makefile
+index 4c17b1b..2332c2d 100644
+--- a/usr/src/cmd/cmd-inet/usr.bin/talk/Makefile
++++ b/usr/src/cmd/cmd-inet/usr.bin/talk/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG=	talk
+@@ -40,7 +41,7 @@ POFILE= talk.po
+ CFLAGS +=	$(CCVERBOSE)
+ CERRWARN +=	-_gcc=-Wno-uninitialized
+ CPPFLAGS +=	-DSYSV -DSTRNET -DBSD_COMP
+-LDLIBS +=	-lcurses -lsocket -lnsl
++LDLIBS +=	-lsunw_curses -lsocket -lnsl
+ 
+ .KEEP_STATE:
+ 
+diff --git a/usr/src/cmd/cmd-inet/usr.bin/telnet/Makefile b/usr/src/cmd/cmd-inet/usr.bin/telnet/Makefile
+index 967e6a1..3034e63 100644
+--- a/usr/src/cmd/cmd-inet/usr.bin/telnet/Makefile
++++ b/usr/src/cmd/cmd-inet/usr.bin/telnet/Makefile
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG=		telnet
+@@ -49,7 +50,7 @@ CERRWARN +=	-_gcc=-Wno-unused-function
+ CERRWARN +=	-_gcc=-Wno-extra
+ CERRWARN +=	-_gcc=-Wno-implicit-function-declaration
+ CERRWARN +=	-_gcc=-Wno-unused-label
+-LDLIBS +=	-lsocket -lnsl -ltermlib
++LDLIBS +=	-lsocket -lnsl -lsunw_termlib
+ LDLIBS +=	-lmech_krb5 
+ LDFLAGS +=	$(KRUNPATH) -L$(ROOT)$(KLIBDIR_DO) -L$(ROOT)$(KLIBDIR_GL)
+ 
+diff --git a/usr/src/cmd/csh/i386/Makefile b/usr/src/cmd/csh/i386/Makefile
+index 5f05c1b..43f6855 100644
+--- a/usr/src/cmd/csh/i386/Makefile
++++ b/usr/src/cmd/csh/i386/Makefile
+@@ -1,3 +1,4 @@
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ # Copyright (c) 1993, 2010, Oracle and/or its affiliates. All rights reserved.
+ #
+ #	Copyright (c) 1983, 1984, 1985, 1986, 1987, 1988, 1989 AT&T
+@@ -22,7 +23,7 @@ DEFS	=  -DVFORK -DFILEC -DBSD_COMP -DFIVE	# No TELL when MBCHAR
+ CPPFLAGS= -I. $(DEFS) $(MBCHAR) $(CPPFLAGS.master)
+ CPPFLAGS +=	-I../../sh
+ CPPFLAGS += -D_FILE_OFFSET_BITS=64
+-LDLIBS += -lcurses
++LDLIBS += -lsunw_curses
+ 
+ CERRWARN += -_gcc=-Wno-implicit-function-declaration
+ CERRWARN += -_gcc=-Wno-uninitialized
+diff --git a/usr/src/cmd/csh/sparc/Makefile b/usr/src/cmd/csh/sparc/Makefile
+index df03abd..2c93b71 100644
+--- a/usr/src/cmd/csh/sparc/Makefile
++++ b/usr/src/cmd/csh/sparc/Makefile
+@@ -1,3 +1,4 @@
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ # Copyright (c) 1992, 2010, Oracle and/or its affiliates. All rights reserved.
+ 
+ #	Copyright (c) 1983, 1984, 1985, 1986, 1987, 1988, 1989 AT&T
+@@ -32,7 +33,7 @@ CERRWARN += -_gcc=-Wno-clobbered
+ CERRWARN += -_gcc=-Wno-unused-label
+ CERRWARN += -_gcc=-Wno-extra
+ 
+-LDLIBS += -lcurses
++LDLIBS += -lsunw_curses
+ 
+ MAPFILES =	../mapfile-intf $(MAPFILE.NGB)
+ LDFLAGS +=	$(MAPFILES:%=-M%)
+diff --git a/usr/src/cmd/infocmp/Makefile b/usr/src/cmd/infocmp/Makefile
+index 4a7eef9..23e4ad1 100644
+--- a/usr/src/cmd/infocmp/Makefile
++++ b/usr/src/cmd/infocmp/Makefile
+@@ -21,8 +21,7 @@
+ #
+ # Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+-#
+-# ident	"%Z%%M%	%I%	%E% SMI"
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG=		infocmp
+@@ -33,7 +32,7 @@ include		../Makefile.cmd
+ 
+ CFLAGS +=	$(CCVERBOSE)
+ XGETFLAGS +=	-a -x infocmp.xcl
+-LDLIBS +=	-lcurses
++LDLIBS +=	-lsunw_curses
+ CPPFLAGS +=	-I../../lib/libcurses/screen
+ MAPFILES =	$(MAPFILE.INT) $(MAPFILE.NGB)
+ LDFLAGS +=	$(MAPFILES:%=-M%)
+diff --git a/usr/src/cmd/ipf/tools/Makefile.tools b/usr/src/cmd/ipf/tools/Makefile.tools
+index 71f8116..4946992 100644
+--- a/usr/src/cmd/ipf/tools/Makefile.tools
++++ b/usr/src/cmd/ipf/tools/Makefile.tools
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG=		ipf ipfs ipmon ipnat ippool ipfstat
+@@ -59,7 +60,7 @@ LDFLAGS		+= $(MAPFILE.NGB:%=-M%)
+ CPPFLAGS	+= -I. -DIPFILTER_LOOKUP -DIPFILTER_LOG
+ 
+ ipfstat.o	:=	CPPFLAGS += -DSTATETOP
+-ipfstat		:=	LDLIBS += -lcurses
++ipfstat		:=	LDLIBS += -lsunw_curses
+ 
+ ipf		:=	LDLIBS += -lsocket -lnsl
+ ipftest		:=	LDLIBS += -lsocket -lnsl -lmd
+diff --git a/usr/src/cmd/latencytop/Makefile.com b/usr/src/cmd/latencytop/Makefile.com
+index 16884c4..155490f 100644
+--- a/usr/src/cmd/latencytop/Makefile.com
++++ b/usr/src/cmd/latencytop/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright (c) 2008-2009, Intel Corporation.
+ # All Rights Reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG = latencytop
+@@ -36,7 +37,7 @@ CERRWARN += -_gcc=-Wno-uninitialized
+ 
+ CPPFLAGS += -DEMBED_CONFIGS -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
+ C99MODE = $(C99_ENABLE)
+-LDLIBS += -lcurses -ldtrace
++LDLIBS += -lsunw_curses -ldtrace
+ all install	:= LDLIBS += -lglib-2.0
+ 
+ LINTFLAGS += -erroff=E_NAME_USED_NOT_DEF2
+diff --git a/usr/src/cmd/lp/cmd/lpadmin/Makefile b/usr/src/cmd/lp/cmd/lpadmin/Makefile
+index ace6fc7..56a3c44 100644
+--- a/usr/src/cmd/lp/cmd/lpadmin/Makefile
++++ b/usr/src/cmd/lp/cmd/lpadmin/Makefile
+@@ -23,8 +23,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+-#
+-# ident	"%Z%%M%	%I%	%E% SMI"
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/lp/cmd/lpadmin/Makefile
+ #
+@@ -64,7 +63,7 @@ LPLIBS=		$(LIBACC)	\
+ 		$(LIBOAM)	\
+ 		$(LIBLP)
+ 
+-SYSLIBS=	-lcurses
++SYSLIBS=	-lsunw_curses
+ 
+ LDLIBS +=	-lsecdb $(LPLIBS) $(SYSLIBS) $(I18N)
+ LDFLAGS +=	$(MAPFILE.NGB:%=-M%)
+diff --git a/usr/src/cmd/lp/cmd/lpsched/Makefile b/usr/src/cmd/lp/cmd/lpsched/Makefile
+index c5c645f..da4286b 100644
+--- a/usr/src/cmd/lp/cmd/lpsched/Makefile
++++ b/usr/src/cmd/lp/cmd/lpsched/Makefile
+@@ -100,7 +100,7 @@ LPLIBS =			\
+ 		$(LIBLP)	\
+ 		$(LIBSEC)
+ 
+-SYSLIBS=	-lcurses -lgen -lcurses -lnsl -ltsol -lsecdb -lbsm
++SYSLIBS=	-lsunw_curses -lgen -lnsl -ltsol -lsecdb -lbsm
+ 
+ LDLIBS +=	$(LPLIBS) $(SYSLIBS)
+ 
+diff --git a/usr/src/cmd/lp/lib/papi/Makefile b/usr/src/cmd/lp/lib/papi/Makefile
+index 0db8138..eeecf64 100644
+--- a/usr/src/cmd/lp/lib/papi/Makefile
++++ b/usr/src/cmd/lp/lib/papi/Makefile
+@@ -21,8 +21,7 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+-#
+-# ident	"%Z%%M%	%I%	%E% SMI"
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ LIBRARY =	psm-lpsched.a
+@@ -44,7 +43,7 @@ CPPFLAGS +=	-I$(SRC)/lib/print/libpapi-common/common
+ CPPFLAGS +=	-D_REENTRANT
+ CPPFLAGS +=	$(ENVCPPFLAGS1)
+ CPPFLAGS +=	$(ENVCPPFLAGS2)
+-LDLIBS +=	-lcurses -lc
++LDLIBS +=	-lsunw_curses -lc
+ LDLIBS +=	-L$(SRC)/cmd/lp/lib/msgs -llpmsg
+ LDLIBS +=	-L$(SRC)/cmd/lp/lib/printers -llpprt
+ LDLIBS +=	-L$(SRC)/cmd/lp/lib/class -llpcls
+diff --git a/usr/src/cmd/lp/model/Makefile b/usr/src/cmd/lp/model/Makefile
+index 5da2ee6..d15e0b2 100644
+--- a/usr/src/cmd/lp/model/Makefile
++++ b/usr/src/cmd/lp/model/Makefile
+@@ -19,10 +19,9 @@
+ # CDDL HEADER END
+ #
+ #
+-# ident	"%Z%%M%	%I%	%E% SMI"
+-#
+ # Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/lp/model/Makefile
+ #
+@@ -63,7 +62,7 @@ CPPFLAGS =		-I$(LPINC) $(CPPFLAGS.master)
+ 
+ # conditional assignments
+ lp.tell :=			LDLIBS += $(LIBMSG) $(LIBLP)
+-lp.set drain.output lp.cat :=	LDLIBS += $(LIBLP) -lcurses
++lp.set drain.output lp.cat :=	LDLIBS += $(LIBLP) -lsunw_curses
+ lp.tsol_separator :=		LDLIBS += -ltsol
+ 
+ $(ROOTMISC) :=		FILEMODE = 0444
+diff --git a/usr/src/cmd/ls/Makefile.com b/usr/src/cmd/ls/Makefile.com
+index d16e1ce..53b1098 100644
+--- a/usr/src/cmd/ls/Makefile.com
++++ b/usr/src/cmd/ls/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/ls/Makefile.com
+ #
+@@ -33,7 +34,7 @@ SRCS=           $(OBJS:%.o=../%.c)
+ 
+ include ../../Makefile.cmd
+ 
+-LDLIBS += -lsec -lnvpair -lcmdutils -lcurses
++LDLIBS += -lsec -lnvpair -lcmdutils -lsunw_curses
+ CFLAGS	+=	$(CCVERBOSE)
+ CERRWARN +=	-_gcc=-Wno-parentheses
+ CERRWARN +=	-_gcc=-Wno-uninitialized
+diff --git a/usr/src/cmd/mdb/Makefile.mdb b/usr/src/cmd/mdb/Makefile.mdb
+index f331a43..873dd59 100644
+--- a/usr/src/cmd/mdb/Makefile.mdb
++++ b/usr/src/cmd/mdb/Makefile.mdb
+@@ -27,6 +27,7 @@
+ # Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+ # Copyright (c) 2012 by Delphix. All rights reserved.
+ # Copyright (c) 2012 Joyent, Inc. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ .KEEP_STATE:
+@@ -97,7 +98,7 @@ CPPFLAGS += -D_MDB -I. -I../.. -I../../../common
+ C99MODE=	-xc99=%all
+ C99LMODE=	-Xc99=%all
+ 
+-LDLIBS += -lcurses -lkvm -lproc -lrtld_db -lctf -lumem -ldisasm -lscf
++LDLIBS += -lsunw_curses -lkvm -lproc -lrtld_db -lctf -lumem -ldisasm -lscf
+ 
+ CERRWARN += -_gcc=-Wno-uninitialized
+ CERRWARN += -_gcc=-Wno-char-subscripts
+diff --git a/usr/src/cmd/more/Makefile b/usr/src/cmd/more/Makefile
+index 9ad39bb..c9e3a64 100644
+--- a/usr/src/cmd/more/Makefile
++++ b/usr/src/cmd/more/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG= more
+@@ -29,7 +30,7 @@ DATA= more.help
+ 
+ include ../Makefile.cmd
+ 
+-LDLIBS += -lcurses
++LDLIBS += -lsunw_curses
+ 
+ ROOTLIBDATA= $(DATA:%=$(ROOTLIB)/%)
+ CPPFLAGS += -D_FILE_OFFSET_BITS=64
+diff --git a/usr/src/cmd/pg/Makefile b/usr/src/cmd/pg/Makefile
+index c5ba757..e28a232 100644
+--- a/usr/src/cmd/pg/Makefile
++++ b/usr/src/cmd/pg/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG= pg
+@@ -29,7 +30,7 @@ PROG= pg
+ include ../Makefile.cmd
+ 
+ CFLAGS += -DSINGLE $(CCVERBOSE)
+-LDLIBS += -lgen -lcurses
++LDLIBS += -lgen -lsunw_curses
+ XGETFLAGS += -a -x $(PROG).xcl
+ CPPFLAGS += -D_FILE_OFFSET_BITS=64
+ 
+diff --git a/usr/src/cmd/powertop/Makefile.com b/usr/src/cmd/powertop/Makefile.com
+index 441cefc..c4f4fdc 100644
+--- a/usr/src/cmd/powertop/Makefile.com
++++ b/usr/src/cmd/powertop/Makefile.com
+@@ -20,6 +20,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG = powertop
+@@ -43,7 +44,7 @@ CFLAGS		+= $(CCVERBOSE)
+ CFLAGS64	+= $(CCVERBOSE)
+ CERRWARN	+= -_gcc=-Wno-parentheses
+ CERRWARN	+= -_gcc=-Wno-uninitialized
+-LDLIBS		+= -lcurses -ldtrace -lkstat
++LDLIBS		+= -lsunw_curses -ldtrace -lkstat
+ 
+ FILEMODE	= 0555
+ 
+diff --git a/usr/src/cmd/prstat/Makefile.com b/usr/src/cmd/prstat/Makefile.com
+index e317483..76addf2 100644
+--- a/usr/src/cmd/prstat/Makefile.com
++++ b/usr/src/cmd/prstat/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/prstat/Makefile.com
+ #
+@@ -33,7 +34,7 @@ include ../../Makefile.cmd
+ 
+ CFLAGS += $(CCVERBOSE)
+ CERRWARN += -_gcc=-Wno-parentheses
+-LDLIBS += -lcurses -lproject
++LDLIBS += -lsunw_curses -lproject
+ LINTFLAGS += -u
+ LINTFLAGS64 += -u
+ 
+diff --git a/usr/src/cmd/scadm/sparc/mpxu/Makefile b/usr/src/cmd/scadm/sparc/mpxu/Makefile
+index 05b7697..51ca17f 100644
+--- a/usr/src/cmd/scadm/sparc/mpxu/Makefile
++++ b/usr/src/cmd/scadm/sparc/mpxu/Makefile
+@@ -21,8 +21,7 @@
+ #
+ # Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+-#
+-# ident	"%Z%%M%	%I%	%E% SMI"
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ # cmd/scadm/sparc/mpxu/Makefile
+ #
+@@ -44,7 +43,7 @@ include $(SRCDIR)/Makefile.com
+ CFLAGS		+= -R /usr/platform/$(PLATFORM)/lib
+ 
+ LDLIBS		+= -L$(ROOT)/usr/platform/$(PLATFORM)/lib
+-LDLIBS		+= -lrsc -lcurses
++LDLIBS		+= -lrsc -lsunw_curses
+ LINTFLAGS	+= -u
+ 
+ .KEEP_STATE:
+diff --git a/usr/src/cmd/tabs/Makefile b/usr/src/cmd/tabs/Makefile
+index 9a5e534..a145fa1 100644
+--- a/usr/src/cmd/tabs/Makefile
++++ b/usr/src/cmd/tabs/Makefile
+@@ -22,13 +22,14 @@
+ #
+ # Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG= tabs
+ 
+ include ../Makefile.cmd
+ 
+-LDLIBS += -lcurses
++LDLIBS += -lsunw_curses
+ CFLAGS += $(CCVERBOSE)
+ CERRWARN += -_gcc=-Wno-parentheses
+ CERRWARN += -_gcc=-Wno-address
+diff --git a/usr/src/cmd/tic/Makefile b/usr/src/cmd/tic/Makefile
+index e4d3c12..676042e 100644
+--- a/usr/src/cmd/tic/Makefile
++++ b/usr/src/cmd/tic/Makefile
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG= tic
+@@ -38,7 +39,7 @@ SRCS= $(OBJS:%.o=%.c)
+ 
+ include ../Makefile.cmd
+ 
+-LDLIBS += -lcurses
++LDLIBS += -lsunw_curses
+ CPPFLAGS += -I../../lib/libcurses/screen
+ MAPFILES = $(MAPFILE.INT) $(MAPFILE.NGB)
+ LDFLAGS += $(MAPFILES:%=-M%)
+diff --git a/usr/src/cmd/tput/Makefile b/usr/src/cmd/tput/Makefile
+index 80cd77e..0bff064 100644
+--- a/usr/src/cmd/tput/Makefile
++++ b/usr/src/cmd/tput/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ PROG= tput
+@@ -33,7 +34,7 @@ include ../Makefile.cmd
+ CFLAGS += $(CCVERBOSE)
+ CERRWARN += -_gcc=-Wno-parentheses
+ XGETFLAGS += -a -x tput.xcl
+-LDLIBS +=  -lcurses
++LDLIBS +=  -lsunw_curses
+ 
+ all: $(PROG)
+ 
+diff --git a/usr/src/cmd/ul/Makefile b/usr/src/cmd/ul/Makefile
+index dfc14b2..d595061 100644
+--- a/usr/src/cmd/ul/Makefile
++++ b/usr/src/cmd/ul/Makefile
+@@ -19,9 +19,7 @@
+ #
+ # CDDL HEADER END
+ #
+-#
+-#ident	"%Z%%M%	%I%	%E% SMI"
+-#
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ # Copyright (c) 1989 by Sun Microsystems, Inc.
+ #
+ 
+@@ -29,7 +27,7 @@ PROG= ul
+ 
+ include ../Makefile.cmd
+ 
+-LDLIBS += -lcurses
++LDLIBS += -lsunw_curses
+ 
+ .KEEP_STATE:
+ 
+diff --git a/usr/src/cmd/vi/port/Makefile b/usr/src/cmd/vi/port/Makefile
+index 268dd75..9db6626 100644
+--- a/usr/src/cmd/vi/port/Makefile
++++ b/usr/src/cmd/vi/port/Makefile
+@@ -22,6 +22,7 @@
+ #
+ # Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ # cmd/vi/port/Makefile
+@@ -80,11 +81,11 @@ CPPFLAGS +=  -DUSG -DSTDIO -DVMUNIX -DTABS=8 -DSINGLE -DTAG_STACK
+ LDFLAGS +=	$(MAPFILE.NGB:%=-M%)
+ 
+ CLOBBERFILES += $(LIBPROGS)
+-ex :=		LDLIBS += -lmapmalloc -lcurses -lgen -lcrypt_i
+-$(XPG4) :=	LDLIBS += -lmapmalloc -lcurses -lgen -lcrypt_i
+-$(XPG6) :=	LDLIBS += -lmapmalloc -lcurses -lgen -lcrypt_i
++ex :=		LDLIBS += -lmapmalloc -lsunw_curses -lgen -lcrypt_i
++$(XPG4) :=	LDLIBS += -lmapmalloc -lsunw_curses -lgen -lcrypt_i
++$(XPG6) :=	LDLIBS += -lmapmalloc -lsunw_curses -lgen -lcrypt_i
+ exrecover :=	LDLIBS += -lmapmalloc -lcrypt_i
+-lint :=		LDLIBS += -lmapmalloc -lcurses -lgen -lcrypt
++lint :=		LDLIBS += -lmapmalloc -lsunw_curses -lgen -lcrypt
+ 
+ ROOTLIBPROGS= $(LIBPROGS:%=$(ROOTLIB)/%)
+ 
+diff --git a/usr/src/grub/grub-0.97/grub/Makefile.solaris b/usr/src/grub/grub-0.97/grub/Makefile.solaris
+index 9d2b2e4..cf548d6 100644
+--- a/usr/src/grub/grub-0.97/grub/Makefile.solaris
++++ b/usr/src/grub/grub-0.97/grub/Makefile.solaris
+@@ -1,8 +1,7 @@
+ #
+ # Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+-#
+-# ident	"%Z%%M%	%I%	%E% SMI"
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ include ../../Makefile.grub
+ include ../Makefile.solaris.defs
+@@ -10,7 +9,7 @@ include ../Makefile.solaris.defs
+ 
+ GRUB		= grub
+ GRUB_OBJS	= asmstub.o main.o
+-$(GRUB)		:= LIBS = ../stage2/libgrub.a ../lib/libcommon.a -lcurses
++$(GRUB)		:= LIBS = ../stage2/libgrub.a ../lib/libcommon.a -lsunw_curses
+ $(GRUB)		:= LDFLAGS += $(LDLIBS.cmd)
+ $(GRUB)		:= CCLD = $(CC)
+ 
+diff --git a/usr/src/lib/libcurses/Makefile b/usr/src/lib/libcurses/Makefile
+index a1b04c3..92830e3 100644
+--- a/usr/src/lib/libcurses/Makefile
++++ b/usr/src/lib/libcurses/Makefile
+@@ -53,7 +53,7 @@ SCRFILES = screen/keycaps \
+ HDRS= 		curses.h term.h unctrl.h
+ HDRDIR=		screen
+ 
+-LIBRARY=	libcurses.a
++LIBRARY=	libsunw_curses.a
+ TEXT_DOMAIN=	SUNW_OST_OSLIB
+ XGETFLAGS=	-a
+ MSGDIRS=	screen
+diff --git a/usr/src/lib/libcurses/Makefile.com b/usr/src/lib/libcurses/Makefile.com
+index b295f4b..7ef9fee 100644
+--- a/usr/src/lib/libcurses/Makefile.com
++++ b/usr/src/lib/libcurses/Makefile.com
+@@ -19,12 +19,13 @@
+ # CDDL HEADER END
+ #
+ #
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ # Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+ # Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
+ #
+ 
+-LIBRARY=	libcurses.a
++LIBRARY=	libsunw_curses.a
+ VERS=	.1
+ 
+ OBJECTS=	$(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4) $(OBJS5) $(OBJS6)
+@@ -142,7 +143,7 @@ LIBS =		$(DYNLIB) $(LINTLIB)
+ $(LINTLIB):= SRCS=../screen/llib-lcurses
+ 
+ LINTOUT=	lint.out
+-LINTSRC=	$(LINTLIB:%.ln=%)
++LINTSRC=	$(LINTLIB:llib-lsunw_%.ln=llib-l%)
+ 
+ CLEANFILES +=	$(LINTOUT) $(LINTLIB)
+ 
+@@ -163,32 +164,32 @@ RM = rm -f
+ # If and when somebody gets around to messaging this, CLOBBERFILE should not
+ # be cleared (so that any .po file will be clobbered.
+ #
+-CLOBBERFILES=	libcurses.so libcurses.so$(VERS)
++CLOBBERFILES=	libsunw_curses.so libsunw_curses.so$(VERS)
+ 
+ all: $(LIBS)
+ 
+ lint: lintcheck
+ 
+ #
+-# Install rules for libtermlib.so links.
++# Install rules for libsunw_termlib.so links.
+ # Augments the rule in Makefile.targ
+ #
+ $(ROOTLIBDIR)/$(LIBLINKS) := INS.liblink= \
+ 	$(RM) $@; $(SYMLINK) $(LIBLINKPATH)$(LIBLINKS)$(VERS) $@; \
+ 	cd $(ROOTLIBDIR); \
+-		$(RM) libtermlib.so libtermlib.so$(VERS); \
+-		$(SYMLINK) libcurses.so$(VERS) libtermlib.so$(VERS); \
+-		$(SYMLINK) libtermlib.so$(VERS) libtermlib.so;
++		$(RM) libsunw_termlib.so libsunw_termlib.so$(VERS); \
++		$(SYMLINK) libsunw_curses.so$(VERS) libsunw_termlib.so$(VERS); \
++		$(SYMLINK) libsunw_termlib.so$(VERS) libsunw_termlib.so;
+ 
+ $(ROOTLIBDIR64)/$(LIBLINKS) := INS.liblink64= \
+ 	$(RM) $@; $(SYMLINK) $(LIBLINKPATH)$(LIBLINKS)$(VERS) $@; \
+ 	cd $(ROOTLIBDIR64); \
+-		$(RM) libtermlib.so libtermlib.so$(VERS);\
+-		$(SYMLINK) libcurses.so$(VERS) libtermlib.so$(VERS); \
+-		$(SYMLINK) libtermlib.so$(VERS) libtermlib.so;
++		$(RM) libsunw_termlib.so libsunw_termlib.so$(VERS);\
++		$(SYMLINK) libsunw_curses.so$(VERS) libsunw_termlib.so$(VERS); \
++		$(SYMLINK) libsunw_termlib.so$(VERS) libsunw_termlib.so;
+ 
+ #
+-# Install rules for libtermlib.ln links.
++# Install rules for libsunw_termlib.ln links.
+ # Augments a pattern rule in Makefile.targ
+ #
+ $(ROOTLIBDIR)/$(LINTLIB) := INS.file= \
+diff --git a/usr/src/lib/libdladm/Makefile.com b/usr/src/lib/libdladm/Makefile.com
+index 5bb56d1..d353d81 100644
+--- a/usr/src/lib/libdladm/Makefile.com
++++ b/usr/src/lib/libdladm/Makefile.com
+@@ -20,6 +20,7 @@
+ #
+ #
+ # Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ LIBRARY = libdladm.a
+@@ -36,7 +37,7 @@ include ../../Makefile.rootfs
+ 
+ LIBS =		$(DYNLIB) $(LINTLIB)
+ LDLIBS +=	-ldevinfo -lc -linetutil -lsocket -lscf -lrcm -lnvpair \
+-		-lexacct -lnsl -lkstat -lcurses -lpool
++		-lexacct -lnsl -lkstat -lsunw_curses -lpool
+ 
+ SRCDIR =	../common
+ $(LINTLIB) :=	SRCS = $(SRCDIR)/$(LINTSRC)
+diff --git a/usr/src/lib/libeti/form/Makefile.com b/usr/src/lib/libeti/form/Makefile.com
+index 465edda..ae91168 100644
+--- a/usr/src/lib/libeti/form/Makefile.com
++++ b/usr/src/lib/libeti/form/Makefile.com
+@@ -20,10 +20,11 @@
+ #
+ #
+ # Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+-# Use is subject to license terms.
++# Use is subject to license terms.a
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+-LIBRARY=	libform.a
++LIBRARY=	libsunw_form.a
+ VERS=		.1
+ 
+ OBJECTS=  \
+@@ -71,9 +72,11 @@ SRCDIR=		../common
+ 
+ $(LINTLIB) :=	SRCS=$(SRCDIR)/$(LINTSRC)
+ 
++LINTSRC=	$(LINTLIB:llib-lsunw_%.ln=llib-l%)
++
+ CPPFLAGS +=	-I../inc
+ CFLAGS +=       $(CCVERBOSE)
+-LDLIBS +=       -lcurses -lc
++LDLIBS +=       -lsunw_curses -lc
+ 
+ CERRWARN +=	-_gcc=-Wno-parentheses
+ CERRWARN +=	-_gcc=-Wno-uninitialized
+diff --git a/usr/src/lib/libeti/menu/Makefile.com b/usr/src/lib/libeti/menu/Makefile.com
+index 2782c3b..6cc2e01 100644
+--- a/usr/src/lib/libeti/menu/Makefile.com
++++ b/usr/src/lib/libeti/menu/Makefile.com
+@@ -21,9 +21,10 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+-LIBRARY=	libmenu.a
++LIBRARY=	libsunw_menu.a
+ VERS=		.1
+ 
+ OBJECTS=  \
+@@ -69,9 +70,11 @@ SRCDIR=		../common
+ 
+ $(LINTLIB) :=	SRCS=$(SRCDIR)/$(LINTSRC)
+ 
++LINTSRC=	$(LINTLIB:llib-lsunw_%.ln=llib-l%)
++
+ CPPFLAGS +=	-I../inc
+ CFLAGS +=       $(CCVERBOSE)
+-LDLIBS +=       -lcurses -lc
++LDLIBS +=       -lsunw_curses -lc
+ 
+ CERRWARN +=	-_gcc=-Wno-parentheses
+ 
+diff --git a/usr/src/lib/libeti/panel/Makefile.com b/usr/src/lib/libeti/panel/Makefile.com
+index 2783c77..ec2c895 100644
+--- a/usr/src/lib/libeti/panel/Makefile.com
++++ b/usr/src/lib/libeti/panel/Makefile.com
+@@ -21,9 +21,10 @@
+ #
+ # Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+-LIBRARY=	libpanel.a
++LIBRARY=	libsunw_panel.a
+ VERS=		.1
+ 
+ OBJECTS=  \
+@@ -45,9 +46,11 @@ SRCDIR=		../common
+ 
+ $(LINTLIB) :=	SRCS=$(SRCDIR)/$(LINTSRC)
+ 
++LINTSRC=	$(LINTLIB:llib-lsunw_%.ln=llib-l%)
++
+ CPPFLAGS +=	-I../inc
+ CFLAGS +=       $(CCVERBOSE)
+-LDLIBS +=       -lcurses -lc
++LDLIBS +=       -lsunw_curses -lc
+ 
+ CERRWARN +=	-_gcc=-Wno-parentheses
+ 
+diff --git a/usr/src/lib/libtecla/Makefile.com b/usr/src/lib/libtecla/Makefile.com
+index 1f52c6b..b9c8f4a 100644
+--- a/usr/src/lib/libtecla/Makefile.com
++++ b/usr/src/lib/libtecla/Makefile.com
+@@ -21,6 +21,7 @@
+ #
+ # Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+ # Use is subject to license terms.
++# Copyright (c) 2013 Andrew Stormont.  All rights reserved.
+ #
+ 
+ LIBRARY=	libtecla.a
+@@ -34,7 +35,7 @@ include ../../Makefile.lib
+ SRCDIR =	../common
+ LIBS =		$(DYNLIB) $(LINTLIB)
+ LDLIBS +=	-lc
+-$(DYNLIB) :=	LDLIBS += -lcurses
++$(DYNLIB) :=	LDLIBS += -lsunw_curses
+ CPPFLAGS +=	-I$(SRCDIR) -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 \
+ 	-DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 \
+ 	-DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 \
+diff --git a/usr/src/tools/cscope-fast/invlib.c b/usr/src/tools/cscope-fast/invlib.c
+index 4063b83..0cba6fd 100644
+--- a/usr/src/tools/cscope-fast/invlib.c
++++ b/usr/src/tools/cscope-fast/invlib.c
+@@ -28,8 +28,6 @@
+  * Use is subject to license terms.
+  */
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
+-
+ #include <ctype.h>
+ #include <stdio.h>
+ #include <sys/types.h>
+@@ -948,7 +946,7 @@ boolclear(void)
+ }
+ 
+ POSTING *
+-boolfile(INVCONTROL *invcntl, long *num, int bool)
++boolfile(INVCONTROL *invcntl, long *num, int op)
+ {
+ 	ENTRY	*entryptr;
+ 	FILE	*file;
+@@ -965,7 +963,7 @@ boolfile(INVCONTROL *invcntl, long *num, int bool)
+ 	ptr2 = ((unsigned long *)ptr) +
+ 	    (entryptr->size + (sizeof (long) - 1)) / sizeof (long);
+ 	*num = entryptr->post;
+-	switch (bool) {
++	switch (op) {
+ 	case OR:
+ 	case NOT:
+ 		if (*num == 0) {
+@@ -975,7 +973,7 @@ boolfile(INVCONTROL *invcntl, long *num, int bool)
+ 	}
+ 	/* make room for the new set */
+ 	u = 0;
+-	switch (bool) {
++	switch (op) {
+ 	case AND:
+ 	case NOT:
+ 		newsetp = set1p = item;
+@@ -1018,7 +1016,7 @@ boolfile(INVCONTROL *invcntl, long *num, int bool)
+ 	(void) fseek(file, (long)*ptr2, SEEK_SET);
+ 	read_next_posting(invcntl, &posting);
+ 	newsetc = 0;
+-	switch (bool) {
++	switch (op) {
+ 	case OR:
+ 		/* while something in both sets */
+ 		set1p = item;
+diff --git a/usr/src/tools/cscope-fast/invlib.h b/usr/src/tools/cscope-fast/invlib.h
+index fa80e19..0bd5aee 100644
+--- a/usr/src/tools/cscope-fast/invlib.h
++++ b/usr/src/tools/cscope-fast/invlib.h
+@@ -28,8 +28,6 @@
+  * Use is subject to license terms.
+  */
+ 
+-#pragma ident	"%Z%%M%	%I%	%E% SMI"
+-
+ /* inverted index definitions */
+ 
+ /* postings temporary file long number coding into characters */
+@@ -88,7 +86,7 @@ extern	long	*srcoffset;	/* source file name database offsets */
+ extern	int	nsrcoffset;	/* number of file name database offsets */
+ 
+ extern void	boolclear(void);
+-extern POSTING	*boolfile(INVCONTROL *invcntl, long *num, int bool);
++extern POSTING	*boolfile(INVCONTROL *invcntl, long *num, int op);
+ extern void	invclose(INVCONTROL *invcntl);
+ extern long	invfind(INVCONTROL *invcntl, char *searchterm);
+ extern int	invforward(INVCONTROL *invcntl);
