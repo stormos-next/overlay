@@ -10,15 +10,15 @@ KEYWORDS="~x86-solaris"
 IUSE="multilib debug"
 
 RDEPEND="dev-libs/libxml2
-	dev-libs/openssl[multilib?]
+	dev-libs/openssl
 	dev-libs/glib
 	dev-libs/dbus-glib
-	sys-libs/zlib[multilib?]
-	sys-apps/dbus[multilib?]
-	dev-libs/nspr[multilib?]
-	dev-libs/nss[multilib?]
-	app-crypt/trousers[multilib?]
-	www-servers/apache:2[multilib?]"
+	sys-libs/zlib
+	sys-apps/dbus
+	dev-libs/nspr
+	dev-libs/nss
+	app-crypt/trousers
+	www-servers/apache:2"
 DEPEND="${RDEPEND}
 	dev-lang/python:2.6
 	>=dev-lang/perl-5.10.0
@@ -46,11 +46,10 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/flex-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/ld-asneeded-verscript.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/libfmd_snmp-no-debugging.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-gnu-gettext.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rename-curses-sunw.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rename-intl-sunw.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rm-v-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
@@ -146,6 +145,9 @@ src_install()
 	for hdr in curses eti form menu panel term termcap unctrl ; do
 		rm -f "${D}/usr/include/${hdr}.h" || die
 	done
+
+	# Drop illumos intl headers.  We use gettext headers instead
+	rm "${D}/usr/include/libintl.h" || die
 
 	# Drop lint libraries
 	find "${D}" -name "llib-l*" -delete
