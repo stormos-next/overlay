@@ -12,7 +12,9 @@ SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-3 LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x64-macos ~arm-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh
+~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x64-macos ~arm-linux ~x86-linux
+~x86-solaris"
 IUSE="doc static-libs"
 
 DEPEND=">=dev-lang/perl-5.6
