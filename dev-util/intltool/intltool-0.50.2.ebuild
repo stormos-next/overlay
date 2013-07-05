@@ -18,10 +18,10 @@ IUSE=""
 DEPEND=">=dev-lang/perl-5.8.1
 	dev-perl/XML-Parser"
 RDEPEND="${DEPEND}
-	|| ( sys-devel/gettext sys-kernel/illumos )"
+	sys-devel/gettext"
 
 DOCS=( AUTHORS ChangeLog NEWS README TODO doc/I18N-HOWTO )
 
 src_prepare() {
-	epatch "${FILESDIR}"/no-force-gnu-gettext.patch
+	use kernel_SunOS && (epatch "${FILESDIR}"/check-g-prefix.patch || die)
 }

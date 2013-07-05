@@ -1,0 +1,15 @@
+--- intltool-0.50.2/intltool.m4.bak	2013-07-05 15:16:38.393454954 -0700
++++ intltool-0.50.2/intltool.m4	2013-07-05 15:17:02.010245944 -0700
+@@ -117,9 +117,9 @@
+ _IT_SUBST(INTLTOOL_POLICY_RULE)
+ 
+ # Check the gettext tools to make sure they are GNU
+-AC_PATH_PROG(XGETTEXT, xgettext)
+-AC_PATH_PROG(MSGMERGE, msgmerge)
+-AC_PATH_PROG(MSGFMT, msgfmt)
++AC_PATH_PROG(XGETTEXT, gxgettext)
++AC_PATH_PROG(MSGMERGE, gmsgmerge)
++AC_PATH_PROG(MSGFMT, gmsgfmt)
+ AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
+ if test -z "$XGETTEXT" -o -z "$MSGMERGE" -o -z "$MSGFMT"; then
+     AC_MSG_ERROR([GNU gettext tools not found; required for intltool])
