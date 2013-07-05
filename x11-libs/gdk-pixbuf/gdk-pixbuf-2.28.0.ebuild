@@ -23,7 +23,7 @@ COMMON_DEPEND="
 	X? ( x11-libs/libX11 )"
 DEPEND="${COMMON_DEPEND}
 	>=dev-util/gtk-doc-am-1.11
-	virtual/gettext
+	sys-devel/gettext
 	virtual/pkgconfig"
 # librsvg blocker is for the new pixbuf loader API, you lose icons otherwise
 RDEPEND="${COMMON_DEPEND}
