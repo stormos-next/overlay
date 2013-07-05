@@ -28,7 +28,7 @@ LIB_DEPEND="acl? ( sys-apps/acl[static-libs] )
 	xattr? ( !userland_BSD? ( sys-apps/attr[static-libs] ) )"
 RDEPEND="!static? ( ${LIB_DEPEND//\[static-libs]} )
 	selinux? ( sys-libs/libselinux )
-	nls? ( virtual/gettext )
+	nls? ( sys-devel/gettext )
 	!app-misc/realpath
 	!<sys-apps/util-linux-2.13
 	!sys-apps/stat
