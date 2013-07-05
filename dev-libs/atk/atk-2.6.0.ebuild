@@ -22,7 +22,7 @@ DEPEND="${RDEPEND}
 	>=dev-lang/perl-5
 	dev-util/gtk-doc-am
 	virtual/pkgconfig
-	nls? ( virtual/gettext )"
+	nls? ( sys-devel/gettext )"
 
 src_prepare() {
 	G2CONF="${G2CONF} $(use_enable introspection)"
