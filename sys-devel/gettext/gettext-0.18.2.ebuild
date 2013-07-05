@@ -73,7 +73,11 @@ src_install() {
 	emake install DESTDIR="${D}" || die "install failed"
 	use nls || rm -r "${D}"/usr/share/locale
 	use static-libs || rm -f "${D}"/usr/lib*/*.la
-	dosym msgfmt /usr/bin/gmsgfmt #43435
+	if use kernel_SunOS ; then
+		dosym gmsgmerge /usr/bin/msgmerge
+	else
+		dosym msgfmt /usr/bin/gmsgfmt #43435
+	fi
 	dobin gettext-tools/misc/gettextize || die "gettextize"
 
 	# remove stuff that glibc handles
@@ -83,7 +87,7 @@ src_install() {
 	fi
 	rm -f "${D}"/usr/share/locale/locale.alias "${D}"/usr/lib/charset.alias
 
-	[[ ${USERLAND} == "BSD" ]] && gen_usr_ldscript -a intl
+	[[ ${USERLAND} != "GNU" ]] && gen_usr_ldscript -a intl
 
 	if use java ; then
 		java-pkg_dojar "${D}"/usr/share/${PN}/*.jar
