@@ -22,7 +22,7 @@ type -P gxargs > /dev/null && alias xargs=gxargs
 # See bugs 169678, 195148 and 256129.
 # Also the discussion on
 # http://archives.gentoo.org/gentoo-dev/msg_8cb1805411f37b4eb168a3e680e531f3.xml
-bsd-post_src_install()
+sunos-post_src_install()
 {
 	if [ "${PN}" != "libiconv" -a -e "${D}"/usr/lib*/charset.alias ] ; then
 		rm -f "${D}"/usr/lib*/charset.alias
@@ -33,13 +33,13 @@ bsd-post_src_install()
 # http://archives.gentoo.org/gentoo-dev/msg_529a0806ed2cf841a467940a57e2d588.xml
 # The profile-* ones are meant to be used in etc/portage/profile.bashrc by user
 # until there is the registration mechanism.
-profile-post_src_install() { bsd-post_src_install ; }
-        post_src_install() { bsd-post_src_install ; }
+profile-post_src_install() { sunos-post_src_install ; }
+        post_src_install() { sunos-post_src_install ; }
 
 
 # Another hack to fix old versions of install-sh (automake) where a non-gnu
 # mkdir is not considered thread-safe (make install errors with -j > 1)
-bsd-patch_install-sh() {
+sunos-patch_install-sh() {
 	# Do nothing if we don't have patch installed:
 	if [[ -z $(type -P gpatch) ]]; then
 		return 0
@@ -76,18 +76,44 @@ bsd-patch_install-sh() {
 	done
 }
 
+# A hack to update a configure script that uses intltool to look for xgettext
+# which is called gxgettext on solaris.
+sunos-update_intltool() {
+	# Do nothing if $S does not exist
+	[ -d "${S}" ] || return 0
+
+	if [[ -n $(grep "INTLTOOL_APPLIED_VERSION" "${S}/configure") ]]; then
+		einfo "Automatically updating intltool to work on solaris."
+		if [[ -z $(grep "gxgettext", "${S}/configure") ]]; then
+			autoreconf -ivf || die "autoreconf failed"
+		fi
+	fi
+}
+
 # It should be run after everything has been unpacked/patched, some developers
 # do patch this little bastard from time to time.
 # So do it after unpack() for EAPI=0|1 and after prepare() for everything else.
 if [[ -n $EAPI ]] ; then
 	case "$EAPI" in
 		0|1)
-			profile-post_src_unpack() { bsd-patch_install-sh ; }
-			post_src_unpack() { bsd-patch_install-sh ; }
+			profile-post_src_unpack() {
+				sunos-patch_install-sh
+				sunos-update_intltool
+			}
+			post_src_unpack() {
+				sunos-patch_install-sh
+				sunos-update_intltool
+			}
 			;;
 		*)
-			profile_post_src_prepare() { bsd-patch_install-sh ; }
-			post_src_prepare() { bsd-patch_install-sh ; }
+			profile_post_src_prepare() {
+				sunos-patch_install-sh
+				sunos-update_intltool
+			}
+			post_src_prepare() {
+				sunos-patch_install-sh
+				sunos-update_intltool
+			}
 			;;
 	esac
 fi
