@@ -26,7 +26,7 @@ RDEPEND=">=sys-libs/ncurses-5.9-r1[unicode?]
 	nls? ( virtual/libintl )
 	!ncurses? ( slang? ( sys-libs/slang ) )"
 DEPEND="${RDEPEND}
-	nls? ( virtual/gettext )
+	nls? ( sys-kernel/gettext )
 	virtual/pkgconfig"
 
 src_prepare() {
