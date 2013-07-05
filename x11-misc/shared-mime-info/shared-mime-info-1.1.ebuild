@@ -18,7 +18,7 @@ RDEPEND=">=dev-libs/glib-2
 	dev-libs/libxml2"
 DEPEND="${RDEPEND}
 	dev-util/intltool
-	virtual/gettext
+	sys-devel/gettext
 	virtual/pkgconfig"
 
 DOCS=( ChangeLog HACKING NEWS README )
