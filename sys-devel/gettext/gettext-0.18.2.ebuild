@@ -12,7 +12,8 @@ SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-3 LGPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86
+~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x86-solaris"
 IUSE="acl -cvs doc emacs git java nls +cxx openmp static-libs elibc_glibc"
 
 DEPEND="virtual/libiconv
@@ -41,6 +42,8 @@ src_configure() {
 	else
 		myconf="${myconf} --with-included-gettext --enable-nls"
 	fi
+	# Build with --program-prefix=g on Solaris systems
+	use kernel_SunOS && myconf+=" --program-prefix=g"
 	use cxx || export CXX=$(tc-getCC)
 
 	# --without-emacs: Emacs support is now in a separate package
@@ -62,7 +65,8 @@ src_configure() {
 		$(use_enable openmp) \
 		$(use_enable static-libs static) \
 		$(use_with git) \
-		$(usex git --without-cvs $(use_with cvs))
+		$(usex git --without-cvs $(use_with cvs)) \
+		${myconf}
 }
 
 src_install() {
