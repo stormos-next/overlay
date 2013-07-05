@@ -31,7 +31,7 @@ RDEPEND="virtual/libiconv
 DEPEND="${RDEPEND}
 	app-text/docbook-xml-dtd:4.1.2
 	>=dev-libs/libxslt-1.0
-	virtual/gettext
+	sys-devel/gettext
 	>=dev-util/gtk-doc-am-1.15
 	systemtap? ( >=dev-util/systemtap-1.3 )
 	test? (
