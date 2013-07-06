@@ -21,7 +21,3 @@ RDEPEND="${DEPEND}
 	sys-devel/gettext"
 
 DOCS=( AUTHORS ChangeLog NEWS README TODO doc/I18N-HOWTO )
-
-src_prepare() {
-	use kernel_SunOS && (epatch "${FILESDIR}"/check-g-prefix.patch || die)
-}
