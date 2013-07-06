@@ -1,5 +1,0 @@
-DESCRIPTION="Virtual for gettext tools"
-SLOT="0"
-KEYWORDS="~x86-solaris"
-DEPEND=""
-RDEPEND="|| ( sys-devel/gettext sys-kernel/illumos )"
