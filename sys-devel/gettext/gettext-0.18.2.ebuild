@@ -81,7 +81,7 @@ src_install() {
 	dobin gettext-tools/misc/gettextize || die "gettextize"
 
 	# remove stuff that glibc handles
-	if use elibc_glibc ; then
+	if use elibc_glibc || use elibc_SunOS ; then
 		rm -f "${D}"/usr/include/libintl.h
 		rm -f "${D}"/usr/$(get_libdir)/libintl.*
 	fi
