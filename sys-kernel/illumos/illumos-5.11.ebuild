@@ -48,8 +48,6 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/no-gnu-gettext.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rename-curses-sunw.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rename-intl-sunw.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rm-v-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
@@ -145,9 +143,6 @@ src_install()
 	for hdr in curses eti form menu panel term termcap unctrl ; do
 		rm -f "${D}/usr/include/${hdr}.h" || die
 	done
-
-	# Drop illumos intl headers.  We use gettext headers instead
-	rm "${D}/usr/include/libintl.h" || die
 
 	# Drop lint libraries
 	find "${D}" -name "llib-l*" -delete
