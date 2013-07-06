@@ -76,44 +76,18 @@ sunos-patch_install-sh() {
 	done
 }
 
-# A hack to update a configure script that uses intltool to look for xgettext
-# which is called gxgettext on solaris.
-sunos-update_intltool() {
-	# Do nothing if $S does not exist
-	[ -d "${S}" ] || return 0
-
-	if [[ -n $(grep "INTLTOOL_APPLIED_VERSION" "${S}/configure") ]]; then
-		einfo "Automatically updating intltool to work on solaris."
-		if [[ -z $(grep "gxgettext", "${S}/configure") ]]; then
-			autoreconf -ivf || die "autoreconf failed"
-		fi
-	fi
-}
-
 # It should be run after everything has been unpacked/patched, some developers
 # do patch this little bastard from time to time.
 # So do it after unpack() for EAPI=0|1 and after prepare() for everything else.
 if [[ -n $EAPI ]] ; then
 	case "$EAPI" in
 		0|1)
-			profile-post_src_unpack() {
-				sunos-patch_install-sh
-				sunos-update_intltool
-			}
-			post_src_unpack() {
-				sunos-patch_install-sh
-				sunos-update_intltool
-			}
+			profile-post_src_unpack() { sunos-patch_install-sh ; }
+			post_src_unpack() { sunos-patch_install-sh ; }
 			;;
 		*)
-			profile_post_src_prepare() {
-				sunos-patch_install-sh
-				sunos-update_intltool
-			}
-			post_src_prepare() {
-				sunos-patch_install-sh
-				sunos-update_intltool
-			}
+			profile_post_src_prepare() { sunos-patch_install-sh ; }
+			post_src_prepare() { sunos-patch_install-sh ; }
 			;;
 	esac
 fi
