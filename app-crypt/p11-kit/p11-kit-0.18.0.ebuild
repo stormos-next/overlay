@@ -12,7 +12,8 @@ SRC_URI="http://p11-glue.freedesktop.org/releases/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh
+~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux ~x86-solaris"
 IUSE="+asn1 debug +trust"
 REQUIRED_USE="trust? ( asn1 )"
 
