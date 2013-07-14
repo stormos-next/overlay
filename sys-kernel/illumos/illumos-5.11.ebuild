@@ -34,21 +34,26 @@ SRC_URI="http://dlc.sun.com/osol/on/downloads/20100817/on-closed-bins.i386.tar.b
 # We have yet to formally define illumos-stormos releases
 #EGIT_COMMIT="aad02571bc59671aa3103bb070ae365f531b0b62"
 
+pkg_setup()
+{
+	if [[ "$ROOT" = / ]]; then
+		die "You must set ROOT when building sys-kernel/illumos"
+	fi
+}
+
 src_prepare()
 {
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
+	EPATCH_OPTS="-p1" epatch "${FILESDIR}/beadm-zones-support.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-gnu-gettext-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/flex-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/revert-accept4-changes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rm-v-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/use-gnu-demangle.patch" || die
@@ -110,20 +115,15 @@ src_compile()
 
 src_install()
 {
-	# Install the kernel bits.  We can do this because we're not running on
-	# a live system yet.  TODO: Check that is is actually true.
-	for dir in kernel platform ; do
+	# Install everything in the proto area, minus build crap
+	for dir in bin boot dev devices etc export home kernel lib \
+	  mnt opt platform proc root sbin system tmp usr var ; do
 		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
 	done
 
-	# Unmount libc so that it can be replaced.
-	umount /lib/libc.so.1 2>/dev/null
-
-	# Install everything else except for /dev /devices /proc - those belong
-	# to the host system so clobbering them would not be a good idea.
-	for dir in bin boot etc export home lib mnt opt root sbin usr var ; do
-		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
-	done
+	# How can it be that in this day and age DNS is not enabled by default?
+	mv "${D}/etc/nsswitch.conf" "${D}/etc/nsswitch.static" || die
+	mv "${D}/etc/nsswitch.dns" "${D}/etc/nsswitch.conf" || die
 
 	# Make xpg4 (e)grep the default
 	for bin in grep egrep ; do
