@@ -101,3 +101,6 @@ net-fs/samba dmapi
 # Naohiro Aota <naota@gentoo.org> (15 Oct 2012)
 # Mask numa on sys-apps/hwloc. numactl not available on FreeBSD
 sys-apps/hwloc numa
+
+# ncurses fails to build on solaris when C++ is enabled
+sys-libs/ncurses cxx
