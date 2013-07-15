@@ -107,7 +107,7 @@ RDEPEND=">=sys-devel/binutils-config-1.9"
 in_iuse zlib && RDEPEND+=" zlib? ( sys-libs/zlib )"
 DEPEND="${RDEPEND}
 	test? ( dev-util/dejagnu )
-	nls? ( virtual/gettext )
+	nls? ( sys-devel/gettext )
 	sys-devel/flex
 	virtual/yacc"
 
