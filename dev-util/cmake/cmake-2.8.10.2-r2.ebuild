@@ -65,9 +65,10 @@ PATCHES=(
 cmake_src_bootstrap() {
 	# Cleanup args to extract only JOBS.
 	# Because bootstrap does not know anything else.
-	echo ${MAKEOPTS} | egrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' > /dev/null
+	echo ${MAKEOPTS} | gegrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' > /dev/null
 	if [ $? -eq 0 ]; then
-		par_arg=$(echo ${MAKEOPTS} | egrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' | tail -n1 | egrep -o '[[:digit:]]+')
+		par_arg=$(echo ${MAKEOPTS} | gegrep -o \
+		'(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' | tail -n1 | gegrep -o '[[:digit:]]+')
 		par_arg="--parallel=${par_arg}"
 	else
 		par_arg="--parallel=1"
