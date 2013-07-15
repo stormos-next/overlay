@@ -37,7 +37,7 @@ src_prepare() {
 src_configure() {
 	local myconf=""
 	# Build with --without-included-gettext (on glibc systems)
-	if use elibc_glibc ; then
+	if use elibc_glibc || use elibc_SunOS ; then
 		myconf="${myconf} --without-included-gettext $(use_enable nls)"
 	else
 		myconf="${myconf} --with-included-gettext --enable-nls"
