@@ -1,8 +1,6 @@
-diff --git a/usr/src/lib/libbe/common/be_activate.c b/usr/src/lib/libbe/common/be_activate.c
-index c83e442..e932da5 100644
---- a/usr/src/lib/libbe/common/be_activate.c
-+++ b/usr/src/lib/libbe/common/be_activate.c
-@@ -131,6 +131,7 @@ _be_activate(char *be_name)
+--- old/usr/src/lib/libbe/common/be_activate.c	Mon Jul 15 15:43:44 2013
++++ new/usr/src/lib/libbe/common/be_activate.c	Mon Jul 15 15:43:43 2013
+@@ -131,6 +131,7 @@
  	be_transaction_data_t cb = { 0 };
  	zfs_handle_t	*zhp = NULL;
  	char		root_ds[MAXPATHLEN];
@@ -10,7 +8,7 @@ index c83e442..e932da5 100644
  	char		*cur_vers = NULL, *new_vers = NULL;
  	be_node_list_t	*be_nodes = NULL;
  	uuid_t		uu = {0};
-@@ -224,10 +225,13 @@ _be_activate(char *be_name)
+@@ -224,10 +225,13 @@
  		goto done;
  	}
  
@@ -28,7 +26,7 @@ index c83e442..e932da5 100644
  	}
  
  	if ((zhp = zfs_open(g_zfs, root_ds, ZFS_TYPE_FILESYSTEM)) != NULL) {
-@@ -246,7 +250,7 @@ _be_activate(char *be_name)
+@@ -246,7 +250,7 @@
  			goto done;
  		}
  	} else {
@@ -37,13 +35,11 @@ index c83e442..e932da5 100644
  		    "dataset (%s): %s\n"), root_ds,
  		    libzfs_error_description(g_zfs));
  		ret = zfs_err_to_be_err(g_zfs);
-@@ -262,6 +266,63 @@ _be_activate(char *be_name)
+@@ -262,6 +266,60 @@
  		    cb.obe_name);
  	}
  
 +	if (getzoneid() != GLOBAL_ZONEID) {
-+		int unset_be = B_TRUE;
-+
 +		if ((zhp = zfs_open(g_zfs, root_ds,
 +		    ZFS_TYPE_FILESYSTEM)) == NULL) {
 +			be_print_err(gettext("be_activate: failed to open "
@@ -52,13 +48,17 @@ index c83e442..e932da5 100644
 +			ret = zfs_err_to_be_err(g_zfs);
 +			goto done;
 +		}
-+
 +		/* Find current active zone root dataset */
-+		if (be_find_active_zone_root(zhp, cb.obe_zpool,
-+		    active_ds, sizeof (active_ds)) != BE_SUCCESS) {
-+			unset_be = B_FALSE;
-+		/* Requested environment is already active */
-+		} else if (strcmp(root_ds, active_ds) == 0) {
++		if ((ret = be_find_active_zone_root(zhp, cb.obe_zpool,
++		    active_ds, sizeof (active_ds))) != BE_SUCCESS) {
++			be_print_err(gettext("be_activate: failed to find "
++			    "active zone root dataset\n"));
++			ZFS_CLOSE(zhp);
++			goto done;
++		}
++		/* Do nothing if requested BE is already active */
++		if (strcmp(root_ds, active_ds) == 0) {
++			ret = BE_SUCCESS;
 +			ZFS_CLOSE(zhp);
 +			goto done;
 +		}
@@ -73,11 +73,6 @@ index c83e442..e932da5 100644
 +			goto done;
 +		}
 +		ZFS_CLOSE(zhp);
-+
-+		/* No environment was set so there's nothing to unset */
-+		if (!unset_be) {
-+			goto done;
-+		}
 +
 +		/* Unset active property for old active root dataset */
 +		if ((zhp = zfs_open(g_zfs, active_ds,
@@ -101,11 +96,9 @@ index c83e442..e932da5 100644
  done:
  	be_free_list(be_nodes);
  	return (ret);
-diff --git a/usr/src/lib/libbe/common/be_create.c b/usr/src/lib/libbe/common/be_create.c
-index 48bf4ec..7dd515b 100644
---- a/usr/src/lib/libbe/common/be_create.c
-+++ b/usr/src/lib/libbe/common/be_create.c
-@@ -482,9 +482,12 @@ be_destroy(nvlist_t *be_attrs)
+--- old/usr/src/lib/libbe/common/be_create.c	Mon Jul 15 15:43:45 2013
++++ new/usr/src/lib/libbe/common/be_create.c	Mon Jul 15 15:43:44 2013
+@@ -482,9 +482,12 @@
  	}
  
  	/* Get the UUID of the global BE */
@@ -121,7 +114,7 @@ index 48bf4ec..7dd515b 100644
  	}
  
  	/*
-@@ -595,6 +598,7 @@ be_copy(nvlist_t *be_attrs)
+@@ -595,6 +598,7 @@
  	zpool_handle_t	*zphp = NULL;
  	nvlist_t	*zfs_props = NULL;
  	uuid_t		uu = { 0 };
@@ -129,7 +122,7 @@ index 48bf4ec..7dd515b 100644
  	char		obe_root_ds[MAXPATHLEN];
  	char		nbe_root_ds[MAXPATHLEN];
  	char		ss[MAXPATHLEN];
-@@ -753,17 +757,30 @@ be_copy(nvlist_t *be_attrs)
+@@ -753,17 +757,30 @@
  		}
  
  		/* Verify it doesn't already exist */
@@ -171,7 +164,7 @@ index 48bf4ec..7dd515b 100644
  		}
  	} else {
  		/*
-@@ -1016,9 +1033,24 @@ be_copy(nvlist_t *be_attrs)
+@@ -1016,9 +1033,24 @@
  	}
  
  	/* Set UUID for new BE */
@@ -199,11 +192,9 @@ index 48bf4ec..7dd515b 100644
  	}
  
  	/*
-diff --git a/usr/src/lib/libbe/common/be_list.c b/usr/src/lib/libbe/common/be_list.c
-index b9c7882..030ff55 100644
---- a/usr/src/lib/libbe/common/be_list.c
-+++ b/usr/src/lib/libbe/common/be_list.c
-@@ -824,7 +824,9 @@ be_get_node_data(
+--- old/usr/src/lib/libbe/common/be_list.c	Mon Jul 15 15:43:45 2013
++++ new/usr/src/lib/libbe/common/be_list.c	Mon Jul 15 15:43:45 2013
+@@ -824,7 +824,9 @@
  	char prop_buf[MAXPATHLEN];
  	nvlist_t *userprops = NULL;
  	nvlist_t *propval = NULL;
@@ -213,7 +204,7 @@ index b9c7882..030ff55 100644
  	char *grub_default_bootfs = NULL;
  	zpool_handle_t *zphp = NULL;
  	int err = 0;
-@@ -865,27 +867,30 @@ be_get_node_data(
+@@ -865,27 +867,30 @@
  
  	be_node->be_space_used = zfs_prop_get_int(zhp, ZFS_PROP_USED);
  
@@ -261,7 +252,7 @@ index b9c7882..030ff55 100644
  
  	/*
  	 * If the dataset is mounted use the mount point
-@@ -910,6 +915,22 @@ be_get_node_data(
+@@ -910,6 +915,22 @@
  	if ((userprops = zfs_get_user_props(zhp)) == NULL) {
  		be_node->be_policy_type = strdup(be_default_policy());
  	} else {
@@ -284,7 +275,7 @@ index b9c7882..030ff55 100644
  		if (nvlist_lookup_nvlist(userprops, BE_POLICY_PROPERTY,
  		    &propval) != 0 || propval == NULL) {
  			be_node->be_policy_type =
-@@ -924,11 +945,19 @@ be_get_node_data(
+@@ -924,11 +945,19 @@
  			else
  				be_node->be_policy_type = strdup(prop_str);
  		}
@@ -309,37 +300,79 @@ index b9c7882..030ff55 100644
  		}
  	}
  
-diff --git a/usr/src/lib/libbe/common/be_mount.c b/usr/src/lib/libbe/common/be_mount.c
-index 6c631da..b8d98d3 100644
---- a/usr/src/lib/libbe/common/be_mount.c
-+++ b/usr/src/lib/libbe/common/be_mount.c
-@@ -533,6 +533,21 @@ _be_unmount(char *be_name, int flags)
- 		return (ret);
+--- old/usr/src/lib/libbe/common/be_mount.c	Mon Jul 15 15:43:46 2013
++++ new/usr/src/lib/libbe/common/be_mount.c	Mon Jul 15 15:43:46 2013
+@@ -326,14 +326,29 @@
+ 		tmp_altroot = *altroot;
  	}
  
-+	/* Zone's root mountpoint property must be set to 'legacy' */
-+	if (getzoneid() != GLOBAL_ZONEID) {
-+		if (strcmp(mountpoint, ZFS_MOUNTPOINT_LEGACY) != 0) {
-+			if (zfs_prop_set(zhp,
-+			    zfs_prop_to_name(ZFS_PROP_MOUNTPOINT),
-+			    ZFS_MOUNTPOINT_LEGACY) != 0) {
-+				be_print_err(gettext("be_unmount: failed to "
-+				    "set mountpoint of zone root dataset %s "
-+				    "to 'legacy': %s\n"), zfs_get_name(zhp),
-+				    libzfs_error_description(g_zfs));
-+				return (zfs_err_to_be_err(g_zfs));
-+			}
-+		}
-+	}
++	md.altroot = tmp_altroot;
++	md.shared_fs = flags & BE_MOUNT_FLAG_SHARED_FS;
++	md.shared_rw = flags & BE_MOUNT_FLAG_SHARED_RW;
 +
- 	ZFS_CLOSE(zhp);
+ 	/* Mount the BE's root file system */
+-	if ((ret = be_mount_root(zhp, tmp_altroot)) != BE_SUCCESS) {
+-		be_print_err(gettext("be_mount: failed to "
+-		    "mount BE root file system\n"));
+-		if (gen_tmp_altroot)
+-			free(tmp_altroot);
+-		ZFS_CLOSE(zhp);
+-		return (ret);
++	if (getzoneid() == GLOBAL_ZONEID) {
++		if ((ret = be_mount_root(zhp, tmp_altroot)) != BE_SUCCESS) {
++			be_print_err(gettext("be_mount: failed to "
++			    "mount BE root file system\n"));
++			if (gen_tmp_altroot)
++				free(tmp_altroot);
++			ZFS_CLOSE(zhp);
++			return (ret);
++		}
++	} else {
++		/* Legacy mount the zone root dataset */
++		if ((ret = be_mount_zone_root(zhp, &md)) != BE_SUCCESS) {
++			be_print_err(gettext("be_mount: failed to "
++			    "mount BE zone root file system\n"));
++			free(md.altroot);
++			ZFS_CLOSE(zhp);
++			return (ret);
++		}
+ 	}
  
- 	return (BE_SUCCESS);
-diff --git a/usr/src/lib/libbe/common/be_snapshot.c b/usr/src/lib/libbe/common/be_snapshot.c
-index 2cb011e..4a09a96 100644
---- a/usr/src/lib/libbe/common/be_snapshot.c
-+++ b/usr/src/lib/libbe/common/be_snapshot.c
-@@ -482,27 +482,30 @@ _be_create_snapshot(char *be_name, char **snap_name, char *policy)
+ 	/* Iterate through BE's children filesystems */
+@@ -347,10 +362,6 @@
+ 		return (err);
+ 	}
+ 
+-	md.altroot = tmp_altroot;
+-	md.shared_fs = flags & BE_MOUNT_FLAG_SHARED_FS;
+-	md.shared_rw = flags & BE_MOUNT_FLAG_SHARED_RW;
+-
+ 	/*
+ 	 * Mount shared file systems if mount flag says so.
+ 	 */
+@@ -528,9 +539,16 @@
+ 	}
+ 
+ 	/* Unmount this BE's root filesystem */
+-	if ((ret = be_unmount_root(zhp, &ud)) != BE_SUCCESS) {
+-		ZFS_CLOSE(zhp);
+-		return (ret);
++	if (getzoneid() == GLOBAL_ZONEID) {
++		if ((ret = be_unmount_root(zhp, &ud)) != BE_SUCCESS) {
++			ZFS_CLOSE(zhp);
++			return (ret);
++		}
++	} else {
++		if ((ret = be_unmount_zone_root(zhp, &ud)) != BE_SUCCESS) {
++			ZFS_CLOSE(zhp);
++			return (ret);
++		}
+ 	}
+ 
+ 	ZFS_CLOSE(zhp);
+--- old/usr/src/lib/libbe/common/be_snapshot.c	Mon Jul 15 15:43:47 2013
++++ new/usr/src/lib/libbe/common/be_snapshot.c	Mon Jul 15 15:43:46 2013
+@@ -482,27 +482,30 @@
  	 * cleanup policy there.  Otherwise don't set one - this snapshot
  	 * will always inherit the cleanup policy from its parent.
  	 */
@@ -347,13 +380,6 @@ index 2cb011e..4a09a96 100644
 -		if (nvlist_alloc(&ss_props, NV_UNIQUE_NAME, 0) != 0) {
 -			be_print_err(gettext("be_create_snapshot: internal "
 -			    "error: out of memory\n"));
--			return (BE_ERR_NOMEM);
--		}
--		if (nvlist_add_string(ss_props, BE_POLICY_PROPERTY, bt.policy)
--		    != 0) {
--			be_print_err(gettext("be_create_snapshot: internal "
--			    "error: out of memory\n"));
--			nvlist_free(ss_props);
 -			return (BE_ERR_NOMEM);
 +	if (getzoneid() == GLOBAL_ZONEID) {
 +		if (pool_version >= SPA_VERSION_SNAP_PROPS) {
@@ -379,6 +405,13 @@ index 2cb011e..4a09a96 100644
 +			    pool_version);
 +			return (BE_ERR_NOTSUP);
  		}
+-		if (nvlist_add_string(ss_props, BE_POLICY_PROPERTY, bt.policy)
+-		    != 0) {
+-			be_print_err(gettext("be_create_snapshot: internal "
+-			    "error: out of memory\n"));
+-			nvlist_free(ss_props);
+-			return (BE_ERR_NOMEM);
+-		}
 -	} else if (policy != NULL) {
 -		/*
 -		 * If an explicit cleanup policy was requested
@@ -390,10 +423,8 @@ index 2cb011e..4a09a96 100644
  	}
  
  	/* Create the snapshots recursively */
-diff --git a/usr/src/lib/libbe/common/be_utils.c b/usr/src/lib/libbe/common/be_utils.c
-index 888a8e2..56926a9 100644
---- a/usr/src/lib/libbe/common/be_utils.c
-+++ b/usr/src/lib/libbe/common/be_utils.c
+--- old/usr/src/lib/libbe/common/be_utils.c	Mon Jul 15 15:43:47 2013
++++ new/usr/src/lib/libbe/common/be_utils.c	Mon Jul 15 15:43:47 2013
 @@ -53,6 +53,7 @@
  #include <deflt.h>
  #include <wait.h>
@@ -402,7 +433,7 @@ index 888a8e2..56926a9 100644
  
  #include <libbe.h>
  #include <libbe_priv.h>
-@@ -230,13 +231,30 @@ be_make_root_ds(const char *zpool, const char *be_name, char *be_root_ds,
+@@ -230,13 +231,30 @@
  {
  	struct be_defaults be_defaults;
  	be_get_defaults(&be_defaults);
@@ -439,7 +470,7 @@ index 888a8e2..56926a9 100644
  }
  
  /*
-@@ -258,12 +276,26 @@ be_make_container_ds(const char *zpool,  char *container_ds,
+@@ -258,12 +276,26 @@
  {
  	struct be_defaults be_defaults;
  	be_get_defaults(&be_defaults);
@@ -471,7 +502,7 @@ index 888a8e2..56926a9 100644
  }
  
  /*
-@@ -2436,11 +2468,25 @@ be_zpool_find_current_be_callback(zpool_handle_t *zlp, void *data)
+@@ -2436,11 +2468,25 @@
  	zfs_handle_t		*zhp = NULL;
  	const char		*zpool =  zpool_get_name(zlp);
  	char			be_container_ds[MAXPATHLEN];
@@ -498,11 +529,9 @@ index 888a8e2..56926a9 100644
  
  	/*
  	 * Check if a BE container dataset exists in this pool.
-diff --git a/usr/src/lib/libbe/common/be_zones.c b/usr/src/lib/libbe/common/be_zones.c
-index 886b0da..d9c21b3 100644
---- a/usr/src/lib/libbe/common/be_zones.c
-+++ b/usr/src/lib/libbe/common/be_zones.c
-@@ -113,13 +113,23 @@ be_find_active_zone_root(zfs_handle_t *be_zhp, char *zonepath_ds,
+--- old/usr/src/lib/libbe/common/be_zones.c	Mon Jul 15 15:43:48 2013
++++ new/usr/src/lib/libbe/common/be_zones.c	Mon Jul 15 15:43:48 2013
+@@ -113,17 +113,27 @@
  	int				ret = BE_SUCCESS;
  
  	/* Get the uuid of the parent global BE */
@@ -527,15 +556,24 @@ index 886b0da..d9c21b3 100644
 +			    zfs_get_name(be_zhp));
 +			return (ret);
 +		}
++		/* Generate string for this zone's root container dataset */
++		be_make_container_ds(zonepath_ds, zone_container_ds,
++		    sizeof (zone_container_ds));
  	}
--
- 	/* Generate string for the root container dataset for this zone. */
- 	be_make_container_ds(zonepath_ds, zone_container_ds,
- 	    sizeof (zone_container_ds));
-@@ -376,6 +386,47 @@ done:
- 	return (ret);
- }
  
+-	/* Generate string for the root container dataset for this zone. */
+-	be_make_container_ds(zonepath_ds, zone_container_ds,
+-	    sizeof (zone_container_ds));
+-
+ 	/* Get handle to this zone's root container dataset */
+ 	if ((zhp = zfs_open(g_zfs, zone_container_ds, ZFS_TYPE_FILESYSTEM))
+ 	    == NULL) {
+@@ -374,6 +384,47 @@
+ done:
+ 	ZFS_CLOSE(zhp);
+ 	return (ret);
++}
++
 +/*
 + * Function:	be_zone_set_parent_uuid
 + * Description:	This function sets parentbe uuid into
@@ -575,16 +613,12 @@ index 886b0da..d9c21b3 100644
 +
 +	ZFS_CLOSE(zhp);
 +	return (ret);
-+}
-+
+ }
+ 
  /* ******************************************************************** */
- /*			Private Functions				*/
- /* ******************************************************************** */
-diff --git a/usr/src/lib/libbe/common/libbe_priv.h b/usr/src/lib/libbe/common/libbe_priv.h
-index 7e79c79..554bae0 100644
---- a/usr/src/lib/libbe/common/libbe_priv.h
-+++ b/usr/src/lib/libbe/common/libbe_priv.h
-@@ -205,6 +205,7 @@ int be_find_mounted_zone_root(char *, char *, char *, int);
+--- old/usr/src/lib/libbe/common/libbe_priv.h	Mon Jul 15 15:43:49 2013
++++ new/usr/src/lib/libbe/common/libbe_priv.h	Mon Jul 15 15:43:48 2013
+@@ -205,6 +205,7 @@
  boolean_t be_zone_supported(char *);
  zoneBrandList_t *be_get_supported_brandlist(void);
  int be_zone_get_parent_uuid(const char *, uuid_t *);

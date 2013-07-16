@@ -144,6 +144,11 @@ src_install()
 		rm -f "${D}/usr/include/${hdr}.h" || die
 	done
 
+	# Drop illumos libelf headers.  We use gentoo provided headers
+	for hdr in libelf gelf ; do
+		rm -f "${D}/usr/include/${hdr}.h" || die
+	done
+
 	# Drop lint libraries
 	find "${D}" -name "llib-l*" -delete
 }
