@@ -121,10 +121,6 @@ src_install()
 		cp -R "${S}/proto/root_i386/$dir" "${D}" || die
 	done
 
-	# How can it be that in this day and age DNS is not enabled by default?
-	mv "${D}/etc/nsswitch.conf" "${D}/etc/nsswitch.static" || die
-	mv "${D}/etc/nsswitch.dns" "${D}/etc/nsswitch.conf" || die
-
 	# Make xpg4 (e)grep the default
 	for bin in grep egrep ; do
 		ln -f "${D}/usr/xpg4/bin/$bin" "${D}/usr/bin/$bin" || die
@@ -145,7 +141,7 @@ src_install()
 	done
 
 	# Drop illumos libelf headers.  We use gentoo provided headers
-	for hdr in libelf gelf ; do
+	for hdr in libelf gelf nlist ; do
 		rm -f "${D}/usr/include/${hdr}.h" || die
 	done
 
