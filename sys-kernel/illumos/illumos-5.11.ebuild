@@ -43,28 +43,34 @@ pkg_setup()
 
 src_prepare()
 {
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/BUILD64_fixes.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/beadm-zones-support.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-cpp-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/rm-v-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/use-gnu-demangle.patch" || die
 }
 
 src_configure()
 {
+	# Work out which commit we're building against
+	if [[ "${EGIT_COMMIT}" = master ]] ; then
+		REVISION=$(cd ${S} && git rev-parse HEAD)
+	else
+		REVISION=${EGIT_COMMIT}
+	fi
+
+	SHORT_REVISION=$(echo $REVISION | head -c 7)
+
 	elog "Generating illumos.sh file"
-	sed -e "s:^export GATE='.*'\$:export GATE=\"illumos-gate\":g" \
+	sed -e "s:^export GATE='.*'\$:export GATE=\"illumos-stormos\":g" \
 		-e "s:^export CODEMGR_WS=\".*\"\$:export CODEMGR_WS=\"${S}\":g" \
- 		-e "s:^export VERSION=\".*\"\$:export VERSION=\"illumos-gate\":g" \
+ 		-e "s:^export VERSION=\".*\"\$:export VERSION=\"illumos-${SHORT_REVISION}\":g" \
  		-e "s:^export ON_CLOSED_BINS=\".*\"\$:export ON_CLOSED_BINS=\"${WORKDIR}/closed\":g" \
 		-e "s:^# \(export ENABLE_SMB_PRINTING='#'\):\1:g" \
  		usr/src/tools/env/illumos.sh > illumos.sh || die
