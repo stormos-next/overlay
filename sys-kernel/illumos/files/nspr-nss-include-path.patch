@@ -14,7 +14,7 @@ index 9c28fae..3f834b1 100644
  include ../../Makefile.lib
  
  NSS_LIBS=	-lnspr4 -lplc4 -lnss3 -lssl3
--NSS_HDRS=	/usr/include/mps
+-NSS_HDRS=	$(ADJUNCT_PROTO)/usr/include/mps
 -NSS_LDPATH=	/usr/lib/mps
 +NSS_HDRS=	/usr/include/nspr /usr/include/nss
 +NSS_LDPATH=	/usr/lib
@@ -46,7 +46,7 @@ index d03823d..afb41de 100644
  CFLAGS +=	$(CCVERBOSE)
  LOCFLAGS +=	-D_REENTRANT -DSUNW_OPTIONS
  CPPFLAGS +=	-I../common -I$(SRC)/lib/libldap5/include/ldap \
--		-I/usr/include/mps $(LOCFLAGS)
+-		-I$(ADJUNCT_PROTO)/usr/include/mps $(LOCFLAGS)
 +		-I/usr/include/nspr $(LOCFLAGS)
  LINTFLAGS +=	-erroff=E_BAD_PTR_CAST_ALIGN
  LINTFLAGS64 +=	-erroff=E_BAD_PTR_CAST_ALIGN
@@ -67,7 +67,7 @@ index a3ab702..52711e0 100644
  
  MPSDIR=		/usr/lib/mps
  KMFINC=		-I../../../include -I../../../ber_der/inc
--NSSINC=		-I/usr/include/mps
+-NSSINC=		-I$(ADJUNCT_PROTO)/usr/include/mps
 +NSSINC=		-I/usr/include/nspr -I/usr/include/nss
  BERLIB=		-lkmf -lkmfberder
  BERLIB64=	$(BERLIB)

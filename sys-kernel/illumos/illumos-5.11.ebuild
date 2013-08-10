@@ -43,7 +43,6 @@ pkg_setup()
 
 src_prepare()
 {
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/beadm-zones-support.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
