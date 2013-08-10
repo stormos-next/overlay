@@ -46,9 +46,7 @@ src_prepare()
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-apache-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-openssl-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-perl-compat.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/better-uuid-compat.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/egrep-Hq-options.patch" || die
-	EPATCH_OPTS="-p1" epatch "${FILESDIR}/fix-krb5-typo.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/grep-H-option.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/nspr-nss-include-path.patch" || die
 	EPATCH_OPTS="-p1" epatch "${FILESDIR}/socket-symbols-in-libc.patch" || die	
