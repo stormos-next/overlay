@@ -38,6 +38,7 @@ DEPEND="${RDEPEND}
 DOCS=(CHANGES NOTICE README)
 
 src_prepare() {
+	epatch "${FILESDIR}/${P}-libtool.patch"
 	eautoreconf
 
 	elibtoolize
